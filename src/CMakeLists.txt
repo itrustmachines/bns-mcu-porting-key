@@ -1,0 +1,15 @@
+project(bns-client-lib)
+
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES false *.c)
+
+set(SOURCES ${SOURCES})
+
+include_directories(./)
+include_directories(${CJSON_INCLUDE_DIRS})
+include_directories(${SECP256K1_INCLUDE_DIRS})
+
+set(BNS_CLIENT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${CJSON_INCLUDE_DIRS} ${SECP256K1_INCLUDE_DIRS})
+set(BNS_CLIENT_INCLUDE_DIRS ${BNS_CLIENT_INCLUDE_DIRS} PARENT_SCOPE)
+
+add_library(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} secp256k1 cJSON)
