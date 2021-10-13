@@ -7,7 +7,7 @@
 - 我們總共定義 8 個事件可以 Callback
   ![Callback順序](../image/callback_number.png)
 
-  1. `register_callback` : BNS Client 初始化時，會向 BNS Server 進行註冊，開發者可實作此函式將 `registerRequest` 和 `registerResult` Callback
+  1. `register_callback` : BNS Client 初始化時，會向 BNS Server 確認註冊狀態，開發者可實作此函式將 `registerRequest` 和 `registerResult` Callback
   
   2. `create_ledger_input_by_cmd_callback` :
      - BNS Client 初始化成功，會將 CMD 等資訊放入 `ledgerInputRequst` 並進行 **ledgerInput** 開發者可實作此函式將 `ledgerInputRequest` Callback。

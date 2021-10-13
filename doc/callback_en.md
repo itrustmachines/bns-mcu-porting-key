@@ -13,7 +13,7 @@ The Callbacks send the events between BNS Client and BNS Server to the BNS or yo
 
 ![](../image/callback_number.png)
 
-1. `register_callback`: When BNS Client is initialized, it will register with BNS Server. Developers can implement this function to call `registerRequest` and `registerResult`
+1. `register_callback`: When BNS Client is initialized, it will check register status with BNS Server. Developers can implement this function to call `registerRequest` and `registerResult`
 
 2. `create_ledger_input_by_cmd_callback` :
 
