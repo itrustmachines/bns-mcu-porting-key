@@ -22,7 +22,6 @@ If you want to explore our SDK in more details or modify our SDK, we recommand y
       .register_callback = register_callback,
       .create_ledger_input_by_cmd = create_ledger_input_by_cmd_callback,
       .obtain_ledger_input_rebnsnse = ledger_input_response_callback,
-      .obtain_binary_ledger_input_response = binary_ledger_input_response_callback,
       .obtain_receipt_event = receipt_event_callback,
       .obtain_done_clearance_order_event = done_clearance_order_event_callback,
       .obtain_merkle_proof = merkle_proof_callback,

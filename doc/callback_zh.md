@@ -11,19 +11,15 @@
   
   2. `create_ledger_input_by_cmd_callback` :
      - BNS Client 初始化成功，會將 CMD 等資訊放入 `ledgerInputRequst` 並進行 **ledgerInput** 開發者可實作此函式將 `ledgerInputRequest` Callback。
-     - 若開發者使用 CMD 文件中的檔案存證功能，BNS Client 會將 CMD 等資訊放入 `ledgerInputRequst` 並進行 **binaryLedgerInput** 開發者可實作此函式將 `ledgerInputRequest` Callback
   
   3. `ledger_input_response_callback` : BNS Client ledgerInput 後會收到 BNS Server 回傳的 `ledgerInputResult`，開發者可實作此函式將 `ledgerInputResult` Callback
+  4. `receipt_event_callback` : 將 `ledgerInputResult` 中的 `receipt` Callback
   
-  4. `binary_ledger_input_response_callback` : 若開發者使用 CMD 文件中的檔案存證功能，BNS Client 會進行 binaryLedgerInput，並會收到 BNS Server 回傳的 `binaryLedgerInputResult`，開發者可實作此函式將 `binaryLedgerInputResult` Callback
+  5. `done_clearance_order_event_callback` : 將 `ledgerInputResult` 中的 `doneClearanceOrder` Callback
   
-  5. `receipt_event_callback` : 將 `ledgerInputResult` / `binaryLedgerInputResult` 中的 `receipt` Callback
+  6. `merkle_proof_callback` : BNS Client 驗證回條前，會先向 BNS Server 拿取 MerkleProof 作為驗證依據，開發者可實作使函式將 `merkleProof` Callback
   
-  6. `done_clearance_order_event_callback` : 將 `ledgerInputResult` / `binaryLedgerInputResult` 中的 `doneClearanceOrder` Callback
-  
-  7. `merkle_proof_callback` : BNS Client 驗證回條前，會先向 BNS Server 拿取 MerkleProof 作為驗證依據，開發者可實作使函式將 `merkleProof` Callback
-  
-  8. `verify_receipt_result_callback` : BNS Client 取得 MerkleProof 後會開始驗證回條，並將驗證結果放入 `verifyReceiptResult`，開發者可實作此函式將 `verifyReceiptResult` Callback
+  7. `verify_receipt_result_callback` : BNS Client 取得 MerkleProof 後會開始驗證回條，並將驗證結果放入 `verifyReceiptResult`，開發者可實作此函式將 `verifyReceiptResult` Callback
 
 - Callback 此文件分成兩部分
   - **[入門](#入門)** : 使用 BNS 作為範例，說明 `ledger_input_response_callback` 和 `verify_receipt_result_callback` 如何將事件 Callback 至 [Blockchain Notary Service](https://bns.itrustmachines.com/) 。
@@ -33,7 +29,6 @@
 - Callback 實作注意事項
   - 若開發者想直接使用 BNS，僅需了解入門文件中的兩個 Callback 運作流程且不需更改任何程式
   - **若開發者想使用其他 Callback 請閱讀進階文件並實作 Callback 將事件傳送至自己的系統，因 BNS API 僅提供 `ledger_input_response_callback` 和 `verify_receipt_result_callback` 串接。**
-  - **若開發者想使用 CMD 檔案存證驗證功能，則需執行 [spo_client_binary_example](../example/bns-client-binary-example) 中的程式必將程式實作在此資料夾中**
 
 - callback 相關檔案
 
@@ -119,7 +114,7 @@
 
 ##### BNS Client 初始化時，會向 BNS Server 進行註冊，若您想將註冊資訊 Callback 至自己的系統，可閱讀下方說明及程式
 
-- BNS Client 初始化時，[spo_client.c](../src/bns-client/spo_client.c) 會呼叫 [register.c](../src/bns-client/register/register.c) 中的 `spo_post_register` 函式建立 `registerRequest` 並向 BNS Server 請求註冊
+- BNS Client 初始化時，會向 BNS Server 進行註冊，開發者可實作此函式將 `registerRequest` 和 `registerResult` Callback
 
 - BNS Server 收到請求註冊後會將註冊結果回傳給 BNS Client，BNS Client 會透過 `spo_post_register` 中的 `check_and_parse_register_response` 函式將註冊結果資訊放入 `registerResult`
 
@@ -204,15 +199,13 @@
 
 #### create_ledger_input_by_cmd_callback 說明
 
-##### BNS Client 初始化成功，會將 CMD 等資訊放入 ledgerInputRequst 並進行 ledgerInput / binaryLedgerInput，若您想將 ledgerInputRequst 的資訊 Callback 至自己的系統，可閱讀下方說明及程式
+##### BNS Client 初始化成功，會將 CMD 等資訊放入 ledgerInputRequst 並進行 ledgerInput，若您想將 ledgerInputRequst 的資訊 Callback 至自己的系統，可閱讀下方說明及程式
 
 - BNS Client 初始化成功後，[spo_client.c](../src/bns-client/spo_client.c) 的 `spo_client_ledger_input` 函式會呼叫 [ledger_input.c](../src/bns-client/input/ledger_input.c) 中的 `spo_post_ledger_input` 函式進行 `ledgerInput`
 
-- **若開發者使用 CMD 文件中的檔案存證功能，[spo_client.c](../src/bns-client/spo_client.c) 的 `spo_client_binary_ledger_input` 函式會呼叫 [binary_ledger_input.c](../src/bns-client/input/binary_ledger_input.c) 中的 `spo_post_binary_ledger_input` 函式進行 `binaryLedgerInput`**
+- `spo_post_ledger_input` 函式在進行 `ledgerInput` 前會呼叫 [ledger_input_request.c](../src/bns-client/input/ledger_input_request.c) 中的 `build_ledger_input_request_json` 函式將 `CMD`, `indexValue` ... 等資訊放入 `ledgerInputRequest`，並透過 `ledger_input_request_sign` 函式將 `ledgerInputRequest` 進行電子簽章
 
-- `spo_post_ledger_input` / `spo_post_binary_ledger_input` 函式在進行 `ledgerInput` / `binaryLedgerInput` 前會呼叫 [ledger_input_request.c](../src/bns-client/input/ledger_input_request.c) 中的 `build_ledger_input_request_json` 函式將 `CMD`, `indexValue` ... 等資訊放入 `ledgerInputRequest`，並透過 `ledger_input_request_sign` 函式將 `ledgerInputRequest` 進行電子簽章
-
-- 電子簽章後，`spo_post_ledger_input` / `spo_post_binary_ledger_input` 函式會將 `ledgerInputRequest` 傳送至 BNS Server 進行存證
+- 電子簽章後，`spo_post_ledger_input` 函式會將 `ledgerInputRequest` 傳送至 BNS Server 進行存證
 
 - `ledgerInputRequest` 為 struct 資料型別，內容可參考 [spo_types.h](../src/bns-client/core/spo_types.h)
 
@@ -358,7 +351,7 @@
 
 #### receipt_event_callback 說明
 
-##### 若您想將 ledgerInputResult / binaryLedgerInputResult 中的回條 Callback 至自己的系統，可閱讀下方說明及程式
+##### 若您想將 ledgerInputResult 中的回條 Callback 至自己的系統，可閱讀下方說明及程式
 
 - 開發者可在 [callback.c](../example/bns-client-example/callback.c) 的 `receipt_event_callback` 撰寫程式將 `receipt` 的資訊 Callback 至自己的系統
 
@@ -395,7 +388,7 @@
 
 #### done_clearance_order_event_callback 說明
 
-##### 若您想將 ledgerInputResult / binaryLedgerInputResult 中的 doneClearanceOrder Callback 至自己的系統，可閱讀下方說明及程式
+##### 若您想將 ledgerInputResult 中的 doneClearanceOrder Callback 至自己的系統，可閱讀下方說明及程式
 
 - 開發者可在 [callback.c](../example/bns-client-example/callback.c) 的 `done_clearance_order_event_callback` 撰寫程式將 `doneClearanceOrder` 的資訊 Callback 至自己的系統
 
@@ -520,8 +513,6 @@
 - BNS Client 取得 `merkleProof` 後會開始進行驗證，[verify.c](../src/bns-client/verify/verify.c) 會依序呼叫 `verify_receipt_signature`, `verify_merkle_proof_signature`, `verify_clearance_order`, `verify_pb_pair`, `verify_merkle_proof_slice`, `verify_root_hash` 函式進行驗證，並將驗證結果儲存至 `verifyReceiptResult`
 
 - 開發者可在 [callback.c](../example/bns-client-example/callback.c) 的 `verify_receipt_result_callback` 撰寫程式將 `verifyReceiptResult` 的資訊 Callback 至自己的系統
-
-- 若開發者使用 CMD 檔案存證功能則需在 [callback.c](../example/bns-client-binary-example/callback.c) 的 `verify_receipt_result_callback` 撰寫程式將 `verifyReceiptResult` 的資訊 Callback 至自己的系統
 
 - `verifyReceiptResult` 為 struct 資料型別，內容可參考 [bns_types.h](../src/bns-client/core/bns_types.h)
 

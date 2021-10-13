@@ -13,25 +13,21 @@ The Callbacks send the events between BNS Client and BNS Server to the BNS or yo
 
 ![](../image/callback_number.png)
 
-1. `register_callback` : When initialize the BNS Client, BNS Client will send `registerRequest` to BNS Server and receive `registerResult` from BNS Server. Developers can implement the code in `register_callback` function to callback the informations in `registerRequest` and `registerResult`.
+1. `register_callback`: When BNS Client is initialized, it will register with BNS Server. Developers can implement this function to call `registerRequest` and `registerResult`
 
 2. `create_ledger_input_by_cmd_callback` :
 
    - After successfully initializing the BNS Client, BNS Client will store CMD and other data in `ledgerInputRequest` and do **ledgerInput** to send `ledgerInputRequest` to the BNS Server. Developers can implement the code in `create_ledger_input_by_cmd_callback` function to callback the information in `ledgerInputRequest`.
-
-   - If developes want to use BNS-client-binary-example which introduced in CMD document, BNS Client will do **binaryLedgerInput** to send `ledgerInputRequest` to BNS Server. Developers can implement the code in `create_ledger_input_by_cmd_callback` function to callback the informations in `ledgerInputRequest`.
-
+   
 3. `ledger_input_response_callback` : BNS Client will receive `ledgerInputResult` from BNS Server after sending `ledgerInputRequest`. Developers can implement the code in `ledger_input_response_callback` function to callback the informations in `ledgerInputResult`.
 
-4. `binary_ledger_input_response_callback` : If developers use bns-client-binary-example, BNS Client will do binaryLedgerInput to send `ledgerInputRequest` to BNS server and receive `binaryLedgerInputResult` from BNS Server. Developes can implement the code in `binary_ledger_input_response_callback` function to callback the informations in `binaryLedgerInputResult`.
+4`receipt_event_callback` : The `receipt` is contained in `ledgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`.
 
-5. `receipt_event_callback` : The `receipt` is contained in `ledgerInputResult` / `binaryLedgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`.
+5`done_clearance_order_event_callback` : The `doneClearanceOrder` is contained in `ledgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`.
 
-6. `done_clearance_order_event_callback` : The `doneClearanceOrder` is contained in `ledgerInputResult` / `binaryLedgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`.
+6`merkle_proof_callback` : Before verifying the receipt, BNS Client will request the `merkleProof` of the receipts to be verified from the Server. The Merkle Proof is evidence of receipt verification. BNS Client will use Merkle proof to verify the receipt whether receipt is in the TP-merkle tree. Developers can implement the code in `merkle_proof_callback` function to callback the informations in `merkleProof`.
 
-7. `merkle_proof_callback` : Before verifying the receipt, BNS Client will request the `merkleProof` of the receipts to be verified from the Server. The Merkle Proof is evidence of receipt verification. BNS Client will use Merkle proof to verify the receipt whether receipt is in the TP-merkle tree. Developers can implement the code in `merkle_proof_callback` function to callback the informations in `merkleProof`.
-
-8. `verify_receipt_result_callback` : After receiving the Merkle Proof. BNS Client will start to verify the receipt and store the result to `verifyReceiptResult`. Developers can implement the code in `verify_receipt_result_callback` function to callback the informations in `verifyReceiptResult`.
+7`verify_receipt_result_callback` : After receiving the Merkle Proof. BNS Client will start to verify the receipt and store the result to `verifyReceiptResult`. Developers can implement the code in `verify_receipt_result_callback` function to callback the informations in `verifyReceiptResult`.
 
 ### Basic
 
@@ -200,19 +196,17 @@ Before you implement the code in Callback functions, please remember to remove t
 
 #### create_ledger_input_by_cmd_callback
 
-**After successfully initializing the BNS Client, BNS Client will store CMD and other data in `ledgerInputRequest` and do ledgerInput / binaryLedgerInput to send `ledgerInputRequest` to the BNS Server. Developers can implement the code in `create_ledger_input_by_cmd_callback` function to callback `ledgerInputRequest`**
+**After successfully initializing the BNS Client, BNS Client will store CMD and other data in `ledgerInputRequest` and do ledgerInput to send `ledgerInputRequest` to the BNS Server. Developers can implement the code in `create_ledger_input_by_cmd_callback` function to callback `ledgerInputRequest`**
 
-- BNS Client will call `bns_post_ledger_input` / `bns_post_binary_ledger_input` function to do ledgerInput / binaryLedgerInput
+- BNS Client will call `bns_post_ledger_input` function to do ledgerInput
 
-- Before doing ledgerInput / binaryLedgerInput, `bns_post_ledger_input` / `bns_post_binary_ledger_input` will call `build_ledger_input_request_json` function to build `ledgerInputRequest` with `cmdJSON` and sign the `ledgerInputRequest` with `privateKey`
+- Before doing ledgerInput, `bns_post_ledger_input` will call `build_ledger_input_request_json` function to build `ledgerInputRequest` with `cmdJSON` and sign the `ledgerInputRequest` with `privateKey`
 
 - After building `ledgerInputRequest`, BNS Client will POST `ledgerInputRequest` to BNS Server via URL of BNS Server
 
 - `ledgerInputRequest` is a struct data type, including `timestamp`, `indexValue`, `clearanceOrder`, `cmdJson` ... and so on. Please refer to [bns_types.h](../src/bns-client/core/bns_types.h) for more informations
 
-- For `bns_post_binary_ledger_input` function, please refer to [binary_ledger_input.c](../src/bns-client/input/binary_ledger_input.c)
-
-- In order to search ledgerInput / binaryLedgerInput data conveniently, we recommand that you can callback the `indexValue` and `clearanceOrder`
+- In order to search ledgerInput data conveniently, we recommand that you can callback the `indexValue` and `clearanceOrder`
 
 - [bns_client.c](../src/bns-client/bns_client.c)
   
@@ -285,7 +279,7 @@ Before you implement the code in Callback functions, please remember to remove t
     }
   ```
 
-#### ledger_input_rebnsnse_callback
+#### ledger_input_response_callback
 
 **BNS Client will receive `ledgerInputResult` from BNS Server after sending `ledgerInputRequest`. Developers can implement the code in `ledger_input_response_callback` function to callback the informations in `ledgerInputResult`**
 
@@ -346,87 +340,9 @@ Before you implement the code in Callback functions, please remember to remove t
     }
   ```
 
-#### binary_ledger_input_response_callback
-
-**If developers use bns-client-binary-example, BNS Client will do binaryLedgerInput to send `ledgerInputRequest` to BNS server and receive `binaryLedgerInputResult` from BNS Server. Developes can implement the code in `binary_ledger_input_response_callback` function to callback the informations in `binaryLedgerInputResult`.**
-
-- BNS Client will call `check_and_parse_ledger_input_response` function to extract the result from binary ledgerinput result and store the result in `binaryledgerInputResult`
-
-- For `check_and_parse_ledger_input_response` function, please check [binary_ledger_input.c](../src/bns-client/input/binary_ledger_input.c)
-
-- `binaryLedgerInputResult` is a struct data type, including `stauts`, `receipt`, `doneClearanceOrder` ... and so on. Check [spo_types.h](../src/bns-client/core/spo_types.h) for more informations
-
-- In order to search data conveniently, we recommand that you can callback the `indexValue` and `clearanceOrder` to your system
-
-- [binary_ledger_input.c](../src/bns-client/input/binary_ledger_input.c)
-  
-  ```C
-  spo_exit_code_t spo_post_binary_ledger_input(
-    const spo_client_t *const spoClient, const char *const cmdJson,
-    const receipt_locator_t *const receiptLocator,
-    const binary_info_t *const binaryInfo,
-    binary_ledger_input_result_t *const binaryLedgerInputResult) {
-      ...
-      ...
-      if ((exitCode = check_and_parse_binary_ledger_input_response( res, binaryLedgerInputResult)) != SPO_OK) {
-        goto spo_post_binary_ledger_input_fail;
-      }
-      ...
-      ...
-    }
-  ```
-
-- [spo_client.c](../src/bns-client/spo_client.c)
-  
-  ```C
-  spo_exit_code_t spo_client_binary_ledger_input(
-    const spo_client_t *const spoClient, const char *const cmdJson,
-    const binary_info_t *const binaryInfo) {
-      ...
-      ...
-      if (spoClient->spoClientCallback.obtain_binary_ledger_input_response) {
-        spoClient->spoClientCallback.obtain_binary_ledger_input_response( &receiptLocator, cmdJson, binaryInfo, &binaryLedgerInputResult);
-      }
-      ...
-      ...
-    }
-  ```
-
-- [callback.c](../example/bns-client-binary-example/callback.c)
-  
-  ```C
-  void binary_ledger_input_response_callback(
-    const receipt_locator_t *const receiptLocator, const char *const cmdJson,
-    const binary_info_t *const binaryInfo,
-    const binary_ledger_input_result_t *const binaryLedgerInputResult) {
-      
-      LOG_DEBUG("binary_ledger_input_response_callback begin()");
-
-      size_t retryCount = 5;
-      
-      if (strcmp(SPO_STATUS_OK, binaryLedgerInputResult->status) == 0) {
-        receipt_locator_t _receiptLocator = {0};
-        _receiptLocator.clearanceOrder = binaryLedgerInputResult->receipt->clearanceOrder;
-        spo_strdup(&_receiptLocator.indexValue, binaryLedgerInputResult->receipt->indexValue);
-        dashboard_post_image(&_receiptLocator, binaryLedgerInputResult, cmdJson,
-                             binaryInfo->len,
-                             binaryLedgerInputResult->binaryFileUrl,
-                             binaryInfo->filename, SERVER_URL, &retryCount);
-                             receipt_locator_free(&_receiptLocator);
-      } else {
-        dashboard_post_image(receiptLocator, binaryLedgerInputResult, cmdJson,
-                             binaryInfo->len,
-                             binaryLedgerInputResult->binaryFileUrl,
-                             binaryInfo->filename, SERVER_URL, &retryCount);
-      }
-      
-      LOG_DEBUG("binary_ledger_input_response_callback end()");
-  }
-  ```
-
 #### receipt_event_callback
 
-**The `receipt` is contained in `ledgerInputResult` / `binaryLedgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`**
+**The `receipt` is contained in `ledgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`**
 
 - `Receipt` is a struct data type, including `timestamp`, `cmd`, `clearanceOrder` ... and so on. Check [spo_types.h](../src/bns-client/core/spo_types.h) for more informations
 
@@ -461,7 +377,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 #### done_clearance_order_event_callback
 
-**The `doneClearanceOrder` is contained in `ledgerInputResult` / `binaryLedgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`**
+**The `doneClearanceOrder` is contained in `ledgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`**
   
 - `doneClearanceOrder` is a struct data type. Check [spo_types.h](../src/bns-client/core/spo_types.h) for more informations
 
