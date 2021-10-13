@@ -106,7 +106,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 - Second, BNS Client POST `registerRequest` to BNS Server via API
 
-- Third, bns Client receive the registration result from bns Server and `bns_post_register` call `check_and_parse_register_reponse` function to store the registration result in `registerResult`
+- Third, bns Client receive the register status result from bns Server and `bns_post_register` call `check_and_parse_register_reponse` function to store the register status result in `registerResult`
 
 - `registerRequest` and `registerResult` are struct data type. Please refer to [bns_types.h](../src/bns-client/core/bns_types.h) for more informations
 

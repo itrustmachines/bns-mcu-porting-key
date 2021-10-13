@@ -112,11 +112,11 @@
 
 #### register_callback 說明
 
-##### BNS Client 初始化時，會向 BNS Server 進行註冊，若您想將註冊資訊 Callback 至自己的系統，可閱讀下方說明及程式
+##### BNS Client 初始化時，會向 BNS Server 確認註冊狀態，若您想將註冊狀態資訊 Callback 至自己的系統，可閱讀下方說明及程式
 
-- BNS Client 初始化時，會向 BNS Server 進行註冊，開發者可實作此函式將 `registerRequest` 和 `registerResult` Callback
+- BNS Client 初始化時，會向 BNS Server 確認註冊狀態，開發者可實作此函式將 `registerRequest` 和 `registerResult` Callback
 
-- BNS Server 收到請求註冊後會將註冊結果回傳給 BNS Client，BNS Client 會透過 `spo_post_register` 中的 `check_and_parse_register_response` 函式將註冊結果資訊放入 `registerResult`
+- BNS Server 收到確認註冊狀態後會將註冊狀態結果回傳給 BNS Client，BNS Client 會透過 `spo_post_register` 中的 `check_and_parse_register_response` 函式將註冊狀態結果資訊放入 `registerResult`
 
 - `registerRequest` 和 `registerResult` 為 struct 資料型別，內容可參考 [spo_types.h](../src/bns-client/core/spo_types.h)
 

@@ -93,7 +93,7 @@
 - 關係圖
   ![關係圖](../image/spo_client_ldeger_input.png)
 
-- BNS Client 初始化且成功註冊後，將 CMD 轉換成 JSON 資料型別並呼叫 [spo_client.c](../src/bns-client/spo_client.c) 中的 `spo_client_ledger_input` 進行資料存證，CMD 詳細資訊請參考 [CMD實作說明](./cmd_zh.md)
+- BNS Client 初始化且成功確認註冊狀態後，將 CMD 轉換成 JSON 資料型別並呼叫 [spo_client.c](../src/bns-client/spo_client.c) 中的 `spo_client_ledger_input` 進行資料存證，CMD 詳細資訊請參考 [CMD實作說明](./cmd_zh.md)
 
 - `spo_client_ledger_input` 函式會將 `cmdJSON` 與其他資訊儲存至 `ledgerInputRequest` 並傳送到 BNS Server 然後將 BNS Server 回傳的 `ledgerInputResponse` 中的 `receipt` 透過 receiptDao 儲存至記憶體內。
 
