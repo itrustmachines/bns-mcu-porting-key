@@ -187,7 +187,7 @@
 
 ### 5. 確認執行結果
 
-執行範例程式後，可透過登入 [Blockchain Notary Service](https://bns.itrustmachines.com/) 確認範例程式能否將資料傳送至 BNS Server 進行存證上鏈。
+執行範例程式後，可透過登入 [Blockchain Notary Service](https://bns.itrustmachines.com/) 確認範例程式能否將資料傳送至 BNS Server 進行存證上鏈。BNS 相關操作可參考 [Blockchain Notary Service 操作手冊](https://drive.google.com/file/d/1s1hDdHplzrEmnAIaja-rXJpPPq7eGlC5/view?usp=sharing) 或前往 YouTube 觀看教學影片 [Blockchain Notary Service Playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42)。
 
 您已完成快速開始文件中所有教學步驟，並且已經成功將此 SDK 整合至您的裝置，接下來我們會引導你如何將想存證的資料設計成 CMD 傳送至 BNS Server
 
