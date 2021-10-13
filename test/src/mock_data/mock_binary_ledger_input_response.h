@@ -8,7 +8,7 @@
 #include "mock_ok_data.h"
 
 #define MOCK_BINARY_FILE_METADATA_OK                             \
-  "{\"BINARY_FILE_URL\":\"{spo-server-url}/binary/origin/32150/" \
+  "{\"BINARY_FILE_URL\":\"{bns-server-url}/binary/origin/32150/" \
   "BNS_C_Client_Example_R1\"}"
 
 #define MOCK_BINARY_LEDGER_INPUT_RESPONSE_STRING_TIMESTAMP_OK          \

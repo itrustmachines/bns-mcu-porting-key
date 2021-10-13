@@ -14,10 +14,10 @@ int ssl_init();
 
 void ssl_clean();
 
-// Get information form SPO Server
+// Get information form BNS Server
 char *bns_get(const char *url);
 
-// POST information to SPO Server
+// POST information to BNS Server
 char *bns_post(const char *url, const char *postData);
 
 // Get information form Blockchain

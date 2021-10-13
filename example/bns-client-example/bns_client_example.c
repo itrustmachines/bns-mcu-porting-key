@@ -54,7 +54,7 @@ int bns_client_example() {
       .get = bns_get, .post = bns_post, .eth_post = eth_post};
 
   /**
-   * To estabish the ledgerInput and Verification service with SPO Server
+   * To estabish the ledgerInput and Verification service with BNS Server
    * BNS Client will call bns_client_init function to initialize
    * the Callback, ReceiptDao, HttpClient, and configuration file
    */

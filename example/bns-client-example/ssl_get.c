@@ -99,7 +99,7 @@ void ssl_clean() {
   curl_global_cleanup();
 }
 
-// Get information form SPO Server
+// Get information form BNS Server
 char *bns_get(const char *const url) {
   LOG_INFO("bns_get() begin() url=%s", url);
   CURLcode res = 0;
@@ -131,7 +131,7 @@ cleanupLabel:
   return NULL;
 }
 
-// POST information to SPO Server
+// POST information to BNS Server
 char *bns_post(const char *const url, const char *const postData) {
   LOG_INFO("bns_post() begin() url=%s, postData=%s", url, postData);
   CURLcode res = 0;
