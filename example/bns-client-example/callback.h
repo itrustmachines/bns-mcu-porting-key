@@ -5,8 +5,8 @@
 
 /** 1.
  * When initialize the BNS Client
- * BNS Client will send registerRequest to SPO Server
- * and receive registerResult from SPO Server
+ * BNS Client will send registerRequest to BNS Server
+ * and receive registerResult from BNS Server
  * Developers can implement the code in register_callback function
  * to callback the informations in registerRequest and registerResult
  */
@@ -14,8 +14,8 @@ void register_callback(const register_request_t *registerRequest, bool result);
 
 /** 1.
  * When initialize the BNS Client
- * BNS Client will send registerRequest to SPO Server
- * and receive registerResult from SPO Server
+ * BNS Client will send registerRequest to BNS Server
+ * and receive registerResult from BNS Server
  * Developers can implement the code in register_callback function
  * to callback the informations in registerRequest and registerResult
  */
@@ -24,7 +24,7 @@ void create_ledger_input_by_cmd_callback(
     const ledger_input_request_t *ledgerInputRequest);
 
 /** 3.
- * BNS Client will receive ledgerInputResult from SPO Server
+ * BNS Client will receive ledgerInputResult from BNS Server
  * after sending ledgerInputRequest
  * Developers can implement the code in ledger_input_response_callback function
  * to callback the informations in ledgerInputResult
@@ -34,7 +34,7 @@ void ledger_input_response_callback(
     const ledger_input_result_t *ledgerInputResult);
 
 /** 4.
- * BNS Client will receive binaryLedgerInputResult from SPO Server
+ * BNS Client will receive binaryLedgerInputResult from BNS Server
  * after sending ledgerInputRequest
  * Developers can implement the code in binary_ledger_input_response_callback
  * function to callback the informations in binaryLedgerInputResult
