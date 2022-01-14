@@ -149,7 +149,7 @@ void test_BNS_CLIENT_HTTP_CLIENT_BNS_POST_NULL_ERROR() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = NULL;
+  bnsClient.httpClient.post        = NULL;
   receipt_locator_t receiptLocator = {0};
   mock_receipt_locator_ok(&receiptLocator);
 
@@ -168,7 +168,7 @@ void test_BNS_CLIENT_RECEIPT_DAO_SAVE_NULL_ERROR() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.receiptDao.save = NULL;
+  bnsClient.receiptDao.save        = NULL;
   receipt_locator_t receiptLocator = {0};
   mock_receipt_locator_ok(&receiptLocator);
 
@@ -235,7 +235,7 @@ void test_BNS_POST_LEDGER_INPUT_RESPONSE_NULL_ERROR() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_response_null;
+  bnsClient.httpClient.post        = mock_response_null;
   receipt_locator_t receiptLocator = {0};
   mock_receipt_locator_ok(&receiptLocator);
 

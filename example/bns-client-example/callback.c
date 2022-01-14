@@ -14,8 +14,8 @@
  * Developers can implement the code in register_callback function
  * to callback the informations in registerRequest and registerResult
  */
-void register_callback(_UNUSED const register_request_t *registerRequest,
-                       _UNUSED bool result) {
+void register_callback(_UNUSED const register_request_t* registerRequest,
+                       _UNUSED bool                      result) {
   LOG_DEBUG("register_callback begin()");
   LOG_DEBUG("register_callback end()");
 }
@@ -29,8 +29,8 @@ void register_callback(_UNUSED const register_request_t *registerRequest,
  * function to callback the information in ledgerInputRequest
  */
 void create_ledger_input_by_cmd_callback(
-    _UNUSED const receipt_locator_t *receiptLocator,
-    _UNUSED const ledger_input_request_t *ledgerInputRequest) {
+    _UNUSED const receipt_locator_t*      receiptLocator,
+    _UNUSED const ledger_input_request_t* ledgerInputRequest) {
   LOG_DEBUG("create_ledger_input_by_cmd_callback begin()");
   LOG_DEBUG("create_ledger_input_by_cmd_callback end()");
 }
@@ -42,9 +42,9 @@ void create_ledger_input_by_cmd_callback(
  * to callback the informations in ledgerInputResult
  */
 void ledger_input_response_callback(
-    _UNUSED const receipt_locator_t *receiptLocator,
-    _UNUSED const char *cmdJson,
-    const ledger_input_result_t *ledgerInputResult) {
+    _UNUSED const receipt_locator_t* receiptLocator,
+    _UNUSED const char*              cmdJson,
+    const ledger_input_result_t*     ledgerInputResult) {
   LOG_DEBUG(
       "ledger_input_response_callback "
       "begin() " LEDGER_INPUT_RESULT_PRINT_FORMAT,
@@ -59,9 +59,10 @@ void ledger_input_response_callback(
  * function to callback the informations in binaryLedgerInputResult
  */
 void binary_ledger_input_response_callback(
-    _UNUSED const receipt_locator_t *receiptLocator,
-    _UNUSED const char *cmdJson, _UNUSED const binary_info_t *binaryInfo,
-    _UNUSED const binary_ledger_input_result_t *binaryLedgerInputResult) {
+    _UNUSED const receipt_locator_t*            receiptLocator,
+    _UNUSED const char*                         cmdJson,
+    _UNUSED const binary_info_t*                binaryInfo,
+    _UNUSED const binary_ledger_input_result_t* binaryLedgerInputResult) {
   LOG_DEBUG("binary_ledger_input_response_callback begin()");
   LOG_DEBUG("binary_ledger_input_response_callback end()");
 }
@@ -71,7 +72,7 @@ void binary_ledger_input_response_callback(
  * Developers can implement the code in receipt_event_callback function
  * to callback the informations in receipt
  */
-void receipt_event_callback(_UNUSED const receipt_t *receipt) {
+void receipt_event_callback(_UNUSED const receipt_t* receipt) {
   LOG_DEBUG("receipt_event_callback begin()");
   LOG_DEBUG("receipt_event_callback end()");
 }
@@ -96,8 +97,8 @@ void done_clearance_order_event_callback(_UNUSED clearance_order_t doneCO) {
  * TP-merkle tree. Developers can implement the code in merkle_proof_callback
  * function to callback the informations in merkleProof
  */
-void merkle_proof_callback(_UNUSED const receipt_locator_t *receiptLocator,
-                           _UNUSED const merkle_proof_t *merkleProof) {
+void merkle_proof_callback(_UNUSED const receipt_locator_t* receiptLocator,
+                           _UNUSED const merkle_proof_t*    merkleProof) {
   LOG_DEBUG("merkle_proof_callback begin()");
   LOG_DEBUG("merkle_proof_callback end()");
 }
@@ -110,8 +111,9 @@ void merkle_proof_callback(_UNUSED const receipt_locator_t *receiptLocator,
  * verifyReceiptResult
  */
 void verify_receipt_result_callback(
-    _UNUSED const receipt_t *receipt, _UNUSED const merkle_proof_t *merkleProof,
-    const verify_receipt_result_t *verifyReceiptResult) {
+    _UNUSED const receipt_t*       receipt,
+    _UNUSED const merkle_proof_t*  merkleProof,
+    const verify_receipt_result_t* verifyReceiptResult) {
   LOG_DEBUG(
       "verify_receipt_result_callback "
       "begin() " VERIFY_RECEIPT_RESULT_PRINT_FORMAT,

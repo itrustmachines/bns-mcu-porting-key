@@ -18,11 +18,11 @@ void test_ok() {
   mock_receipt_ok(&receipt);
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_merkle_proof_response_ok;
+  bnsClient.httpClient.get      = mock_merkle_proof_response_ok;
   bnsClient.httpClient.eth_post = mock_clearance_record_response_ok;
 
   // when
-  merkle_proof_t merkleProof = {0};
+  merkle_proof_t          merkleProof         = {0};
   verify_receipt_result_t verifyReceiptResult = {0};
   res = verify(&bnsClient, &receipt, &merkleProof, &verifyReceiptResult);
 
@@ -57,11 +57,11 @@ void test_error() {
   mock_receipt_ok(&receipt);
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_merkle_proof_response_status_error;
+  bnsClient.httpClient.get      = mock_merkle_proof_response_status_error;
   bnsClient.httpClient.eth_post = mock_clearance_record_response_ok;
 
   // when
-  merkle_proof_t merkleProof = {0};
+  merkle_proof_t          merkleProof         = {0};
   verify_receipt_result_t verifyReceiptResult = {0};
   res = verify(&bnsClient, &receipt, &merkleProof, &verifyReceiptResult);
 

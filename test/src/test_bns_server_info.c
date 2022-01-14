@@ -9,13 +9,13 @@
 
 static int retryCount = 5;
 
-char *mock_http_get_ok() {
-  char *json = NULL;
+char* mock_http_get_ok() {
+  char* json = NULL;
   bns_strdup(&json, MOCK_BNS_SERVER_INFO_RESPONSE_OK);
   return json;
 }
 
-char *mock_response_retry() {
+char* mock_response_retry() {
   if (--retryCount > 0) {
     return NULL;
   } else {
@@ -25,13 +25,13 @@ char *mock_response_retry() {
 
 void test_ok() {
   LOG_DEBUG("test_ok() begin");
-  int res;
+  int          res;
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
   bns_server_info_t outputSpoServerInfo = {0};
-  bnsClient.httpClient.post = mock_http_get_ok;
+  bnsClient.httpClient.get              = mock_http_get_ok;
 
-  res = bns_post_server_info(&bnsClient, &outputSpoServerInfo);
+  res = bns_get_server_info(&bnsClient, &outputSpoServerInfo);
   assert(res == BNS_OK);
   assert(strcmp(MOCK_CONTRACT_ADDRESS_OK,
                 outputSpoServerInfo.contractAddress) == 0);
@@ -46,15 +46,15 @@ void test_retry() {
   LOG_DEBUG("test_retry() begin");
 
   // given
-  int res;
+  int          res;
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_response_retry;
+  bnsClient.httpClient.get = mock_response_retry;
   assert(bns_client_set_retry_count(&bnsClient, retryCount) == BNS_OK);
 
   // when
   bns_server_info_t bnsServerInfo = {0};
-  res = bns_post_server_info(&bnsClient, &bnsServerInfo);
+  res = bns_get_server_info(&bnsClient, &bnsServerInfo);
 
   // then
   if (res != BNS_OK) {

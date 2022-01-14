@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-char *get_timestamp_string() {
+char* get_timestamp_string() {
   LOG_DEBUG("get_timestamp_string() begin");
   long int timestampLong = time(NULL);
-  char *timestamp =
-      (char *)malloc(sizeof(char) * (bns_digits(timestampLong) + 3 + 1));
+  char*    timestamp =
+      (char*)malloc(sizeof(char) * (bns_digits(timestampLong) + 3 + 1));
   sprintf(timestamp, "%ld000", timestampLong);
   LOG_DEBUG("get_timestamp_string() end, timestamp=%s", timestamp);
   return timestamp;

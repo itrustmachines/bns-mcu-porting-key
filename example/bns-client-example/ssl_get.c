@@ -12,12 +12,14 @@
 #define NODE_NEED_AUTH 0
 #endif
 
-static CURL *curl = NULL;
-struct curl_slist *hs = NULL;
+static CURL*       curl = NULL;
+struct curl_slist* hs   = NULL;
 
-static size_t curlDataCallback(void *chunks, size_t chunkSize,
-                               size_t chunksCount, void *memoryBlock) {
-  MemoryBlock *block = (MemoryBlock *)memoryBlock;
+static size_t curlDataCallback(void*  chunks,
+                               size_t chunkSize,
+                               size_t chunksCount,
+                               void*  memoryBlock) {
+  MemoryBlock* block = (MemoryBlock*)memoryBlock;
 
   size_t additionalDataSize = chunkSize * chunksCount;
   block->data = realloc(block->data, block->size + additionalDataSize + 1);
@@ -35,13 +37,10 @@ static size_t curlDataCallback(void *chunks, size_t chunkSize,
 
 int ssl_init() {
   CURLcode res = curl_global_init(CURL_GLOBAL_ALL);
-  if (res != CURLE_OK) {
-    goto ssl_init_fail;
-  }
-  if ((curl = curl_easy_init()) == NULL) {
-    return !CURLE_OK;
-  }
+  if (res != CURLE_OK) { goto ssl_init_fail; }
+  if ((curl = curl_easy_init()) == NULL) { return !CURLE_OK; }
   hs = curl_slist_append(hs, APPLICATION_JSON);
+  hs = curl_slist_append(hs, "device-type:sdk");
   return res;
 ssl_init_fail:
   curl_slist_free_all(hs);
@@ -52,9 +51,7 @@ ssl_init_fail:
 int ssl_reset() {
   CURLcode res = 0;
   if (!curl) {
-    if ((res = ssl_init()) != CURLE_OK) {
-      return res;
-    }
+    if ((res = ssl_init()) != CURLE_OK) { return res; }
   }
   curl_easy_reset(curl);
 #if LOG_LEVEL >= LOG_LEVEL_DEBUG
@@ -81,6 +78,11 @@ int ssl_reset() {
   if ((res = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L)) != CURLE_OK) {
     return res;
   }
+  char* filename = "./bns-cookie.txt";  // store cookie to file
+  // char* filename = "";  // store cookie to memory
+  if ((res = curl_easy_setopt(curl, CURLOPT_COOKIEJAR, filename)) != CURLE_OK) {
+    return res;
+  }
   if ((res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlDataCallback)) !=
       CURLE_OK) {
     return res;
@@ -100,46 +102,38 @@ void ssl_clean() {
 }
 
 // Get information form BNS Server
-char *bns_get(const char *const url) {
+char* bns_get(const char* const url) {
   LOG_INFO("bns_get() begin() url=%s", url);
-  CURLcode res = 0;
+  CURLcode    res   = 0;
   MemoryBlock block = {.data = NULL, .size = 0};
 
-  if ((res = ssl_reset()) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = ssl_reset()) != CURLE_OK) { goto cleanupLabel; }
   if ((res = curl_easy_setopt(curl, CURLOPT_URL, url)) != CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&block)) !=
+  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&block)) !=
       CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_perform(curl)) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = curl_easy_perform(curl)) != CURLE_OK) { goto cleanupLabel; }
 
   LOG_INFO("bns_get() end, content-length=%zu bytes, content=%s", block.size,
            block.data);
   return block.data;
 
 cleanupLabel:
-  if (block.data) {
-    free(block.data);
-  }
+  if (block.data) { free(block.data); }
   LOG_ERROR("bns_get() error, %s", curl_easy_strerror(res));
   return NULL;
 }
 
 // POST information to BNS Server
-char *bns_post(const char *const url, const char *const postData) {
+char* bns_post(const char* const url, const char* const postData) {
   LOG_INFO("bns_post() begin() url=%s, postData=%s", url, postData);
-  CURLcode res = 0;
+  CURLcode    res   = 0;
   MemoryBlock block = {.data = NULL, .size = 0};
 
-  if ((res = ssl_reset()) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = ssl_reset()) != CURLE_OK) { goto cleanupLabel; }
   if ((res = curl_easy_setopt(curl, CURLOPT_URL, url)) != CURLE_OK) {
     goto cleanupLabel;
   }
@@ -154,35 +148,29 @@ char *bns_post(const char *const url, const char *const postData) {
       CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&block)) !=
+  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&block)) !=
       CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_perform(curl)) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = curl_easy_perform(curl)) != CURLE_OK) { goto cleanupLabel; }
 
   LOG_INFO("bns_post() end, content-length=%zu bytes, content=%s", block.size,
            block.data);
   return block.data;
 
 cleanupLabel:
-  if (block.data) {
-    free(block.data);
-  }
+  if (block.data) { free(block.data); }
   LOG_ERROR("bns_post() error, %s", curl_easy_strerror(res));
   return block.data;
 }
 
 // Get information form Blockchain
-char *eth_post(const char *const url, const char *const postData) {
+char* eth_post(const char* const url, const char* const postData) {
   LOG_INFO("eth_post() begin() url=%s, postData=%s", url, postData);
-  CURLcode res = 0;
+  CURLcode    res   = 0;
   MemoryBlock block = {.data = NULL, .size = 0};
 
-  if ((res = ssl_reset()) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = ssl_reset()) != CURLE_OK) { goto cleanupLabel; }
 #if NODE_NEED_AUTH == 1
   if ((res = curl_easy_setopt(curl, CURLOPT_USERNAME, NODE_USER_NAME)) !=
       CURLE_OK) {
@@ -207,22 +195,18 @@ char *eth_post(const char *const url, const char *const postData) {
       CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&block)) !=
+  if ((res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&block)) !=
       CURLE_OK) {
     goto cleanupLabel;
   }
-  if ((res = curl_easy_perform(curl)) != CURLE_OK) {
-    goto cleanupLabel;
-  }
+  if ((res = curl_easy_perform(curl)) != CURLE_OK) { goto cleanupLabel; }
 
   LOG_INFO("eth_post() end, content-length=%zu bytes, content=%s", block.size,
            block.data);
   return block.data;
 
 cleanupLabel:
-  if (block.data) {
-    free(block.data);
-  }
+  if (block.data) { free(block.data); }
   LOG_ERROR("eth_post() error, %s", curl_easy_strerror(res));
   return block.data;
 }

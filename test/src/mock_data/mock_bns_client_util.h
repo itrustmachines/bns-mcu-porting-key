@@ -8,11 +8,10 @@
 #include "mock_ok_data.h"
 
 _CHECK_RESULT
-int mock_post_bns_client_(bns_client_t *bnsClient,
-                          char *(*httpPostMethod)(const char *const,
-                                                  const char *const)) {
-  http_client_t httpClient = {.post = httpPostMethod};
-  bnsClient->httpClient = httpClient;
+int mock_get_bns_client_(bns_client_t* bnsClient,
+                         char* (*httpGetMethod)(const char* const)) {
+  http_client_t httpClient = {.get = httpGetMethod};
+  bnsClient->httpClient    = httpClient;
   bns_strdup(&bnsClient->config.serverUrl, MOCK_SERVER_URL_OK);
   bns_strdup(&bnsClient->config.nodeUrl, MOCK_NODE_URL_OK);
   strcpy(bnsClient->config.privateKey, MOCK_PRIVATE_KEY_OK);
@@ -24,12 +23,12 @@ int mock_post_bns_client_(bns_client_t *bnsClient,
 }
 
 _CHECK_RESULT
-int mock_post_bns_client(bns_client_t *bnsClient,
-                         char *(*httpPostMethod)(const char *const,
-                                                 const char *const)) {
-  http_client_t httpClient = {.post = httpPostMethod,
+int mock_post_bns_client(bns_client_t* bnsClient,
+                         char* (*httpPostMethod)(const char* const,
+                                                 const char* const)) {
+  http_client_t httpClient = {.post     = httpPostMethod,
                               .eth_post = httpPostMethod};
-  bnsClient->httpClient = httpClient;
+  bnsClient->httpClient    = httpClient;
   bns_strdup(&bnsClient->config.serverUrl,
              "https://azure-rc-rinkeby.itm.monster:4430/");
   bns_strdup(&bnsClient->config.nodeUrl,

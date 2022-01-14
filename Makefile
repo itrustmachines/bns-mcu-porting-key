@@ -27,6 +27,7 @@ bns_client_OBJ = $(cJSON_OBJ) $(secp256k1_OBJ) \
 	src/bns-client/input/ledger_input_request.o \
 	src/bns-client/input/receipt.o \
 	src/bns-client/input/receipt_locator.o \
+	src/bns-client/login/login.o \
 	src/bns-client/register/register.o \
 	src/bns-client/register/bns_server_info.o \
 	src/bns-client/sha256/sha256.o \

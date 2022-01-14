@@ -8,29 +8,26 @@
 #include <string.h>
 #include <unistd.h>
 
-char *build_post_binary_ledger_input_url(const char *const serverUrl) {
-  if (!serverUrl) {
-    return NULL;
-  }
+void build_post_binary_ledger_input_url(char**            url,
+                                        const char* const serverUrl) {
+  if (!url) { return; }
   size_t size = strlen(serverUrl) + strlen(BINARY_LEDGER_INPUT_PATH);
-  char *url = (char *)malloc(sizeof(char) * (size + 1));
-  if (url) {
-    sprintf(url, "%s%s", serverUrl, BINARY_LEDGER_INPUT_PATH);
-  }
-  return url;
+  *url        = (char*)malloc(sizeof(char) * (size + 1));
+  if (*url) { sprintf(*url, "%s%s", serverUrl, BINARY_LEDGER_INPUT_PATH); }
 }
 
 bns_exit_code_t bns_post_binary_ledger_input(
-    const bns_client_t *const bnsClient, const char *const cmdJson,
-    const receipt_locator_t *const receiptLocator,
-    const binary_info_t *const binaryInfo,
-    binary_ledger_input_result_t *const binaryLedgerInputResult) {
+    const bns_client_t* const           bnsClient,
+    const char* const                   cmdJson,
+    const receipt_locator_t* const      receiptLocator,
+    const binary_info_t* const          binaryInfo,
+    binary_ledger_input_result_t* const binaryLedgerInputResult) {
   size_t count = 0;
 bns_post_binary_ledger_input_beg : {
   bns_exit_code_t exitCode;
-  char *reqJson = NULL;
-  char *url = NULL;
-  char *res = NULL;
+  char*           reqJson = NULL;
+  char*           url     = NULL;
+  char*           res     = NULL;
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
     goto bns_post_binary_ledger_input_fail;
@@ -85,18 +82,18 @@ bns_post_binary_ledger_input_beg : {
     goto bns_post_binary_ledger_input_fail;
   }
 
-  url = build_post_binary_ledger_input_url(bnsClient->config.serverUrl);
-  bns_form_t form1 = {.key = MULTI_PART_LEDGER_INPUT_KEY,
+  build_post_binary_ledger_input_url(&url, bnsClient->config.serverUrl);
+  bns_form_t form1 = {.key         = MULTI_PART_LEDGER_INPUT_KEY,
                       .contentType = BNS_APPLICATION_JSON,
-                      .filename = MULTI_PART_LEDGER_INPUT_KEY,
-                      .value = reqJson,
-                      .valueLen = strlen(reqJson)};
-  bns_form_t form2 = {.key = MULTI_PART_BINARY_KEY,
+                      .filename    = MULTI_PART_LEDGER_INPUT_KEY,
+                      .value       = reqJson,
+                      .valueLen    = strlen(reqJson)};
+  bns_form_t form2 = {.key         = MULTI_PART_BINARY_KEY,
                       .contentType = BNS_APPLICATION_OCTET_STREAM,
-                      .filename = binaryInfo->filename,
-                      .value = binaryInfo->data,
-                      .valueLen = binaryInfo->len};
-  res = bnsClient->httpClient.post_multi(url, &form1, &form2);
+                      .filename    = binaryInfo->filename,
+                      .value       = binaryInfo->data,
+                      .valueLen    = binaryInfo->len};
+  res              = bnsClient->httpClient.post_multi(url, &form1, &form2);
   BNS_FREE(url);
   BNS_FREE(reqJson);
   if (!res) {
@@ -121,26 +118,16 @@ bns_post_binary_ledger_input_beg : {
   return exitCode;
 
 bns_post_binary_ledger_input_fail:
-  if (reqJson) {
-    BNS_FREE(reqJson);
-  }
-  if (url) {
-    BNS_FREE(url);
-  }
-  if (res) {
-    BNS_FREE(res);
-  }
+  if (reqJson) { BNS_FREE(reqJson); }
+  if (url) { BNS_FREE(url); }
+  if (res) { BNS_FREE(res); }
   LOG_ERROR("bns_post_binary_ledger_input() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   if (bnsClient && bnsClient->maxRetryCount) {
-    if (is_ledger_input_error(exitCode)) {
-      return exitCode;
-    }
+    if (is_ledger_input_error(exitCode)) { return exitCode; }
     if (count++ < *bnsClient->maxRetryCount) {
       LOG_DEBUG("bns_post_binary_ledger_input() retry, count=%ld", count);
-      if (bnsClient->retryDelaySec) {
-        sleep(*bnsClient->retryDelaySec);
-      }
+      if (bnsClient->retryDelaySec) { sleep(*bnsClient->retryDelaySec); }
       goto bns_post_binary_ledger_input_beg;
     }
   }
@@ -149,18 +136,18 @@ bns_post_binary_ledger_input_fail:
 }
 
 bns_exit_code_t check_and_parse_binary_ledger_input_response(
-    const char *res, binary_ledger_input_result_t *binaryLedgerInputResult) {
+    const char* res, binary_ledger_input_result_t* binaryLedgerInputResult) {
   LOG_DEBUG("check_and_parse_binary_ledger_input_response() begin");
   bns_exit_code_t exitCode;
-  cJSON *root = cJSON_Parse(res);
-  cJSON *status, *description;
+  cJSON*          root = cJSON_Parse(res);
+  cJSON *         status, *description;
   status = cJSON_GetObjectItem(root, "status");
   if (!cJSON_IsString(status)) {
     exitCode = BNS_RESPONSE_STATUS_PARSE_ERROR;
     goto check_and_parse_binary_ledger_input_response_fail;
   }
   binaryLedgerInputResult->status =
-      (char *)malloc(sizeof(char) * (strlen(status->valuestring) + 1));
+      (char*)malloc(sizeof(char) * (strlen(status->valuestring) + 1));
   strcpy(binaryLedgerInputResult->status, status->valuestring);
   cJSON_DetachItemViaPointer(root, status);
   cJSON_Delete(status);
@@ -171,7 +158,7 @@ bns_exit_code_t check_and_parse_binary_ledger_input_response(
     goto check_and_parse_binary_ledger_input_response_fail;
   }
   binaryLedgerInputResult->description =
-      (char *)malloc(sizeof(char) * (strlen(description->valuestring) + 1));
+      (char*)malloc(sizeof(char) * (strlen(description->valuestring) + 1));
   strcpy(binaryLedgerInputResult->description, description->valuestring);
   cJSON_DetachItemViaPointer(root, description);
   cJSON_Delete(description);
@@ -208,8 +195,8 @@ bns_exit_code_t check_and_parse_binary_ledger_input_response(
     }
   }
   cJSON *receipt, *doneClearanceOrderList, *binaryFileMetadata, *binaryFileUrl;
-  receipt = cJSON_GetObjectItem(root, "receipt");
-  binaryLedgerInputResult->receipt = (receipt_t *)malloc(sizeof(receipt_t));
+  receipt                          = cJSON_GetObjectItem(root, "receipt");
+  binaryLedgerInputResult->receipt = (receipt_t*)malloc(sizeof(receipt_t));
   if ((exitCode = parse_receipt_from_cjson(
            receipt, binaryLedgerInputResult->receipt)) != BNS_OK) {
     goto check_and_parse_binary_ledger_input_response_fail;
@@ -218,8 +205,8 @@ bns_exit_code_t check_and_parse_binary_ledger_input_response(
   cJSON_Delete(receipt);
 
   doneClearanceOrderList = cJSON_GetObjectItem(root, "doneClearanceOrderList");
-  exitCode = parse_done_clearance_order_list_from_cjson(
-      doneClearanceOrderList, &binaryLedgerInputResult->doneClearanceOrder);
+  exitCode               = parse_done_clearance_order_list_from_cjson(
+                    doneClearanceOrderList, &binaryLedgerInputResult->doneClearanceOrder);
   if (exitCode != BNS_OK) {
     goto check_and_parse_binary_ledger_input_response_fail;
   }
@@ -258,7 +245,7 @@ check_and_parse_binary_ledger_input_response_fail:
 }
 
 void binary_ledger_input_result_free(
-    binary_ledger_input_result_t *const binaryLedgerInputResult) {
+    binary_ledger_input_result_t* const binaryLedgerInputResult) {
   if (binaryLedgerInputResult) {
     if (binaryLedgerInputResult->status) {
       BNS_FREE(binaryLedgerInputResult->status);

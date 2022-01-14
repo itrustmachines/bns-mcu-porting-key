@@ -4,7 +4,7 @@
 #include <bns-client/core/core.h>
 
 _CHECK_RESULT
-char *get_timestamp_string();
+char* get_timestamp_string();
 
 _CHECK_RESULT
 bns_long_t get_timestamp();

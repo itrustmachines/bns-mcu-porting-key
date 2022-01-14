@@ -6,7 +6,7 @@
 
 #include "mock_ok_data.h"
 
-void mock_receipt_ok(receipt_t *receipt) {
+void mock_receipt_ok(receipt_t* receipt) {
   strcpy(receipt->callerAddress, MOCK_CALLER_ADDRESS_OK);
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   receipt->timestamp = MOCK_TIMESTAMP_OK;

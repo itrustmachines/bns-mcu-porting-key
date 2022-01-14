@@ -9,19 +9,22 @@
 /**
  * store receipt in memory
  */
-void receipt_cache_save(const receipt_t *receipt);
+void receipt_cache_save(const receipt_t* receipt);
 
 /**
  * use clearanceOrder to find out which receipts to be verified
  */
 void receipt_cache_findPageByClearanceOrderEqualOrLessThan(
-    clearance_order_t clearanceOrder, size_t page, size_t pageSize,
-    receipt_t *outputReceipt, size_t *outputSize);
+    clearance_order_t clearanceOrder,
+    size_t            page,
+    size_t            pageSize,
+    receipt_t*        outputReceipt,
+    size_t*           outputSize);
 
 /**
  * delete the verified receipts
  */
-void receipt_cache_delete(const receipt_t *receipt);
+void receipt_cache_delete(const receipt_t* receipt);
 
 /* Get the number of receipt */
 int receipt_cache_count();

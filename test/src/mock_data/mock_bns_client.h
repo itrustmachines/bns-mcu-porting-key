@@ -5,19 +5,22 @@
 #include <string.h>
 
 #include "mock_ok_data.h"
+#include "mock_login_response.h"
 #include "mock_register_response.h"
 
 _CHECK_RESULT
-char *mock_response_null() { return NULL; }
+char* mock_response_null() { return NULL; }
 
-void mock_save_empty(_UNUSED const receipt_t *receipt) {}
+void mock_save_empty(_UNUSED const receipt_t* receipt) {}
 
 void mock_findPageByClearanceOrderEqualOrLessThan_empty(
-    _UNUSED const clearance_order_t clearanceOrder, _UNUSED const size_t page,
-    _UNUSED const size_t pageSize, _UNUSED receipt_t *outputReceipt,
-    _UNUSED size_t *outputSize) {}
+    _UNUSED const clearance_order_t clearanceOrder,
+    _UNUSED const size_t            page,
+    _UNUSED const size_t            pageSize,
+    _UNUSED receipt_t*              outputReceipt,
+    _UNUSED size_t*                 outputSize) {}
 
-void mock_delete_empty(_UNUSED const receipt_t *receipt) {}
+void mock_delete_empty(_UNUSED const receipt_t* receipt) {}
 
 _CHECK_RESULT
 receipt_dao_t mock_receipt_dao_empty() {
@@ -29,12 +32,12 @@ receipt_dao_t mock_receipt_dao_empty() {
   return receiptDao;
 }
 
-void mock_bns_client_ok(bns_client_t *bnsClient) {
-  receipt_dao_t receiptDao = mock_receipt_dao_empty();
-  http_client_t httpClient = {.get = mock_check_register_response_true,
-                              .post = mock_register_response_ok,
+void mock_bns_client_ok(bns_client_t* bnsClient) {
+  receipt_dao_t         receiptDao = mock_receipt_dao_empty();
+  http_client_t         httpClient = {.get  = mock_check_register_response_true,
+                              .post = mock_login_response_ok,
                               .eth_post = mock_response_null};
-  bns_client_callback_t callback = {0};
+  bns_client_callback_t callback   = {0};
   strcpy(bnsClient->bnsServerInfo.contractAddress, MOCK_CONTRACT_ADDRESS_OK);
   strcpy(bnsClient->bnsServerInfo.serverWalletAddress,
          MOCK_SERVER_WALLET_ADDRESS_OK);

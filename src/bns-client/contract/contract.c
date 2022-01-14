@@ -8,7 +8,7 @@
 #include <unistd.h>
 
 bns_exit_code_t build_clearance_record_contract_instruction(
-    const clearance_order_t clearanceOrder, char **const instruction) {
+    const clearance_order_t clearanceOrder, char** const instruction) {
   LOG_DEBUG(
       "build_clearance_record_contract_instruction() begin, "
       "clearanceOrder=%lld",
@@ -24,9 +24,9 @@ bns_exit_code_t build_clearance_record_contract_instruction(
   }
   if (*instruction) {
     *instruction =
-        (char *)realloc(*instruction, sizeof(char) * INSTRUCTION_STR_LEN);
+        (char*)realloc(*instruction, sizeof(char) * INSTRUCTION_STR_LEN);
   } else {
-    *instruction = (char *)malloc(sizeof(char) * INSTRUCTION_STR_LEN);
+    *instruction = (char*)malloc(sizeof(char) * INSTRUCTION_STR_LEN);
   }
   sprintf(*instruction, INSTRUCTION_PREFIX "%064llx", clearanceOrder);
   LOG_DEBUG("build_clearance_record_contract_instruction() end");
@@ -40,31 +40,29 @@ build_clearance_record_contract_instruction_fail:
   return exitCode;
 }
 
-bns_exit_code_t build_contract_request_json(const char *const contractAddress,
-                                            const char *const instruction,
-                                            char **const requestJson) {
+bns_exit_code_t build_contract_request_json(const char* const contractAddress,
+                                            const char* const instruction,
+                                            char** const      requestJson) {
   LOG_DEBUG(
       "build_contract_request_json() begin, contractAddress=%s, instruction=%s",
       contractAddress, instruction);
   bns_exit_code_t exitCode = BNS_OK;
-  cJSON *root = NULL;
-  cJSON *params = NULL;
-  cJSON *item = NULL;
+  cJSON*          root     = NULL;
+  cJSON*          params   = NULL;
+  cJSON*          item     = NULL;
   if (!contractAddress) {
     exitCode = BNS_CONTRACT_ADDRESS_NULL_ERROR;
     goto build_contract_request_json_fail;
   }
-  if (!instruction) {
-    exitCode = BNS_CLEARANCE_RECORD_INSTRUCTION_NULL_ERROR;
-  }
+  if (!instruction) { exitCode = BNS_CLEARANCE_RECORD_INSTRUCTION_NULL_ERROR; }
   if (!requestJson) {
     exitCode = BNS_CONTRACT_REQUEST_JSON_NULL_ERROR;
     goto build_contract_request_json_fail;
   }
 
-  item = cJSON_CreateObject();
+  item   = cJSON_CreateObject();
   params = cJSON_CreateArray();
-  root = cJSON_CreateObject();
+  root   = cJSON_CreateObject();
 
   cJSON_AddStringToObject(item, "to", contractAddress);
   cJSON_AddStringToObject(item, "data", instruction);
@@ -77,9 +75,7 @@ bns_exit_code_t build_contract_request_json(const char *const contractAddress,
   cJSON_AddItemToObject(root, "params", params);
   cJSON_AddNumberToObject(root, "id", 1, 1);
 
-  if (*requestJson) {
-    BNS_FREE(*requestJson);
-  }
+  if (*requestJson) { BNS_FREE(*requestJson); }
   *requestJson = cJSON_PrintUnformatted(root);
   cJSON_Delete(root);
   LOG_DEBUG("build_contract_request_json() end, requestJson=%s", *requestJson);
@@ -93,16 +89,17 @@ build_contract_request_json_fail:
 }
 
 bns_exit_code_t contract_post_clearance_record(
-    const bns_client_t *const bnsClient, const clearance_order_t clearanceOrder,
-    clearance_record_t *const clearanceRecord) {
+    const bns_client_t* const bnsClient,
+    const clearance_order_t   clearanceOrder,
+    clearance_record_t* const clearanceRecord) {
   size_t count = 0;
 contract_post_clearance_record_beg:
   LOG_INFO("contract_post_clearance_record() begin, clearanceOrder=%lld",
            clearanceOrder);
-  bns_exit_code_t exitCode = BNS_OK;
-  char *requestMessage = NULL;
-  char *res = NULL;
-  char *coInstruction = NULL;
+  bns_exit_code_t exitCode       = BNS_OK;
+  char*           requestMessage = NULL;
+  char*           res            = NULL;
+  char*           coInstruction  = NULL;
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
     goto contract_post_clearance_record_fail;
@@ -161,24 +158,16 @@ contract_post_clearance_record_beg:
   return exitCode;
 
 contract_post_clearance_record_fail:
-  if (coInstruction) {
-    BNS_FREE(coInstruction);
-  }
-  if (requestMessage) {
-    BNS_FREE(requestMessage);
-  }
-  if (res) {
-    BNS_FREE(res);
-  }
+  if (coInstruction) { BNS_FREE(coInstruction); }
+  if (requestMessage) { BNS_FREE(requestMessage); }
+  if (res) { BNS_FREE(res); }
   LOG_ERROR(
       "contract_post_clearance_record() error, " BNS_EXIT_CODE_PRINT_FORMAT,
       bns_strerror(exitCode));
   if (bnsClient && bnsClient->maxRetryCount) {
     if (count++ < *bnsClient->maxRetryCount) {
       LOG_DEBUG("contract_post_clearance_record() retry, count=%ld", count);
-      if (bnsClient->retryDelaySec) {
-        sleep(*bnsClient->retryDelaySec);
-      }
+      if (bnsClient->retryDelaySec) { sleep(*bnsClient->retryDelaySec); }
       goto contract_post_clearance_record_beg;
     }
   }
@@ -186,11 +175,11 @@ contract_post_clearance_record_fail:
 }
 
 bns_exit_code_t check_and_parse_contract_clearance_record_response(
-    const char *const res, clearance_record_t *const clearanceRecord) {
+    const char* const res, clearance_record_t* const clearanceRecord) {
   LOG_DEBUG("check_and_parse_contract_clearance_record_response() begin");
   bns_exit_code_t exitCode = BNS_OK;
-  cJSON *root = NULL;
-  cJSON *item;
+  cJSON*          root     = NULL;
+  cJSON*          item;
   if (!clearanceRecord) {
     exitCode = BNS_CLEARANCE_RECORD_NULL_ERROR;
     goto check_contract_clearance_record_response_fail;

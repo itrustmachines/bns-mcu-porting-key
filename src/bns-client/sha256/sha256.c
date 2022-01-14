@@ -27,39 +27,22 @@ const WORD k[64] = {
     0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
     0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
     0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
-enum
-{
-  a,
-  b,
-  c,
-  d,
-  e,
-  f,
-  g,
-  h
-};
+enum { a, b, c, d, e, f, g, h };
 
 // function
-void sha256_transform(SHA256_CTX *ctx, const BYTE data[])
-{
+void sha256_transform(SHA256_CTX* ctx, const BYTE data[]) {
   WORD arr[8], t[2], m[64], i, j;
-  for (i = 0, j = 0; i < 16; ++i, j += 4)
-  {
+  for (i = 0, j = 0; i < 16; ++i, j += 4) {
     m[i] = (data[j] << 24) | (data[j + 1] << 16) | (data[j + 2] << 8) |
            (data[j + 3]);
   }
-  for (; i < 64; ++i)
-  {
+  for (; i < 64; ++i) {
     m[i] = SIG1(m[i - 2]) + m[i - 7] + SIG0(m[i - 15]) + m[i - 16];
   }
-  for (i = 0; i < 8; i++)
-  {
-    arr[i] = ctx->state[i];
-  }
-  for (i = 0; i < 64; ++i)
-  {
-    t[0] = arr[h] + EP1(arr[e]) + CH(arr[e], arr[f], arr[g]) + k[i] + m[i];
-    t[1] = EP0(arr[a]) + MAJ(arr[a], arr[b], arr[c]);
+  for (i = 0; i < 8; i++) { arr[i] = ctx->state[i]; }
+  for (i = 0; i < 64; ++i) {
+    t[0]   = arr[h] + EP1(arr[e]) + CH(arr[e], arr[f], arr[g]) + k[i] + m[i];
+    t[1]   = EP0(arr[a]) + MAJ(arr[a], arr[b], arr[c]);
     arr[h] = arr[g];
     arr[g] = arr[f];
     arr[f] = arr[e];
@@ -69,16 +52,12 @@ void sha256_transform(SHA256_CTX *ctx, const BYTE data[])
     arr[b] = arr[a];
     arr[a] = t[0] + t[1];
   }
-  for (i = 0; i < 8; i++)
-  {
-    ctx->state[i] += arr[i];
-  }
+  for (i = 0; i < 8; i++) { ctx->state[i] += arr[i]; }
 }
 
-void sha256_init(SHA256_CTX *ctx)
-{
-  ctx->dataLen = 0;
-  ctx->bitLen = 0;
+void sha256_init(SHA256_CTX* ctx) {
+  ctx->dataLen  = 0;
+  ctx->bitLen   = 0;
   ctx->state[0] = 0x6a09e667;
   ctx->state[1] = 0xbb67ae85;
   ctx->state[2] = 0x3c6ef372;
@@ -89,15 +68,12 @@ void sha256_init(SHA256_CTX *ctx)
   ctx->state[7] = 0x5be0cd19;
 }
 
-void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len)
-{
+void sha256_update(SHA256_CTX* ctx, const BYTE data[], size_t len) {
   WORD i;
-  for (i = 0; i < len; ++i)
-  {
+  for (i = 0; i < len; ++i) {
     ctx->data[ctx->dataLen] = data[i];
     ctx->dataLen++;
-    if (ctx->dataLen == 64)
-    {
+    if (ctx->dataLen == 64) {
       sha256_transform(ctx, ctx->data);
       ctx->bitLen += 512;
       ctx->dataLen = 0;
@@ -105,41 +81,27 @@ void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len)
   }
 }
 
-void sha256_final(SHA256_CTX *ctx, BYTE hash[])
-{
+void sha256_final(SHA256_CTX* ctx, BYTE hash[]) {
   WORD i, j;
   i = ctx->dataLen;
-  if (ctx->dataLen < 56)
-  {
+  if (ctx->dataLen < 56) {
     ctx->data[i++] = 0x80;
-    while (i < 56)
-    {
-      ctx->data[i++] = 0x00;
-    }
-  }
-  else
-  {
+    while (i < 56) { ctx->data[i++] = 0x00; }
+  } else {
     ctx->data[i++] = 0x80;
-    while (i < 64)
-    {
-      ctx->data[i++] = 0x00;
-    }
+    while (i < 64) { ctx->data[i++] = 0x00; }
     sha256_transform(ctx, ctx->data);
     memset(ctx->data, 0, 56);
   }
   ctx->bitLen += ctx->dataLen * 8;
 
-  for (j = 63; j > 55; j--)
-  {
-    ctx->data[j] = ctx->bitLen >> (63 - j) * 8;
-  }
+  for (j = 63; j > 55; j--) { ctx->data[j] = ctx->bitLen >> (63 - j) * 8; }
   sha256_transform(ctx, ctx->data);
 
-  for (i = 0; i < 4; ++i)
-  {
-    hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
-    hash[i + 4] = (ctx->state[1] >> (24 - i * 8)) & 0x000000ff;
-    hash[i + 8] = (ctx->state[2] >> (24 - i * 8)) & 0x000000ff;
+  for (i = 0; i < 4; ++i) {
+    hash[i]      = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
+    hash[i + 4]  = (ctx->state[1] >> (24 - i * 8)) & 0x000000ff;
+    hash[i + 8]  = (ctx->state[2] >> (24 - i * 8)) & 0x000000ff;
     hash[i + 12] = (ctx->state[3] >> (24 - i * 8)) & 0x000000ff;
     hash[i + 16] = (ctx->state[4] >> (24 - i * 8)) & 0x000000ff;
     hash[i + 20] = (ctx->state[5] >> (24 - i * 8)) & 0x000000ff;
@@ -148,19 +110,17 @@ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
   }
 }
 
-void sha256(const BYTE *data, size_t len, char *hash)
-{
+void sha256(const BYTE* data, size_t len, char* hash) {
   SHA256_CTX ctx;
-  int i;
-  BYTE byteHash[SHA256_BLOCK_SIZE];
+  int        i;
+  BYTE       byteHash[SHA256_BLOCK_SIZE];
 
   sha256_init(&ctx);
   sha256_update(&ctx, data, len);
   sha256_final(&ctx, byteHash);
 
   char temp[4] = {0};
-  for (i = 0; i < SHA256_BLOCK_SIZE; i++)
-  {
+  for (i = 0; i < SHA256_BLOCK_SIZE; i++) {
     sprintf(temp, "%.2x", byteHash[i]);
     strcat(hash, temp);
     temp[0] = '\0';

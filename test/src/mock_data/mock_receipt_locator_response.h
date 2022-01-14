@@ -44,10 +44,10 @@
    ",\"sn\":\"" MOCK_SN_OK_STR "\"}")
 
 _CHECK_RESULT
-char *mock_receipt_locator_response_ok();
+char* mock_receipt_locator_response_ok();
 
-char *mock_receipt_locator_response_ok() {
-  char *res = NULL;
+char* mock_receipt_locator_response_ok() {
+  char* res = NULL;
   bns_strdup(&res, MOCK_RECEIPT_LOCATOR_RESPONSE_OK);
   return res;
 }

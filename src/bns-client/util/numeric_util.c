@@ -10,14 +10,10 @@ size_t bns_digits(long long int num) {
   return count;
 }
 
-char *bns_lltos(const long long int num) {
+char* bns_lltos(const long long int num) {
   size_t size = bns_digits(num);
-  if (num < 0) {
-    size += 1;
-  }
-  char *buffer = (char *)malloc(sizeof(char) * (size + 1));
-  if (buffer) {
-    sprintf(buffer, "%lld", num);
-  }
+  if (num < 0) { size += 1; }
+  char* buffer = (char*)malloc(sizeof(char) * (size + 1));
+  if (buffer) { sprintf(buffer, "%lld", num); }
   return buffer;
 }

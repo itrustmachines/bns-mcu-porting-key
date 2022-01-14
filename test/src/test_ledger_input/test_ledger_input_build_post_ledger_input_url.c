@@ -6,7 +6,8 @@
 
 void test_ok() {
   // then
-  char *result = build_post_ledger_input_url(MOCK_SERVER_URL_OK);
+  char* result = NULL;
+  build_post_ledger_input_url(&result, MOCK_SERVER_URL_OK);
   assert(strcmp(result, MOCK_SERVER_URL_OK LEDGER_INPUT_PATH) == 0);
 
   // clean
@@ -14,7 +15,8 @@ void test_ok() {
 }
 
 void test_NULL() {
-  char *result = build_post_ledger_input_url(NULL);
+  char* result = NULL;
+  build_post_ledger_input_url(&result, NULL);
   assert(!result);
 }
 

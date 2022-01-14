@@ -3,8 +3,8 @@
 
 void test_ok() {
   // given
-  char *hex1 = "0x123456789abcdefABCDEF";
-  char *hex2 = "0x123456789ABCDEFabcdef";
+  char* hex1 = "0x123456789abcdefABCDEF";
+  char* hex2 = "0x123456789ABCDEFabcdef";
 
   // when
   bool result = bns_equals_n_ignore_case(hex1, hex2, 23);
@@ -15,7 +15,7 @@ void test_ok() {
 
 void test_first_NULL() {
   // given
-  char *hex2 = "0x123456789ABCDEFabcdef";
+  char* hex2 = "0x123456789ABCDEFabcdef";
 
   // when
   bool result = bns_equals_n_ignore_case(NULL, hex2, 23);
@@ -26,7 +26,7 @@ void test_first_NULL() {
 
 void test_second_NULL() {
   // given
-  char *hex1 = "0x123456789abcdefABCDEF";
+  char* hex1 = "0x123456789abcdefABCDEF";
 
   // when
   bool result = bns_equals_n_ignore_case(hex1, NULL, 23);
@@ -37,8 +37,8 @@ void test_second_NULL() {
 
 void test_diff_size() {
   // given
-  char *hex1 = "0x123456789abcdefABCDEF";
-  char *hex2 = "0x123456789ABCDEFabcdefABCDEF";
+  char* hex1 = "0x123456789abcdefABCDEF";
+  char* hex2 = "0x123456789ABCDEFabcdefABCDEF";
 
   // when
   bool result = bns_equals_n_ignore_case(hex1, hex2, 23);
@@ -49,8 +49,8 @@ void test_diff_size() {
 
 void test_contain_non_letter_or_number() {
   // given
-  char *hex1 = "~!@#$%^&*()_+";
-  char *hex2 = "~!@#$%^&*()_+";
+  char* hex1 = "~!@#$%^&*()_+";
+  char* hex2 = "~!@#$%^&*()_+";
 
   // when
   bool result = bns_equals_n_ignore_case(hex1, hex2, 23);

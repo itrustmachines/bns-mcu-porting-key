@@ -1,15 +1,14 @@
 #include <assert.h>
 #include <bns-client/contract/clearance_record_cache.h>
 #include <bns-client/contract/contract.h>
-#include <bns-client/core/core.h>
 
 #include "mock_data/mock_bns_client_util.h"
 #include "mock_data/mock_clearance_record_response.h"
 
 static int retryCount = 5;
 
-char *mock_response_retry(_UNUSED const char *const s1,
-                          _UNUSED const char *const s2) {
+char* mock_response_retry(_UNUSED const char* const s1,
+                          _UNUSED const char* const s2) {
   if (--retryCount > 0) {
     return NULL;
   } else {
@@ -19,10 +18,10 @@ char *mock_response_retry(_UNUSED const char *const s1,
 
 void test_create_clearance_record_function_instruction() {
   long long int co = 2147483648L;
-  char *solution =
+  char*         solution =
       "0x6b30ad2300000000000000000000000000000000000000000000000000000000800000"
       "00";
-  char *instruction = NULL;
+  char* instruction = NULL;
   assert(build_clearance_record_contract_instruction(co, &instruction) ==
          BNS_OK);
   assert(strcmp(solution, instruction) == 0);
@@ -30,12 +29,12 @@ void test_create_clearance_record_function_instruction() {
 }
 
 void test_create_contract_request_message() {
-  char *instruction =
+  char* instruction =
       "0x6b30ad230000000000000000000000000000000000000000000000000000000000005d"
       "11";
-  char *contractAddress = "1Bbe2D131a42DaEd0110fd2bE08AF56906A5a1Ce";
+  char* contractAddress = "1Bbe2D131a42DaEd0110fd2bE08AF56906A5a1Ce";
 
-  char *request = NULL;
+  char* request = NULL;
   assert(build_contract_request_json(contractAddress, instruction, &request) ==
          BNS_OK);
   assert(strlen(request) != 0);
@@ -43,7 +42,7 @@ void test_create_contract_request_message() {
 }
 
 void test_contract_post_clearance_record() {
-  bns_client_t bnsClient = {0};
+  bns_client_t       bnsClient       = {0};
   clearance_record_t clearanceRecord = {0};
   assert(mock_post_bns_client(&bnsClient, mock_clearance_record_response_ok) ==
          BNS_OK);
@@ -55,7 +54,7 @@ void test_contract_post_clearance_record() {
 }
 
 void test_parse_response_to_clearance_record() {
-  char *json = mock_clearance_record_response_ok("", "");
+  char*              json = mock_clearance_record_response_ok("", "");
   clearance_record_t clearanceRecord = {0};
   assert(check_and_parse_contract_clearance_record_response(
              json, &clearanceRecord) == BNS_OK);
@@ -65,7 +64,7 @@ void test_parse_response_to_clearance_record() {
 }
 
 void test_check_response_ok() {
-  char *json = mock_clearance_record_response_ok("", "");
+  char*              json = mock_clearance_record_response_ok("", "");
   clearance_record_t clearanceRecord = {0};
   assert(check_and_parse_contract_clearance_record_response(
              json, &clearanceRecord) == BNS_OK);
@@ -73,7 +72,7 @@ void test_check_response_ok() {
 }
 
 void test_check_response_error() {
-  char *json = mock_clearance_record_response_error("", "");
+  char*              json = mock_clearance_record_response_error("", "");
   clearance_record_t clearanceRecord = {0};
   assert(check_and_parse_contract_clearance_record_response(
              json, &clearanceRecord) != BNS_OK);
@@ -81,7 +80,7 @@ void test_check_response_error() {
 }
 
 void test_retry() {
-  bns_client_t bnsClient = {0};
+  bns_client_t       bnsClient       = {0};
   clearance_record_t clearanceRecord = {0};
   reset_clearance_record_cache();
   assert(mock_post_bns_client(&bnsClient, mock_response_retry) == BNS_OK);
