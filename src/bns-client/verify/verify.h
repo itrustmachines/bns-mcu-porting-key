@@ -22,35 +22,39 @@
 
 #define VERIFY_FAIL_DESCRIPTION "verify fail"
 _CHECK_RESULT
-bns_exit_code_t verify(const bns_client_t *bnsClient, const receipt_t *receipt,
-                       merkle_proof_t *merkleProof,
-                       verify_receipt_result_t *verifyReceiptResult);
+bns_exit_code_t verify(const bns_client_t*      bnsClient,
+                       const receipt_t*         receipt,
+                       merkle_proof_t*          merkleProof,
+                       verify_receipt_result_t* verifyReceiptResult);
 
 _CHECK_RESULT
-bns_exit_code_t verify_merkle_proof_signature(const char *serverWalletAddress,
-                                              const merkle_proof_t *merkleProof,
-                                              bool *result);
+bns_exit_code_t verify_merkle_proof_signature(const char* serverWalletAddress,
+                                              const merkle_proof_t* merkleProof,
+                                              bool*                 result);
 
 _CHECK_RESULT
-bns_exit_code_t verify_receipt_signature(const char *serverWalletAddress,
-                                         const receipt_t *receipt,
-                                         bool *result);
+bns_exit_code_t verify_receipt_signature(const char*      serverWalletAddress,
+                                         const receipt_t* receipt,
+                                         bool*            result);
 
 _CHECK_RESULT
 bns_exit_code_t verify_clearance_order(
-    const receipt_t *receipt, const merkle_proof_t *merkleProof,
-    const clearance_record_t *clearanceRecord, bool *result);
+    const receipt_t*          receipt,
+    const merkle_proof_t*     merkleProof,
+    const clearance_record_t* clearanceRecord,
+    bool*                     result);
 
 _CHECK_RESULT
-bns_exit_code_t verify_pb_pair(const receipt_t *receipt,
-                               const merkle_proof_t *merkleProof, bool *result);
+bns_exit_code_t verify_pb_pair(const receipt_t*      receipt,
+                               const merkle_proof_t* merkleProof,
+                               bool*                 result);
 
 _CHECK_RESULT
-bns_exit_code_t verify_merkle_proof_slice(const slice_t *slice, bool *result);
+bns_exit_code_t verify_merkle_proof_slice(const slice_t* slice, bool* result);
 
 _CHECK_RESULT
-bns_exit_code_t verify_root_hash(const merkle_proof_t *merkleProof,
-                                 const clearance_record_t *clearanceRecord,
-                                 bool *result);
+bns_exit_code_t verify_root_hash(const merkle_proof_t*     merkleProof,
+                                 const clearance_record_t* clearanceRecord,
+                                 bool*                     result);
 
 #endif  // BNS_C_CLIENT_VERIFY_H

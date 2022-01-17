@@ -6,11 +6,11 @@
 #include <bns-client/verify/slice.h>
 #include <string.h>
 
-bns_exit_code_t is_leaf_node(const slice_t *const slice,
-                             const pb_pair_t *const pbPair) {
+bns_exit_code_t is_leaf_node(const slice_t* const   slice,
+                             const pb_pair_t* const pbPair) {
   bns_exit_code_t exitCode;
-  char *pbPairValue = NULL;
-  unsigned char *pbPairValueByte = NULL;
+  char*           pbPairValue     = NULL;
+  unsigned char*  pbPairValueByte = NULL;
   if (!slice) {
     exitCode = BNS_SLICE_NULL_ERROR;
     goto is_leaf_node_fail;
@@ -28,12 +28,12 @@ bns_exit_code_t is_leaf_node(const slice_t *const slice,
   }
 
   size_t size = pbPair->size * (HASH_STR_LEN - 1);
-  pbPairValue = (char *)malloc(sizeof(char) * (size + 1));
+  pbPairValue = (char*)malloc(sizeof(char) * (size + 1));
   memset(pbPairValue, 0, size + 1);
   for (size_t i = 0; i < pbPair->size; i++) {
     strcat(pbPairValue, pbPair->pbPairValue[i].value);
   }
-  pbPairValueByte = (unsigned char *)malloc(sizeof(unsigned char) * (size / 2));
+  pbPairValueByte = (unsigned char*)malloc(sizeof(unsigned char) * (size / 2));
   bns_hex_to_byte(pbPairValue, size, pbPairValueByte);
   BNS_FREE(pbPairValue);
 
@@ -50,19 +50,13 @@ bns_exit_code_t is_leaf_node(const slice_t *const slice,
   return exitCode;
 
 is_leaf_node_fail:
-  if (pbPairValue) {
-    BNS_FREE(pbPairValue);
-  }
-  if (pbPairValueByte) {
-    BNS_FREE(pbPairValueByte);
-  }
   LOG_ERROR("is_leaf_node() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;
 }
 
-bns_exit_code_t get_leaf_node_hash(const slice_t *const slice,
-                                   char *leafNodeHash) {
+bns_exit_code_t get_leaf_node_hash(const slice_t* const slice,
+                                   char*                leafNodeHash) {
   bns_exit_code_t exitCode = BNS_OK;
   if (!slice) {
     exitCode = BNS_SLICE_NULL_ERROR;
@@ -96,8 +90,8 @@ get_leaf_node_hash_fail:
   return exitCode;
 }
 
-bns_exit_code_t eval_root_hash_from_slice(const slice_t *const slice,
-                                          bool *const result) {
+bns_exit_code_t eval_root_hash_from_slice(const slice_t* const slice,
+                                          bool* const          result) {
   bns_exit_code_t exitCode = BNS_OK;
   if (!slice) {
     exitCode = BNS_SLICE_NULL_ERROR;
@@ -109,10 +103,10 @@ bns_exit_code_t eval_root_hash_from_slice(const slice_t *const slice,
   }
   LOG_DEBUG("check_slice() begin, " SLICE_PRINT_FORMAT,
             SLICE_TO_PRINT_ARGS(slice));
-  int parentIndex;
-  int index = slice->index;
-  char parentDigest[HASH_STR_LEN];
-  for (int i = 0; index > 1; i += 2, index /= 2) {
+  size_t parentIndex;
+  size_t index = (size_t)slice->index;
+  char   parentDigest[HASH_STR_LEN];
+  for (size_t i = 0; index > 1; i += 2, index /= 2) {
     parentIndex = i + 2 + ((index / 2) == 1 ? 0 : (index / 2)) % 2;
     char concatTwoInterNodes[(HASH_STR_LEN - 1) * 2 + 1] = {0};
     strncpy(concatTwoInterNodes, slice->hashStringList[i], HASH_STR_LEN - 1);
@@ -137,17 +131,13 @@ bns_exit_code_t eval_root_hash_from_slice(const slice_t *const slice,
   return exitCode;
 
 check_slice_fail:
-  if (result) {
-    *result = false;
-  }
+  if (result) { *result = false; }
   LOG_ERROR("check_clice() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;
 }
 
-char *slice_get_root_hash(const slice_t *const slice) {
-  if (!slice) {
-    return NULL;
-  }
+char* slice_get_root_hash(const slice_t* const slice) {
+  if (!slice) { return NULL; }
   return slice->hashStringList[slice->size - 1];
 }

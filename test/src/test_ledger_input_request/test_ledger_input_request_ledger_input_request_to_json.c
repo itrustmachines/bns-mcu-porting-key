@@ -11,10 +11,10 @@ void test_ok() {
   mock_ledger_input_request_ok(&ledgerInputRequest);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(ledger_input_request_to_json(&ledgerInputRequest, &result) == BNS_OK);
-  cJSON *temp;
-  cJSON *root = cJSON_Parse(result);
+  cJSON* temp;
+  cJSON* root = cJSON_Parse(result);
   assert(root);
   temp = cJSON_GetObjectItem(root, "callerAddress");
   assert(temp);
@@ -29,8 +29,8 @@ void test_ok() {
   assert(strcmp(temp->valuestring, MOCK_METADATA_OK) == 0);
   temp = cJSON_GetObjectItem(root, "clearanceOrder");
   assert(temp->valueint == MOCK_CLEARANCE_ORDER_OK);
-  cJSON *sigClient = cJSON_GetObjectItem(root, "sigClient");
-  temp = cJSON_GetObjectItem(sigClient, "r");
+  cJSON* sigClient = cJSON_GetObjectItem(root, "sigClient");
+  temp             = cJSON_GetObjectItem(sigClient, "r");
   assert(strlen(temp->valuestring) > 0);
   temp = cJSON_GetObjectItem(sigClient, "s");
   assert(strlen(temp->valuestring) > 0);
@@ -40,13 +40,11 @@ void test_ok() {
   // clean
   cJSON_Delete(root);
   ledger_input_request_free(&ledgerInputRequest);
-  if (result) {
-    BNS_FREE(result);
-  }
+  if (result) { BNS_FREE(result); }
 }
 
 void test_BNS_LEDGER_INPUT_REQUEST_NULL_ERROR_1() {
-  char *result = NULL;
+  char* result = NULL;
   assert(ledger_input_request_to_json(NULL, &result) ==
          BNS_LEDGER_INPUT_REQUEST_NULL_ERROR);
 }
@@ -58,7 +56,7 @@ void test_BNS_LEDGER_INPUT_REQUEST_NULL_ERROR_2() {
   BNS_FREE(ledgerInputRequest.cmd);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(ledger_input_request_to_json(&ledgerInputRequest, &result) ==
          BNS_LEDGER_INPUT_REQUEST_NULL_ERROR);
 
@@ -73,7 +71,7 @@ void test_BNS_LEDGER_INPUT_REQUEST_NULL_ERROR_3() {
   BNS_FREE(ledgerInputRequest.indexValue);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(ledger_input_request_to_json(&ledgerInputRequest, &result) ==
          BNS_LEDGER_INPUT_REQUEST_NULL_ERROR);
 
@@ -88,7 +86,7 @@ void test_BNS_LEDGER_INPUT_REQUEST_NULL_ERROR_4() {
   BNS_FREE(ledgerInputRequest.metadata);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(ledger_input_request_to_json(&ledgerInputRequest, &result) ==
          BNS_LEDGER_INPUT_REQUEST_NULL_ERROR);
 

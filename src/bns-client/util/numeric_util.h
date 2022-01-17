@@ -7,6 +7,6 @@ _CHECK_RESULT
 size_t bns_digits(long long int num);
 
 _CHECK_RESULT
-char *bns_lltos(long long int num);
+char* bns_lltos(long long int num);
 
 #endif  // BNS_C_CLIENT_SRC_NUMERIC_UTIL_H_

@@ -8,11 +8,11 @@ void test_ok() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_receipt_locator_response_ok;
+  bnsClient.httpClient.get = mock_receipt_locator_response_ok;
 
   // then
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(&bnsClient, &receiptLocator) == BNS_OK);
+  assert(bns_get_receipt_locator(&bnsClient, &receiptLocator) == BNS_OK);
   assert(receiptLocator.clearanceOrder == MOCK_CLEARANCE_ORDER_OK);
   assert(strcmp(receiptLocator.indexValue, MOCK_INDEX_VALUE_OK) == 0);
 
@@ -23,7 +23,7 @@ void test_ok() {
 
 void test_BNS_CLIENT_NULL_ERROR() {
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(NULL, &receiptLocator) ==
+  assert(bns_get_receipt_locator(NULL, &receiptLocator) ==
          BNS_CLIENT_NULL_ERROR);
 }
 
@@ -35,7 +35,7 @@ void test_BNS_CLIENT_CONFIG_SERVER_URL_NULL_ERROR() {
 
   // then
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(&bnsClient, &receiptLocator) ==
+  assert(bns_get_receipt_locator(&bnsClient, &receiptLocator) ==
          BNS_CLIENT_CONFIG_SERVER_URL_NULL_ERROR);
 
   // clean
@@ -50,23 +50,23 @@ void test_BNS_CLIENT_CONFIG_INDEX_VALUE_KEY_NULL_ERROR() {
 
   // then
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(&bnsClient, &receiptLocator) ==
+  assert(bns_get_receipt_locator(&bnsClient, &receiptLocator) ==
          BNS_CLIENT_CONFIG_INDEX_VALUE_KEY_NULL_ERROR);
 
   // clean
   bns_client_free(&bnsClient);
 }
 
-void test_BNS_CLIENT_HTTP_CLIENT_BNS_POST_NULL_ERROR() {
+void test_BNS_CLIENT_HTTP_CLIENT_BNS_GET_NULL_ERROR() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = NULL;
+  bnsClient.httpClient.get = NULL;
 
   // then
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(&bnsClient, &receiptLocator) ==
-         BNS_CLIENT_HTTP_CLIENT_BNS_POST_NULL_ERROR);
+  assert(bns_get_receipt_locator(&bnsClient, &receiptLocator) ==
+         BNS_CLIENT_HTTP_CLIENT_BNS_GET_NULL_ERROR);
 
   // clean
   bns_client_free(&bnsClient);
@@ -78,7 +78,7 @@ void test_BNS_RECEIPT_LOCATOR_NULL_ERROR() {
   mock_bns_client_ok(&bnsClient);
 
   // then
-  assert(bns_post_receipt_locator(&bnsClient, NULL) ==
+  assert(bns_get_receipt_locator(&bnsClient, NULL) ==
          BNS_RECEIPT_LOCATOR_NULL_ERROR);
 
   // clean
@@ -89,11 +89,11 @@ void test_BNS_GET_RECEIPT_LOCATOR_RESPONSE_NULL_ERROR() {
   // given
   bns_client_t bnsClient = {0};
   mock_bns_client_ok(&bnsClient);
-  bnsClient.httpClient.post = mock_response_null;
+  bnsClient.httpClient.get = mock_response_null;
 
   // then
   receipt_locator_t receiptLocator = {0};
-  assert(bns_post_receipt_locator(&bnsClient, &receiptLocator) ==
+  assert(bns_get_receipt_locator(&bnsClient, &receiptLocator) ==
          BNS_GET_RECEIPT_LOCATOR_RESPONSE_NULL_ERROR);
 
   // clean
@@ -105,7 +105,7 @@ int main() {
   test_BNS_CLIENT_NULL_ERROR();
   test_BNS_CLIENT_CONFIG_SERVER_URL_NULL_ERROR();
   test_BNS_CLIENT_CONFIG_INDEX_VALUE_KEY_NULL_ERROR();
-  test_BNS_CLIENT_HTTP_CLIENT_BNS_POST_NULL_ERROR();
+  test_BNS_CLIENT_HTTP_CLIENT_BNS_GET_NULL_ERROR();
   test_BNS_RECEIPT_LOCATOR_NULL_ERROR();
   test_BNS_GET_RECEIPT_LOCATOR_RESPONSE_NULL_ERROR();
   return 0;

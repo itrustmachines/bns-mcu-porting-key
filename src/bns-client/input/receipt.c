@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-bns_exit_code_t receipt_first_part_to_sign_data(const receipt_t *receipt,
-                                                char **firstPart) {
+bns_exit_code_t receipt_first_part_to_sign_data(const receipt_t* receipt,
+                                                char**           firstPart) {
   LOG_DEBUG("receipt_first_part_to_sign_data() begin");
   bns_exit_code_t exitCode = BNS_OK;
   if (!receipt) {
@@ -24,10 +24,9 @@ bns_exit_code_t receipt_first_part_to_sign_data(const receipt_t *receipt,
   firstPartSize += bns_digits(receipt->clearanceOrder);
 
   if (*firstPart) {
-    *firstPart =
-        (char *)realloc(*firstPart, sizeof(char) * (firstPartSize + 1));
+    *firstPart = (char*)realloc(*firstPart, sizeof(char) * (firstPartSize + 1));
   } else {
-    *firstPart = (char *)malloc(sizeof(char) * (firstPartSize + 1));
+    *firstPart = (char*)malloc(sizeof(char) * (firstPartSize + 1));
   }
   sprintf(*firstPart, "%s%lld", receipt->indexValue, receipt->clearanceOrder);
 
@@ -41,11 +40,11 @@ receipt_first_part_sign_data_fail:
   return exitCode;
 }
 
-bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t *receipt,
-                                                      char **secondPartHash) {
+bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t* receipt,
+                                                      char** secondPartHash) {
   LOG_DEBUG("receipt_second_part_hash_to_sign_data() begin");
-  bns_exit_code_t exitCode = BNS_OK;
-  char *secondPart = NULL;
+  bns_exit_code_t exitCode   = BNS_OK;
+  char*           secondPart = NULL;
   if (!receipt) {
     exitCode = BNS_RECEIPT_NULL_ERROR;
     goto receipt_second_part_hash_sign_data_fail;
@@ -73,7 +72,7 @@ bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t *receipt,
   secondPartSize += strlen(receipt->sigClient.s);
   secondPartSize += strlen(receipt->sigClient.v);
 
-  secondPart = (char *)malloc(sizeof(char) * (secondPartSize + 1));
+  secondPart = (char*)malloc(sizeof(char) * (secondPartSize + 1));
 
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   sprintf(secondPart, "%s%lld%s%s%lld%s%s%s%s", receipt->callerAddress,
@@ -89,12 +88,12 @@ bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t *receipt,
 
   if (*secondPartHash) {
     *secondPartHash =
-        (char *)realloc(*secondPartHash, sizeof(char) * HASH_STR_LEN);
+        (char*)realloc(*secondPartHash, sizeof(char) * HASH_STR_LEN);
   } else {
-    *secondPartHash = (char *)malloc(sizeof(char) * HASH_STR_LEN);
+    *secondPartHash = (char*)malloc(sizeof(char) * HASH_STR_LEN);
   }
   memset(*secondPartHash, 0, HASH_STR_LEN);
-  sha256((unsigned char *)secondPart, secondPartSize, *secondPartHash);
+  sha256((unsigned char*)secondPart, secondPartSize, *secondPartHash);
   BNS_FREE(secondPart);
 
   LOG_DEBUG("receipt_second_part_hash_to_sign_data() end, secondPartHash=%s",
@@ -102,9 +101,6 @@ bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t *receipt,
   return exitCode;
 
 receipt_second_part_hash_sign_data_fail:
-  if (secondPart) {
-    BNS_FREE(secondPart);
-  }
   LOG_ERROR(
       "receipt_second_part_hash_to_sign_data() "
       "error, " BNS_EXIT_CODE_PRINT_FORMAT,
@@ -112,12 +108,12 @@ receipt_second_part_hash_sign_data_fail:
   return exitCode;
 }
 
-bns_exit_code_t receipt_to_sign_data(const receipt_t *receipt,
-                                     char **toSignData) {
+bns_exit_code_t receipt_to_sign_data(const receipt_t* receipt,
+                                     char**           toSignData) {
   LOG_DEBUG("receipt_to_sign_data() begin");
   bns_exit_code_t exitCode;
-  char *firstPart = NULL;
-  char *secondPart = NULL;
+  char*           firstPart  = NULL;
+  char*           secondPart = NULL;
   if (!receipt) {
     exitCode = BNS_RECEIPT_NULL_ERROR;
     goto receipt_sign_data_fail;
@@ -135,12 +131,12 @@ bns_exit_code_t receipt_to_sign_data(const receipt_t *receipt,
     goto receipt_sign_data_fail;
   }
   if (*toSignData) {
-    *toSignData = (char *)realloc(
+    *toSignData = (char*)realloc(
         *toSignData,
         sizeof(char) * (strlen(firstPart) + strlen(secondPart) + 1));
   } else {
-    *toSignData = (char *)malloc(sizeof(char) *
-                                 (strlen(firstPart) + strlen(secondPart) + 1));
+    *toSignData = (char*)malloc(sizeof(char) *
+                                (strlen(firstPart) + strlen(secondPart) + 1));
   }
   sprintf(*toSignData, "%s%s", firstPart, secondPart);
   BNS_FREE(firstPart);
@@ -149,23 +145,19 @@ bns_exit_code_t receipt_to_sign_data(const receipt_t *receipt,
   return BNS_OK;
 
 receipt_sign_data_fail:
-  if (firstPart) {
-    BNS_FREE(firstPart);
-  }
-  if (secondPart) {
-    BNS_FREE(secondPart);
-  }
+  if (firstPart) { BNS_FREE(firstPart); }
+  if (secondPart) { BNS_FREE(secondPart); }
   LOG_ERROR("receipt_to_sign_data() " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;
 }
 
-bns_exit_code_t parse_receipt_from_cjson(cJSON *const root,
-                                         receipt_t *const receipt) {
+bns_exit_code_t parse_receipt_from_cjson(cJSON* const     root,
+                                         receipt_t* const receipt) {
   LOG_DEBUG("parse_receipt_from_cjson() begin");
   bns_exit_code_t exitCode = BNS_OK;
-  size_t size;
-  cJSON *temp, *sig;
+  size_t          size;
+  cJSON *         temp, *sig;
   if (!receipt) {
     exitCode = BNS_RECEIPT_NULL_ERROR;
     goto parse_receipt_from_cJSON_fail;
@@ -312,7 +304,7 @@ bns_exit_code_t parse_receipt_from_cjson(cJSON *const root,
   cJSON_DetachItemViaPointer(root, temp);
   cJSON_Delete(temp);
 
-  sig = cJSON_GetObjectItem(root, "sigClient");
+  sig  = cJSON_GetObjectItem(root, "sigClient");
   temp = cJSON_GetObjectItem(sig, "r");
   if (!cJSON_IsString(temp)) {
     exitCode = BNS_RESPONSE_R_PARSE_ERROR;
@@ -357,7 +349,7 @@ bns_exit_code_t parse_receipt_from_cjson(cJSON *const root,
   cJSON_DetachItemViaPointer(root, sig);
   cJSON_Delete(sig);
 
-  sig = cJSON_GetObjectItem(root, "sigServer");
+  sig  = cJSON_GetObjectItem(root, "sigServer");
   temp = cJSON_GetObjectItem(sig, "r");
   if (!cJSON_IsString(temp)) {
     exitCode = BNS_RESPONSE_R_PARSE_ERROR;
@@ -410,10 +402,10 @@ parse_receipt_from_cJSON_fail:
   return exitCode;
 }
 
-bns_exit_code_t receipt_check_sig(const char *const serverWalletAddress,
-                                  const receipt_t *const receipt) {
+bns_exit_code_t receipt_check_sig(const char* const      serverWalletAddress,
+                                  const receipt_t* const receipt) {
   bns_exit_code_t exitCode;
-  char *toSignData = NULL;
+  char*           toSignData = NULL;
   if (!serverWalletAddress) {
     exitCode = BNS_SERVER_WALLET_ADDRESS_NULL_ERROR;
     goto receipt_check_sig_fail;
@@ -438,20 +430,18 @@ bns_exit_code_t receipt_check_sig(const char *const serverWalletAddress,
   return exitCode;
 
 receipt_check_sig_fail:
-  if (toSignData) {
-    BNS_FREE(toSignData);
-  }
+  if (toSignData) { BNS_FREE(toSignData); }
   LOG_ERROR("receipt_check_sig() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;
 }
 
-bns_exit_code_t receipt_to_digest_value(const receipt_t *const receipt,
-                                        char **const digestValue) {
+bns_exit_code_t receipt_to_digest_value(const receipt_t* const receipt,
+                                        char** const           digestValue) {
   LOG_DEBUG("receipt_to_digest_value() start");
   bns_exit_code_t exitCode;
-  char *signData = NULL;
-  char *buffer = NULL;
+  char*           signData = NULL;
+  char*           buffer   = NULL;
   if (!receipt) {
     exitCode = BNS_RECEIPT_NULL_ERROR;
     goto receipt_to_digest_value_fail;
@@ -468,30 +458,25 @@ bns_exit_code_t receipt_to_digest_value(const receipt_t *const receipt,
   size += strlen(receipt->sigServer.r);
   size += strlen(receipt->sigServer.s);
   size += strlen(receipt->sigServer.v);
-  buffer = (char *)malloc(sizeof(char) * (size + 1));
+  buffer = (char*)malloc(sizeof(char) * (size + 1));
   sprintf(buffer, "%s%s%s%s", signData, receipt->sigServer.r,
           receipt->sigServer.s, receipt->sigServer.v);
 
   BNS_FREE(signData);
   if (*digestValue) {
-    *digestValue = (char *)realloc(*digestValue, sizeof(char) * HASH_STR_LEN);
+    *digestValue = (char*)realloc(*digestValue, sizeof(char) * HASH_STR_LEN);
   } else {
-    *digestValue = (char *)malloc(sizeof(char) * HASH_STR_LEN);
+    *digestValue = (char*)malloc(sizeof(char) * HASH_STR_LEN);
   }
   memset(*digestValue, 0, HASH_STR_LEN);
-  sha256((unsigned char *)buffer, strlen(buffer), *digestValue);
+  sha256((unsigned char*)buffer, strlen(buffer), *digestValue);
   BNS_FREE(buffer);
 
   LOG_DEBUG("receipt_to_digest_value() end");
   return exitCode;
 
 receipt_to_digest_value_fail:
-  if (signData) {
-    BNS_FREE(signData);
-  }
-  if (buffer) {
-    BNS_FREE(buffer);
-  }
+  if (signData) { BNS_FREE(signData); }
   LOG_ERROR("receipt_to_digest_value() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;

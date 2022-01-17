@@ -40,7 +40,7 @@ void test_ok() {
 }
 
 void test_BNS_CLIENT_NULL_ERROR() {
-  receipt_locator_t receiptLocator = {0};
+  receipt_locator_t      receiptLocator     = {0};
   ledger_input_request_t ledgerInputRequest = {0};
   assert(build_ledger_input_request(NULL, MOCK_CMD_OK, &receiptLocator,
                                     &ledgerInputRequest) ==
@@ -48,8 +48,8 @@ void test_BNS_CLIENT_NULL_ERROR() {
 }
 
 void test_BNS_CMD_JSON_NULL_ERROR() {
-  bns_client_t bnsClient = {0};
-  receipt_locator_t receiptLocator = {0};
+  bns_client_t           bnsClient          = {0};
+  receipt_locator_t      receiptLocator     = {0};
   ledger_input_request_t ledgerInputRequest = {0};
   assert(build_ledger_input_request(&bnsClient, NULL, &receiptLocator,
                                     &ledgerInputRequest) ==
@@ -57,7 +57,7 @@ void test_BNS_CMD_JSON_NULL_ERROR() {
 }
 
 void test_BNS_RECEIPT_LOCATOR_NULL_ERROR() {
-  bns_client_t bnsClient = {0};
+  bns_client_t           bnsClient          = {0};
   ledger_input_request_t ledgerInputRequest = {0};
   assert(build_ledger_input_request(&bnsClient, MOCK_CMD_OK, NULL,
                                     &ledgerInputRequest) ==
@@ -65,7 +65,7 @@ void test_BNS_RECEIPT_LOCATOR_NULL_ERROR() {
 }
 
 void test_BNS_LEDGER_INPUT_REQUEST_NULL_ERROR() {
-  bns_client_t bnsClient = {0};
+  bns_client_t      bnsClient      = {0};
   receipt_locator_t receiptLocator = {0};
   assert(build_ledger_input_request(&bnsClient, MOCK_CMD_OK, &receiptLocator,
                                     NULL) ==

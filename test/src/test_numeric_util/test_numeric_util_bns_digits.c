@@ -6,7 +6,7 @@ void test_positive_int() {
   int num = 1234567890;
 
   // when
-  int digits = bns_digits(num);
+  size_t digits = bns_digits(num);
 
   // then
   assert(digits == 10);
@@ -17,7 +17,7 @@ void test_negative_int() {
   int num = -1234567890;
 
   // when
-  int digits = bns_digits(num);
+  size_t digits = bns_digits(num);
 
   // then
   assert(digits == 10);
@@ -28,7 +28,7 @@ void test_positive_long_long() {
   long long int num = 1234567890123456789L;
 
   // when
-  int digits = bns_digits(num);
+  size_t digits = bns_digits(num);
 
   // then
   assert(digits == 19);
@@ -39,7 +39,7 @@ void test_negative_long_long() {
   long long int num = -1234567890123456789L;
 
   // when
-  int digits = bns_digits(num);
+  size_t digits = bns_digits(num);
 
   // then
   assert(digits == 19);

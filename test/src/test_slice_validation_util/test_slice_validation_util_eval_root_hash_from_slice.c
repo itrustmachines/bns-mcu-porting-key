@@ -2,7 +2,6 @@
 #include <bns-client/util/slice_validation_util.h>
 #include <bns-client/verify/merkle_proof.h>
 #include <bns-client/verify/slice.h>
-#include <string.h>
 
 #include "../mock_data/mock_ok_data.h"
 

@@ -8,8 +8,7 @@
 
 static int retryCount = 5;
 
-char *mock_response_retry(_UNUSED const char *const url,
-                          _UNUSED const char *const data) {
+char* mock_response_retry(_UNUSED const char* const url) {
   if (--retryCount > 0) {
     return NULL;
   } else {
@@ -31,7 +30,7 @@ void test_bns_get_merkle_proof_ok() {
 }
 
 void test_check_merkle_proof_response_ok() {
-  char *response = mock_merkle_proof_response_ok();
+  char*          response    = mock_merkle_proof_response_ok();
   merkle_proof_t merkleProof = {0};
   assert(check_and_parse_merkle_proof_response(response, &merkleProof) ==
          BNS_OK);
@@ -40,7 +39,7 @@ void test_check_merkle_proof_response_ok() {
 }
 
 void test_check_merkle_proof_response_error() {
-  char *response = mock_merkle_proof_response_status_error();
+  char*          response    = mock_merkle_proof_response_status_error();
   merkle_proof_t merkleProof = {0};
   assert(check_and_parse_merkle_proof_response(response, &merkleProof) ==
          BNS_RESPONSE_STATUS_ERROR);
@@ -48,7 +47,7 @@ void test_check_merkle_proof_response_error() {
 }
 
 void test_check_merkle_proof_response_format_error() {
-  char *response = mock_merkle_proof_response_format_error();
+  char*          response    = mock_merkle_proof_response_format_error();
   merkle_proof_t merkleProof = {0};
   assert(check_and_parse_merkle_proof_response(response, &merkleProof) ==
          BNS_RESPONSE_STATUS_PARSE_ERROR);
@@ -57,7 +56,7 @@ void test_check_merkle_proof_response_format_error() {
 
 void test_parse_merkle_proof_ok() {
   merkle_proof_t merkleProof = {0};
-  char *response = mock_merkle_proof_response_ok();
+  char*          response    = mock_merkle_proof_response_ok();
   assert(check_and_parse_merkle_proof_response(response, &merkleProof) ==
          BNS_OK);
   free(response);
@@ -74,7 +73,7 @@ void test_parse_merkle_proof_ok() {
 
 void test_parse_merkle_proof_data_error() {
   merkle_proof_t merkleProof = {0};
-  char *response = mock_merkle_proof_response_format_error();
+  char*          response    = mock_merkle_proof_response_format_error();
   assert(check_and_parse_merkle_proof_response(response, &merkleProof) ==
          BNS_RESPONSE_STATUS_PARSE_ERROR);
   free(response);
@@ -85,7 +84,7 @@ void test_parse_merkle_proof_data_error() {
 void test_merkle_proof_to_sign_data() {
   merkle_proof_t merkleProof = {0};
   mock_merkleProof_ok(&merkleProof);
-  char *signData = NULL;
+  char* signData = NULL;
   assert(merkle_proof_to_sign_data(&merkleProof, &signData) == BNS_OK);
   assert(signData != NULL);
   free(signData);
@@ -116,10 +115,10 @@ void test_retry() {
   merkle_proof_t merkleProof = {0};
 
   bns_client_t bnsClient = {0};
-  assert(mock_post_bns_client_(&bnsClient, mock_response_retry) == BNS_OK);
+  assert(mock_get_bns_client_(&bnsClient, mock_response_retry) == BNS_OK);
   assert(bns_client_set_retry_count(&bnsClient, retryCount) == BNS_OK);
   receipt_locator_t receiptLocator = {204, "NUVOTON_Demo_R7"};
-  assert(bns_post_merkle_proof(&bnsClient, &receiptLocator, &merkleProof) ==
+  assert(bns_get_merkle_proof(&bnsClient, &receiptLocator, &merkleProof) ==
          BNS_OK);
   assert(retryCount == 0);
   assert(merkleProof.slice.index != 0);

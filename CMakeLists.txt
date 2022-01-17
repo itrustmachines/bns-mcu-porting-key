@@ -43,7 +43,7 @@ elseif (${LOG_LEVEL} STREQUAL "Trace")
     add_definitions(-DLOG_LEVEL=5)
 endif (${LOG_LEVEL} STREQUAL "Off")
 
-option(BNS_LOG_DETAIL "BNS_LOG_DETAIL"OFF)
+option(BNS_LOG_DETAIL "BNS_LOG_DETAIL" OFF)
 if (${BNS_LOG_DETAIL})
     message("BNS_LOG_DETAIL=${BNS_LOG_DETAIL}")
     add_definitions(-DLOG_DETAIL)

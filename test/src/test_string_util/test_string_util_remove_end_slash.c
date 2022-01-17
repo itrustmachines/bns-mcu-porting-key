@@ -4,7 +4,7 @@
 
 void test_end_with_slash() {
   // given
-  char *string = NULL;
+  char* string = NULL;
   bns_strdup(&string, "a/b/c/");
 
   // when
@@ -19,7 +19,7 @@ void test_end_with_slash() {
 
 void test_end_without_slash() {
   // given
-  char *string = NULL;
+  char* string = NULL;
   bns_strdup(&string, "a/b/c");
 
   // when

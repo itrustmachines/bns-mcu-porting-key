@@ -5,6 +5,11 @@ typedef enum bns_exit_code_t {
   BNS_OK,
 
   // null error
+  BNS_LOGIN_REQUEST_NULL_ERROR,
+  BNS_LOGIN_REQUEST_JSON_NULL_ERROR,
+  BNS_LOGIN_URL_NULL_ERROR,
+  BNS_LOGIN_RESPONSE_NULL_ERROR,
+  BNS_LOGIN_WARN,
   BNS_ADDRESS_NULL_ERROR,
   BNS_BINARY_FILE_URL_NULL_ERROR,
   BNS_BINARY_LEDGER_INPUT_RESULT_NULL_ERROR,
@@ -151,7 +156,7 @@ typedef enum bns_exit_code_t {
 
 #if defined(LOG_DETAIL)
 #define BNS_EXIT_CODE_PRINT_FORMAT "exitCode=%s"
-char *bns_strerror(int bns_errno);
+char* bns_strerror(int bns_errno);
 #else
 #define BNS_EXIT_CODE_PRINT_FORMAT "exitCode=%d"
 bns_exit_code_t bns_strerror(bns_exit_code_t bns_exit_code);

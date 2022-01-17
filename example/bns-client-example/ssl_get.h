@@ -4,23 +4,23 @@
 #include <stddef.h>
 
 typedef struct {
-  char *data;
+  char*  data;
   size_t size;
 } MemoryBlock;
 
-static const char *const APPLICATION_JSON = "Content-Type: application/json";
+static const char* const APPLICATION_JSON = "Content-Type: application/json";
 
 int ssl_init();
 
 void ssl_clean();
 
 // Get information form BNS Server
-char *bns_get(const char *url);
+char* bns_get(const char* url);
 
 // POST information to BNS Server
-char *bns_post(const char *url, const char *postData);
+char* bns_post(const char* url, const char* postData);
 
 // Get information form Blockchain
-char *eth_post(const char *url, const char *postData);
+char* eth_post(const char* url, const char* postData);
 
 #endif /* SSL_GET_H */

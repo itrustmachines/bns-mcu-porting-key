@@ -6,8 +6,8 @@
 
 #include "mock_ok_data.h"
 
-void mock_receipt_locator_ok(receipt_locator_t *receiptLocator) {
-  int clearanceOrder = MOCK_CLEARANCE_ORDER_OK;
+void mock_receipt_locator_ok(receipt_locator_t* receiptLocator) {
+  int clearanceOrder             = MOCK_CLEARANCE_ORDER_OK;
   receiptLocator->clearanceOrder = clearanceOrder;
   bns_strdup(&receiptLocator->indexValue, MOCK_INDEX_VALUE_OK);
   assert(MOCK_CLEARANCE_ORDER_OK == receiptLocator->clearanceOrder);

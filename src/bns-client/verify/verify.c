@@ -10,11 +10,11 @@
 #include <bns-client/verify/verify.h>
 #include <stdlib.h>
 
-bns_exit_code_t verify(const bns_client_t *const bnsClient,
-                       const receipt_t *const receipt,
-                       merkle_proof_t *const merkleProof,
-                       verify_receipt_result_t *const verifyReceiptResult) {
-  bns_exit_code_t exitCode;
+bns_exit_code_t verify(const bns_client_t* const      bnsClient,
+                       const receipt_t* const         receipt,
+                       merkle_proof_t* const          merkleProof,
+                       verify_receipt_result_t* const verifyReceiptResult) {
+  bns_exit_code_t   exitCode;
   receipt_locator_t receiptLocator = {0};
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
@@ -42,70 +42,54 @@ bns_exit_code_t verify(const bns_client_t *const bnsClient,
 #else
   verifyReceiptResult->timestamp = get_timestamp_string();
 #endif
-  verifyReceiptResult->receiptSignatureOk = false;
-  verifyReceiptResult->merkleproofSignatureOk = false;
-  verifyReceiptResult->clearanceOrderOk = false;
-  verifyReceiptResult->pbPairOk = false;
-  verifyReceiptResult->sliceOk = false;
+  verifyReceiptResult->receiptSignatureOk        = false;
+  verifyReceiptResult->merkleproofSignatureOk    = false;
+  verifyReceiptResult->clearanceOrderOk          = false;
+  verifyReceiptResult->pbPairOk                  = false;
+  verifyReceiptResult->sliceOk                   = false;
   verifyReceiptResult->clearanceRecordRootHashOk = false;
 
   receiptLocator.clearanceOrder = receipt->clearanceOrder;
   bns_strdup(&receiptLocator.indexValue, receipt->indexValue);
-  exitCode = bns_post_merkle_proof(bnsClient, &receiptLocator, merkleProof);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  exitCode = bns_get_merkle_proof(bnsClient, &receiptLocator, merkleProof);
+  if (exitCode != BNS_OK) { goto verify_fail; }
   receipt_locator_free(&receiptLocator);
   clearance_record_t clearanceRecord = {0};
   exitCode = contract_post_clearance_record(bnsClient, receipt->clearanceOrder,
                                             &clearanceRecord);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify receipt signature
   exitCode = verify_receipt_signature(
       bnsClient->bnsServerInfo.serverWalletAddress, receipt,
       &verifyReceiptResult->receiptSignatureOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify merkleProof signature
   exitCode = verify_merkle_proof_signature(
       bnsClient->bnsServerInfo.serverWalletAddress, merkleProof,
       &verifyReceiptResult->merkleproofSignatureOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify clearanceOrder
   exitCode = verify_clearance_order(receipt, merkleProof, &clearanceRecord,
                                     &verifyReceiptResult->clearanceOrderOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify PbPair
   exitCode =
       verify_pb_pair(receipt, merkleProof, &verifyReceiptResult->pbPairOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify slice
   exitCode = verify_merkle_proof_slice(&merkleProof->slice,
                                        &verifyReceiptResult->sliceOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
 
   // verify if clearanceRecord rootHash and merkle proof slice rootHash match
   exitCode = verify_root_hash(merkleProof, &clearanceRecord,
                               &verifyReceiptResult->clearanceRecordRootHashOk);
-  if (exitCode != BNS_OK) {
-    goto verify_fail;
-  }
+  if (exitCode != BNS_OK) { goto verify_fail; }
   verifyReceiptResult->pass = true;
   bns_strdup(&verifyReceiptResult->status, BNS_STATUS_OK);
   bns_strdup(&verifyReceiptResult->description, BNS_STATUS_OK);
@@ -125,10 +109,11 @@ verify_fail:
 }
 
 bns_exit_code_t verify_merkle_proof_signature(
-    const char *const serverWalletAddress,
-    const merkle_proof_t *const merkleProof, bool *const result) {
+    const char* const           serverWalletAddress,
+    const merkle_proof_t* const merkleProof,
+    bool* const                 result) {
   bns_exit_code_t exitCode;
-  char *toSignData = NULL;
+  char*           toSignData = NULL;
   if (!serverWalletAddress) {
     exitCode = BNS_SERVER_WALLET_ADDRESS_NULL_ERROR;
     goto verify_merkle_proof_signature_fail;
@@ -163,9 +148,9 @@ verify_merkle_proof_signature_fail:
   return exitCode;
 }
 
-bns_exit_code_t verify_receipt_signature(const char *serverWalletAddress,
-                                         const receipt_t *receipt,
-                                         bool *result) {
+bns_exit_code_t verify_receipt_signature(const char*      serverWalletAddress,
+                                         const receipt_t* receipt,
+                                         bool*            result) {
   LOG_DEBUG("verify_receipt_signature() start");
   bns_exit_code_t exitCode;
   if (!serverWalletAddress) {
@@ -194,8 +179,10 @@ verify_receipt_signature_fail:
 }
 
 bns_exit_code_t verify_clearance_order(
-    const receipt_t *const receipt, const merkle_proof_t *const merkleProof,
-    const clearance_record_t *const clearanceRecord, bool *const result) {
+    const receipt_t* const          receipt,
+    const merkle_proof_t* const     merkleProof,
+    const clearance_record_t* const clearanceRecord,
+    bool* const                     result) {
   LOG_DEBUG("verify_clearance_order() start");
   bns_exit_code_t exitCode = BNS_OK;
   if (!receipt) {
@@ -233,9 +220,9 @@ verify_clearanceOrderOk_fail:
   return exitCode;
 }
 
-bns_exit_code_t verify_pb_pair(const receipt_t *const receipt,
-                               const merkle_proof_t *const merkleProof,
-                               bool *const result) {
+bns_exit_code_t verify_pb_pair(const receipt_t* const      receipt,
+                               const merkle_proof_t* const merkleProof,
+                               bool* const                 result) {
   LOG_DEBUG("verify_pb_pair() start");
   bns_exit_code_t exitCode;
   if (!receipt) {
@@ -269,8 +256,8 @@ verify_pbPairOk_fail:
   return exitCode;
 }
 
-bns_exit_code_t verify_merkle_proof_slice(const slice_t *const slice,
-                                          bool *const result) {
+bns_exit_code_t verify_merkle_proof_slice(const slice_t* const slice,
+                                          bool* const          result) {
   LOG_DEBUG("verify_merkle_proof_slice() start");
   bns_exit_code_t exitCode;
   if (!slice) {
@@ -294,8 +281,9 @@ verify_sliceOk_fail:
 }
 
 bns_exit_code_t verify_root_hash(
-    const merkle_proof_t *const merkleProof,
-    const clearance_record_t *const clearanceRecord, bool *const result) {
+    const merkle_proof_t* const     merkleProof,
+    const clearance_record_t* const clearanceRecord,
+    bool* const                     result) {
   LOG_DEBUG("verify_root_hash() start");
   bns_exit_code_t exitCode = BNS_OK;
   if (!merkleProof) {

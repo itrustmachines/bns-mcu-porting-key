@@ -4,10 +4,10 @@
 
 void test_ok() {
   // given
-  char *string = "hello";
+  char* string = "hello";
 
   // when
-  char *result = NULL;
+  char* result = NULL;
   bns_strdup(&result, string);
 
   // then
@@ -19,7 +19,7 @@ void test_ok() {
 
 void test_dest_NULL() {
   // given
-  char *string = "hello";
+  char* string = "hello";
 
   // when
   bns_strdup(NULL, string);
@@ -27,7 +27,7 @@ void test_dest_NULL() {
 
 void test_src_NULL() {
   // when
-  char *result = NULL;
+  char* result = NULL;
   bns_strdup(&result, NULL);
 }
 

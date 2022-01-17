@@ -6,19 +6,16 @@
 /**
  * declare the static variable to store receipt in memory
  */
-static receipt_t *receiptPtr[RECEIPT_CACHE_SIZE] = {0};
+static receipt_t* receiptPtr[RECEIPT_CACHE_SIZE] = {0};
 
 /**
  * store receipt in memory
  */
-void receipt_cache_save(const receipt_t *receipt)
-{
+void receipt_cache_save(const receipt_t* receipt) {
   LOG_DEBUG("receipt_cache_save() begin");
-  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++)
-  {
-    if (!receiptPtr[i])
-    {
-      receipt_t *_receipt = (receipt_t *)malloc(sizeof(receipt_t));
+  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++) {
+    if (!receiptPtr[i]) {
+      receipt_t* _receipt = (receipt_t*)malloc(sizeof(receipt_t));
       strcpy(_receipt->callerAddress, receipt->callerAddress);
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
       _receipt->timestamp = receipt->timestamp;
@@ -53,43 +50,34 @@ void receipt_cache_save(const receipt_t *receipt)
  * use clearanceOrder to find out which receipts to be verified
  */
 void receipt_cache_findPageByClearanceOrderEqualOrLessThan(
-    const clearance_order_t clearanceOrder, const size_t page,
-    const size_t pageSize, receipt_t *outputReceipt, size_t *outputSize)
-{
+    const clearance_order_t clearanceOrder,
+    const size_t            page,
+    const size_t            pageSize,
+    receipt_t*              outputReceipt,
+    size_t*                 outputSize) {
   LOG_DEBUG("receipt_cache_findPageByClearanceOrderEqualOrLessThan() begin");
-  if (!outputReceipt)
-  {
+  if (!outputReceipt) {
     LOG_ERROR(
         "receipt_cache_findPageByClearanceOrderEqualOrLessThan() error, "
         "outputReceipt=NULL");
     return;
   }
-  if (!outputSize)
-  {
+  if (!outputSize) {
     LOG_ERROR(
         "receipt_cache_findPageByClearanceOrderEqualOrLessThan() error, "
         "outputSize=NULL");
     return;
   }
-  size_t size = 0;
-  size_t currentOffset = 0;
-  const size_t offset = page * pageSize;
+  size_t       size          = 0;
+  size_t       currentOffset = 0;
+  const size_t offset        = page * pageSize;
 
   int i;
-  for (i = 0; i < RECEIPT_CACHE_SIZE; i++)
-  {
-    if (size >= pageSize)
-    {
-      break;
-    }
-    if (!receiptPtr[i])
-    {
-      break;
-    }
-    if (receiptPtr[i]->clearanceOrder <= clearanceOrder)
-    {
-      if (currentOffset >= offset)
-      {
+  for (i = 0; i < RECEIPT_CACHE_SIZE; i++) {
+    if (size >= pageSize) { break; }
+    if (!receiptPtr[i]) { break; }
+    if (receiptPtr[i]->clearanceOrder <= clearanceOrder) {
+      if (currentOffset >= offset) {
         strcpy(outputReceipt[size].callerAddress, receiptPtr[i]->callerAddress);
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
         outputReceipt[size].timestamp = receiptPtr[i]->timestamp;
@@ -113,20 +101,14 @@ void receipt_cache_findPageByClearanceOrderEqualOrLessThan(
         strcpy(outputReceipt[size].sigServer.s, receiptPtr[i]->sigServer.s);
         strcpy(outputReceipt[size].sigServer.v, receiptPtr[i]->sigServer.v);
         size++;
-      }
-      else
-      {
+      } else {
         currentOffset++;
       }
     }
   }
   *outputSize = size;
-  if (*outputSize == 1)
-  {
-    if (outputReceipt[0].clearanceOrder == 0)
-    {
-      LOG_ERROR("error");
-    }
+  if (*outputSize == 1) {
+    if (outputReceipt[0].clearanceOrder == 0) { LOG_ERROR("error"); }
   }
   LOG_DEBUG(
       "receipt_cache_findPageByClearanceOrderEqualOrLessThan() end, "
@@ -137,28 +119,18 @@ void receipt_cache_findPageByClearanceOrderEqualOrLessThan(
 /**
  * delete the verified receipts
  */
-void receipt_cache_delete(const receipt_t *receipt)
-{
+void receipt_cache_delete(const receipt_t* receipt) {
   LOG_DEBUG("receipt_cache_delete() begin");
-  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++)
-  {
-    if (!receiptPtr[i])
-    {
-      continue;
-    }
+  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++) {
+    if (!receiptPtr[i]) { continue; }
     if ((receiptPtr[i]->clearanceOrder == receipt->clearanceOrder) &&
-        (strcmp(receiptPtr[i]->indexValue, receipt->indexValue) == 0))
-    {
+        (strcmp(receiptPtr[i]->indexValue, receipt->indexValue) == 0)) {
       free(receiptPtr[i]);
       receiptPtr[i] = NULL;
       LOG_DEBUG("receipt_cache_delete() delete index=%d", i);
-      for (int j = i; j < (RECEIPT_CACHE_SIZE - 1); j++)
-      {
+      for (int j = i; j < (RECEIPT_CACHE_SIZE - 1); j++) {
         receiptPtr[j] = receiptPtr[j + 1];
-        if (!receiptPtr[j + 1])
-        {
-          break;
-        }
+        if (!receiptPtr[j + 1]) { break; }
       }
       receiptPtr[RECEIPT_CACHE_SIZE - 1] = NULL;
     }
@@ -167,16 +139,11 @@ void receipt_cache_delete(const receipt_t *receipt)
 }
 
 /* Get the number of receipt */
-int receipt_cache_count()
-{
+int receipt_cache_count() {
   LOG_DEBUG("receipt_cache_count() begin");
   int count = 0;
-  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++)
-  {
-    if (receiptPtr[i])
-    {
-      count++;
-    }
+  for (int i = 0; i < RECEIPT_CACHE_SIZE; i++) {
+    if (receiptPtr[i]) { count++; }
   }
   LOG_DEBUG("receipt_cache_count() end");
   return count;

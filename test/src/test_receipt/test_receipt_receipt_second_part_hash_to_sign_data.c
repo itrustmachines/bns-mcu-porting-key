@@ -9,18 +9,16 @@ void test_ok() {
   mock_receipt_ok(&receipt);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(receipt_second_part_hash_to_sign_data(&receipt, &result) == BNS_OK);
   assert(strcmp(result, MOCK_RECEIPT_SECOND_PART_HASH_OK) == 0);
 
   // clean
-  if (result) {
-    BNS_FREE(result);
-  }
+  if (result) { BNS_FREE(result); }
 }
 
 void test_BNS_RECEIPT_NULL_ERROR() {
-  char *result = NULL;
+  char* result = NULL;
   assert(receipt_second_part_hash_to_sign_data(NULL, &result) ==
          BNS_RECEIPT_NULL_ERROR);
 }

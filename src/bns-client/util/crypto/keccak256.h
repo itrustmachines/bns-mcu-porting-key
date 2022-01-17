@@ -40,9 +40,9 @@ typedef struct SHA3_CTX {
 extern "C" {
 #endif /* __cplusplus */
 
-void keccak_init(SHA3_CTX *ctx);
-void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size);
-void keccak_final(SHA3_CTX *ctx, unsigned char *result);
+void keccak_init(SHA3_CTX* ctx);
+void keccak_update(SHA3_CTX* ctx, const unsigned char* msg, uint16_t size);
+void keccak_final(SHA3_CTX* ctx, unsigned char* result);
 
 #ifdef __cplusplus
 }

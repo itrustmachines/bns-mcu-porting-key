@@ -5,15 +5,11 @@
 
 #define MOCK_INDEX_VALUE_KEY_OK "SolarPanel"
 #define MOCK_EMAIL_OK "admin@itrustmachines.com"
-#define MOCK_TO_SIGN_MESSAGE_OK MOCK_CALLER_ADDRESS_OK
 #define MOCK_PRIVATE_KEY_OK \
   "b8059c31844941a8b37d4cac37b331d7b8059c31344941a8b37d4cac37b331d7"
 #define MOCK_SERVER_URL_OK "https://azure-dev-rinkeby.itm.monster:4430"
 #define MOCK_NODE_URL_OK \
   "https://rinkeby.infura.io/v3/be24c2d510194112af26339c777c46d1"
-#define MOCK_PUBLIC_KEY_OK                                                     \
-  "fcd72cad76e01b1dff7151844a5a96abde55bd536e05841b2157694211f0c4d3ccf54de5a4" \
-  "1f31edccdddef5f6fcff43778db54cd57162c74972ba6a9aa37102"
 
 #define MOCK_BNS_SERVER_INFO_RESPONSE_OK                                    \
   "{\"status\":\"ok\",\"description\":\"\",\"activeProfile\":\"[azure-dev-" \
@@ -27,37 +23,6 @@
 #define MOCK_CONTRACT_ADDRESS_OK "0x1Bbe2D131a42DaEd0110fd2bE08AF56906A5a1Ce"
 #define MOCK_SERVER_WALLET_ADDRESS_OK \
   "0xA197013CA3978962B91f471C4e8C8b6DB42B14D5"
-
-#define MOCK_SIG_REGISTER_R_OK \
-  "8eb918c0093836ef1f30e7ee189466dc01896eb8ac23a10499aca8f23d4f64ee"
-#define MOCK_SIG_REGISTER_S_OK \
-  "004be09f8700e2052dfd664d6655fa932035440981ee28faab690bdbceab8e05"
-#define MOCK_SIG_REGISTER_V_OK "1b"
-
-#define MOCK_SERVER_INFO_REQUEST_SIG_R_OK \
-  "f74737a67cfbbbe2a51fcaf24a53cdc2b8aebb832f7a829e590e054bec6ace82"
-#define MOCK_SERVER_INFO_REQUEST_SIG_S_OK \
-  "48d64958907fecf7390b39dae90458a0296a6317da3c03f2aa075529dfd596a1"
-#define MOCK_SERVER_INFO_REQUEST_SIG_V_OK "1c"
-#define MOCK_SERVER_INFO_REQUEST_JSON_OK                \
-  "{\"address\":\"" MOCK_CALLER_ADDRESS_OK              \
-  "\",\"toSignMessage\":\"serverInfo\",\"sig\":{\"r\":" \
-  "\"" MOCK_SERVER_INFO_REQUEST_SIG_R_OK                \
-  "\",\"s\":\"" MOCK_SERVER_INFO_REQUEST_SIG_S_OK       \
-  "\",\"v\":\"" MOCK_SERVER_INFO_REQUEST_SIG_V_OK "\"}}"
-
-#define MOCK_RECEIPT_LOCATOR_REQUEST_SIG_R_OK \
-  "1e17b78f5c7095688402c78fd64acc5560684a82ce9360b20123d07003c63929"
-#define MOCK_RECEIPT_LOCATOR_REQUEST_SIG_S_OK \
-  "20442fa11e6151ae3e14f11868894be973e35adc03d6fdcba61bfaa7a6ffdcaa"
-#define MOCK_RECEIPT_LOCATOR_REQUEST_SIG_V_OK "1b"
-#define MOCK_RECEIPT_LOCATOR_REQUEST_JSON_OK                     \
-  "{\"address\":\"" MOCK_CALLER_ADDRESS_OK                       \
-  "\",\"toSignMessage\":\"clearanceOrderAndSn\",\"sig\":{\"r\":" \
-  "\"" MOCK_RECEIPT_LOCATOR_REQUEST_SIG_R_OK                     \
-  "\",\"s\":\"" MOCK_RECEIPT_LOCATOR_REQUEST_SIG_S_OK            \
-  "\",\"v\":\"" MOCK_RECEIPT_LOCATOR_REQUEST_SIG_V_OK            \
-  "\"},\"indexValueKey\":\"" MOCK_INDEX_VALUE_KEY_OK "\"}"
 
 #define MOCK_CALLER_ADDRESS_OK "0x281d8fbe2e0d83db1231b6b29c351553d4eb3afe"
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
@@ -127,20 +92,6 @@
   "          \"v\": \"1c\"\n"                                               \
   "        }\n"                                                             \
   "      }"
-
-#define MOCK_MERKLE_PROOF_REQUEST_SIG_R_OK \
-  "8a0357455c8492c590812ae076e104cb322eb812e9c0e63b559c47788e64a633"
-#define MOCK_MERKLE_PROOF_REQUEST_SIG_S_OK \
-  "6d9e68f774f4b574b1118e80caf75bac901a5a1692fecfcbd9c179d044184713"
-#define MOCK_MERKLE_PROOF_REQUEST_SIG_V_OK "1b"
-#define MOCK_MERKLE_PROOF_REQUEST_JSON_OK                \
-  "{\"address\":\"" MOCK_CALLER_ADDRESS_OK               \
-  "\",\"toSignMessage\":\"merkleProof\",\"sig\":{\"r\":" \
-  "\"" MOCK_MERKLE_PROOF_REQUEST_SIG_R_OK                \
-  "\",\"s\":\"" MOCK_MERKLE_PROOF_REQUEST_SIG_S_OK       \
-  "\",\"v\":\"" MOCK_MERKLE_PROOF_REQUEST_SIG_V_OK       \
-  "\"},\"clearanceOrder\":" MOCK_CLEARANCE_ORDER_OK_STR  \
-  ",\"indexValue\":\"" MOCK_INDEX_VALUE_OK "\"}"
 
 #define MOCK_RECEIPT_JSON_LONG_TIMESTAMP_OK                                 \
   "{\n"                                                                     \
@@ -297,17 +248,5 @@
   "39333564653538646161343961613264333939373333626234393835633732663237353330" \
   "62666238306331352c54533a313539353438353737323235332c434f3a32333832355d0000" \
   "0000000000000000000000000000000000000000000000000000\"}"
-
-#define MOCK_REGISTER_REQUEST_SIG_REGISTER_R_OK \
-  "7e46ccc50c8e78cb667e3a5511c43e07d7d6ac400f6371809e2f114cd5128445"
-#define MOCK_REGISTER_REQUEST_SIG_REGISTER_S_OK \
-  "54f927a3b2f0b9fd2ceddb02dd8b8d64d8182b46d37b1083f93ee43cd9fd6fd5"
-#define MOCK_REGISTER_REQUEST_SIG_REGISTER_V_OK "1b"
-#define MOCK_REGISTER_REQUEST_JSON_OK                                      \
-  "{\"address\":\"" MOCK_CALLER_ADDRESS_OK "\",\"email\":\"" MOCK_EMAIL_OK \
-  "\",\"toSignMessage\":\"" MOCK_TO_SIGN_MESSAGE_OK                        \
-  "\",\"sig\":{\"r\":\"" MOCK_REGISTER_REQUEST_SIG_REGISTER_R_OK           \
-  "\",\"s\":\"" MOCK_REGISTER_REQUEST_SIG_REGISTER_S_OK                    \
-  "\",\"v\":\"" MOCK_REGISTER_REQUEST_SIG_REGISTER_V_OK "\"}}"
 
 #endif  // CLIENT_BNS_C_CLIENT_TEST_SRC_MOCK_DATA_MOCK_OK_DATA_H_

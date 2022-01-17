@@ -63,18 +63,4 @@
   ",\"doneClearanceOrderList\":[" MOCK_CLEARANCE_ORDER_OK_STR           \
   "], \"binaryFileMetadata\":{\"BINARY_FILE_URL\":null}}"
 
-_CHECK_RESULT
-char *mock_binary_ledger_input_response_string_timestamp_ok() {
-  char *json = NULL;
-  bns_strdup(&json, MOCK_BINARY_LEDGER_INPUT_RESPONSE_STRING_TIMESTAMP_OK);
-  return json;
-}
-
-_CHECK_RESULT
-char *mock_binary_ledger_input_response_long_timestamp_ok() {
-  char *json = NULL;
-  bns_strdup(&json, MOCK_BINARY_LEDGER_INPUT_RESPONSE_LONG_TIMESTAMP_OK);
-  return json;
-}
-
 #endif  // BNS_C_CLIENT_TEST_SRC_LEDGER_INPUT_MOCK_LEDGER_INPUT_RESPONSE_H_

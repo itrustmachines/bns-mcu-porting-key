@@ -5,7 +5,7 @@
 
 void test_ok() {
   // given
-  cJSON *root = cJSON_CreateObject();
+  cJSON* root = cJSON_CreateObject();
   cJSON_AddItemToArray(root, cJSON_CreateNumber(MOCK_CLEARANCE_ORDER_OK,
                                                 MOCK_CLEARANCE_ORDER_OK));
 
@@ -26,7 +26,7 @@ void test_BNS_RESPONSE_DONE_CO_PARSE_ERROR_1() {
 
 void test_BNS_RESPONSE_DONE_CO_PARSE_ERROR_2() {
   // given
-  cJSON *root = cJSON_CreateObject();
+  cJSON* root = cJSON_CreateObject();
 
   // then
   clearance_order_t result;
@@ -39,7 +39,7 @@ void test_BNS_RESPONSE_DONE_CO_PARSE_ERROR_2() {
 
 void test_BNS_RESPONSE_DONE_CO_PARSE_ERROR_3() {
   // given
-  cJSON *root = cJSON_CreateObject();
+  cJSON* root = cJSON_CreateObject();
   cJSON_AddItemToArray(root, cJSON_CreateString(MOCK_CLEARANCE_ORDER_OK_STR));
 
   // then
