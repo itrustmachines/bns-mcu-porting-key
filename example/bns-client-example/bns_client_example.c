@@ -15,9 +15,7 @@
 int bns_client_example() {
   LOG_INFO("bns_client_example() begin");
   bns_exit_code_t exitCode;
-  if ((exitCode = ssl_init()) != 0) {
-    return exitCode;
-  }
+  if ((exitCode = ssl_init()) != 0) { return exitCode; }
 
   /**
    * BNS Client initialize the bns_client_callback_t struct with each callback
@@ -25,15 +23,15 @@ int bns_client_example() {
    * informations
    */
   bns_client_callback_t callback = {
-      .register_callback = register_callback,
-      .create_ledger_input_by_cmd = create_ledger_input_by_cmd_callback,
+      .register_callback            = register_callback,
+      .create_ledger_input_by_cmd   = create_ledger_input_by_cmd_callback,
       .obtain_ledger_input_response = ledger_input_response_callback,
       .obtain_binary_ledger_input_response =
           binary_ledger_input_response_callback,
-      .obtain_receipt_event = receipt_event_callback,
+      .obtain_receipt_event              = receipt_event_callback,
       .obtain_done_clearance_order_event = done_clearance_order_event_callback,
-      .obtain_merkle_proof = merkle_proof_callback,
-      .get_verify_receipt_result = verify_receipt_result_callback};
+      .obtain_merkle_proof               = merkle_proof_callback,
+      .get_verify_receipt_result         = verify_receipt_result_callback};
 
   /**
    * BNS Client initialize the receipt_dao_t struct with each receiptDao
@@ -41,7 +39,7 @@ int bns_client_example() {
    * informations
    */
   receipt_dao_t receiptDao = {
-      .save = receipt_cache_save,
+      .save   = receipt_cache_save,
       .delete = receipt_cache_delete,
       .findPageByClearanceOrderEqualOrLessThan =
           receipt_cache_findPageByClearanceOrderEqualOrLessThan};
@@ -59,8 +57,8 @@ int bns_client_example() {
    * the Callback, ReceiptDao, HttpClient, and configuration file
    */
   bns_client_t bnsClient = {0};
-  if ((exitCode = bns_client_init(&bnsClient, PRIVATE_KEY, INDEX_VALUE_KEY,
-                                  EMAIL, SERVER_URL, NODE_URL, &receiptDao,
+  if ((exitCode = bns_client_init(&bnsClient, PRIVATE_KEY, ADDRESS, EMAIL,
+                                  SERVER_URL, NODE_URL, &receiptDao,
                                   &httpClient, &callback)) != BNS_OK) {
     goto bns_client_example_fail;
   }
@@ -87,6 +85,7 @@ int bns_client_example() {
     goto bns_client_example_fail;
   }
 
+  bns_long_t time = get_timestamp();
   while (true) {
     if (receipt_cache_count() < RECEIPT_CACHE_SIZE) {
       /**
@@ -95,11 +94,13 @@ int bns_client_example() {
        * and call bns_client_ledger_input function to do the ledgerInput.
        * Check Build the CMD document for more informations
        */
-      char cmdJson[CMD_LEN] = {0};
-      char *timestamp = get_timestamp_string();
+      char  cmdJson[CMD_LEN] = {0};
+      char* timestamp        = get_timestamp_string();
 
-      sprintf(cmdJson, "{\"deviceId\":\"%s\",\"timestamp\":%s}",
-              INDEX_VALUE_KEY, timestamp);
+      sprintf(cmdJson,
+              "{\"address\":\"%s\",\"timestamp\":%s,\"text\":\"%s\","
+              "\"description\":\"%s\"}",
+              ADDRESS, timestamp, "test", "ITM_BNS_C_CLIENT_EXAMPLE");
       BNS_FREE(timestamp);
 
       /**
@@ -118,6 +119,11 @@ int bns_client_example() {
         goto bns_client_example_fail;
       }
       nanosleep((const struct timespec[]){{1L, 0L}}, NULL);
+    }
+    bns_long_t temp_time = get_timestamp();
+    if (temp_time - time > 3600000) {
+      bns_relogin(&bnsClient);
+      time = temp_time;
     }
   }
   while (receipt_cache_count() != 0) {

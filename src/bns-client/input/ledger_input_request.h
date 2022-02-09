@@ -24,23 +24,26 @@
 
 _CHECK_RESULT
 bns_exit_code_t build_ledger_input_request_json(
-    const bns_client_t *bnsClient, const char *cmdJson,
-    const receipt_locator_t *receiptLocator, char **reqJson);
+    const bns_client_t*      bnsClient,
+    const char*              cmdJson,
+    const receipt_locator_t* receiptLocator,
+    char**                   reqJson);
 
 _CHECK_RESULT
 bns_exit_code_t build_ledger_input_request(
-    const bns_client_t *bnsClient, const char *cmdJson,
-    const receipt_locator_t *receiptLocator,
-    ledger_input_request_t *ledgerInputRequest);
+    const bns_client_t*      bnsClient,
+    const char*              cmdJson,
+    const receipt_locator_t* receiptLocator,
+    ledger_input_request_t*  ledgerInputRequest);
 
 _CHECK_RESULT
 bns_exit_code_t ledger_input_request_sign(
-    ledger_input_request_t *ledgerInputRequest, const char *privateKey);
+    ledger_input_request_t* ledgerInputRequest, const char* privateKey);
 
 _CHECK_RESULT
 bns_exit_code_t ledger_input_request_to_json(
-    const ledger_input_request_t *ledgerInputRequest, char **json);
+    const ledger_input_request_t* ledgerInputRequest, char** json);
 
-void ledger_input_request_free(ledger_input_request_t *ledgerInputRequest);
+void ledger_input_request_free(ledger_input_request_t* ledgerInputRequest);
 
 #endif  // BNS_CLIENT_SRC_BNS_CLIENT_INPUT_LEDGER_INPUT_REQUEST_H_

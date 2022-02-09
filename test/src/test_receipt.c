@@ -9,7 +9,7 @@ void test_string_timestamp_ok() {
   int res;
 
   // given
-  char *json =
+  char* json =
       "{\"id\": 118893,"
       "\"callerAddress\": \"0x281d8fbe2e0d83db1231b6b29c351553d4eb3afe\","
       "\"timestamp\": \"1589872935222\","
@@ -33,11 +33,11 @@ void test_string_timestamp_ok() {
       "\"s\": "
       "\"73791d6b41ac00a91bd003d336ff2d19b16002eea53ff9a7450bb13a6e2cca66\","
       "\"v\": \"1b\"}}";
-  cJSON *root = cJSON_Parse(json);
+  cJSON* root = cJSON_Parse(json);
 
   // when
   receipt_t receipt = {0};
-  res = parse_receipt_from_cjson(root, &receipt);
+  res               = parse_receipt_from_cjson(root, &receipt);
 
   // then
   if (res != BNS_OK) {
@@ -100,7 +100,7 @@ void test_long_timestamp_ok() {
   int res;
 
   // given
-  char *json =
+  char* json =
       "{\"id\": 118893,"
       "\"callerAddress\": \"0x281d8fbe2e0d83db1231b6b29c351553d4eb3afe\","
       "\"timestamp\": 1589872935222,"
@@ -124,11 +124,11 @@ void test_long_timestamp_ok() {
       "\"s\": "
       "\"73791d6b41ac00a91bd003d336ff2d19b16002eea53ff9a7450bb13a6e2cca66\","
       "\"v\": \"1b\"}}";
-  cJSON *root = cJSON_Parse(json);
+  cJSON* root = cJSON_Parse(json);
 
   // when
   receipt_t receipt = {0};
-  res = parse_receipt_from_cjson(root, &receipt);
+  res               = parse_receipt_from_cjson(root, &receipt);
 
   // then
   if (res != BNS_OK) {

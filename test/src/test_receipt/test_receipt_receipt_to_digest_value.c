@@ -9,18 +9,16 @@ void test_ok() {
   mock_receipt_ok(&receipt);
 
   // then
-  char *result = NULL;
+  char* result = NULL;
   assert(receipt_to_digest_value(&receipt, &result) == BNS_OK);
   assert(strcmp(result, MOCK_RECEIPT_DIGEST_VALUE_OK) == 0);
 
   // clean
-  if (result) {
-    BNS_FREE(result);
-  }
+  if (result) { BNS_FREE(result); }
 }
 
 void test_BNS_RECEIPT_NULL_ERROR() {
-  char *result = NULL;
+  char* result = NULL;
   assert(receipt_to_digest_value(NULL, &result) == BNS_RECEIPT_NULL_ERROR);
 }
 

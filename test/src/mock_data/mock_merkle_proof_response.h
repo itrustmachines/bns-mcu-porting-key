@@ -20,32 +20,32 @@
   "\",\"description\":\"\",\"merkleProof\":" MOCK_MERKLE_PROOF_JSON_OK "}"
 
 _CHECK_RESULT
-char *mock_merkle_proof_response_ok() {
-  char *response = NULL;
+char* mock_merkle_proof_response_ok() {
+  char* response = NULL;
   bns_strdup(&response, MOCK_MERKLE_PROOF_RESPONSE_OK);
   return response;
 }
 
 _CHECK_RESULT
-char *mock_merkle_proof_response_format_error() {
-  char *response = NULL;
+char* mock_merkle_proof_response_format_error() {
+  char* response = NULL;
   bns_strdup(&response, MOCK_MERKLE_PROOF_RESPONSE_FORMAT_ERROR);
   return response;
 }
 
 _CHECK_RESULT
-char *mock_merkle_proof_response_status_error() {
-  char *response = NULL;
+char* mock_merkle_proof_response_status_error() {
+  char* response = NULL;
   bns_strdup(&response, MOCK_MERKLE_PROOF_RESPONSE_STATUS_ERROR);
   return response;
 }
 
-void mock_merkleProof_ok(merkle_proof_t *merkleProof) {
+void mock_merkleProof_ok(merkle_proof_t* merkleProof) {
   assert(check_and_parse_merkle_proof_response(MOCK_MERKLE_PROOF_RESPONSE_OK,
                                                merkleProof) == BNS_OK);
 }
 
-void mock_merkleProof_error(merkle_proof_t *merkleProof) {
+void mock_merkleProof_error(merkle_proof_t* merkleProof) {
   assert(check_and_parse_merkle_proof_response(MOCK_MERKLE_PROOF_RESPONSE_OK,
                                                merkleProof) == BNS_OK);
   merkleProof->slice.index = merkleProof->slice.index + 1;

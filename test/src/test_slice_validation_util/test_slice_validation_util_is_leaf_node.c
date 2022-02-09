@@ -10,7 +10,7 @@ void test_ok() {
   slice_t slice = {0};
   assert(parse_slice(MOCK_SLICE_OK, &slice) == BNS_OK);
   pb_pair_t pbPair = {0};
-  cJSON *root = cJSON_Parse(MOCK_PBPAIR_OK);
+  cJSON*    root   = cJSON_Parse(MOCK_PBPAIR_OK);
   assert(parse_pb_pair(root, &pbPair) == BNS_OK);
 
   // then
@@ -43,7 +43,7 @@ void test_BNS_PB_PAIR_IN_LEAF_NODE_ERROR() {
   slice_t slice = {0};
   assert(parse_slice(MOCK_SLICE_OK, &slice) == BNS_OK);
   pb_pair_t pbPair = {0};
-  cJSON *root = cJSON_Parse(MOCK_PBPAIR_ERROR);
+  cJSON*    root   = cJSON_Parse(MOCK_PBPAIR_ERROR);
   assert(parse_pb_pair(root, &pbPair) == BNS_OK);
 
   // then

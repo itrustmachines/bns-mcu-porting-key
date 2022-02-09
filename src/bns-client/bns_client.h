@@ -3,7 +3,7 @@
 
 #include <bns-client/core/core.h>
 
-#define LEDGER_DONE_CLEARANCE_ORDER_PATH "/ledger/doneClearanceOrder"
+#define LEDGER_DONE_CLEARANCE_ORDER_PATH "/doneClearanceOrder"
 
 #define BNS_CLIENT_PRINT_FORMAT                                       \
   "bnsClient=bns_client_t(config=bns_client_config_t(privateKey=%s, " \
@@ -35,52 +35,58 @@
 #define VERIFY_BATCH_SIZE 1
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_init(bns_client_t *bnsClient, const char *privateKey,
-                                const char *indexValueKey, const char *email,
-                                const char *serverUrl, const char *nodeUrl,
-                                const receipt_dao_t *receiptDao,
-                                const http_client_t *httpClient,
-                                const bns_client_callback_t *callback);
+bns_exit_code_t bns_client_init(bns_client_t*                bnsClient,
+                                const char*                  privateKey,
+                                const char*                  indexValueKey,
+                                const char*                  email,
+                                const char*                  serverUrl,
+                                const char*                  nodeUrl,
+                                const receipt_dao_t*         receiptDao,
+                                const http_client_t*         httpClient,
+                                const bns_client_callback_t* callback);
 
 _CHECK_RESULT
 bns_exit_code_t bns_client_enable_binary_ledger_input(
-    bns_client_t *bnsClient,
-    char *(*post_multi)(const char *, const bns_form_t *, const bns_form_t *));
+    bns_client_t* bnsClient,
+    char* (*post_multi)(const char*, const bns_form_t*, const bns_form_t*));
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_ledger_input(const bns_client_t *bnsClient,
-                                        const char *cmdJson);
+bns_exit_code_t bns_client_ledger_input(const bns_client_t* bnsClient,
+                                        const char*         cmdJson);
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_binary_ledger_input(const bns_client_t *bnsClient,
-                                               const char *cmdJson,
-                                               const binary_info_t *binaryInfo);
+bns_exit_code_t bns_client_binary_ledger_input(const bns_client_t*  bnsClient,
+                                               const char*          cmdJson,
+                                               const binary_info_t* binaryInfo);
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_verify_now(const bns_client_t *bnsClient,
-                                      size_t verifyCount);
+bns_exit_code_t bns_client_verify_now(const bns_client_t* bnsClient,
+                                      size_t              verifyCount);
 
 _CHECK_RESULT
-bns_exit_code_t bns_post_done_clearance_order(const bns_client_t *bnsClient,
-                                              clearance_order_t *doneCO);
+bns_exit_code_t bns_get_done_clearance_order(const bns_client_t* bnsClient,
+                                             clearance_order_t*  doneCO);
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_verify_by_done_co(const bns_client_t *bnsClient,
-                                             size_t verifyCount,
-                                             clearance_order_t doneCO);
+bns_exit_code_t bns_client_verify_by_done_co(const bns_client_t* bnsClient,
+                                             size_t              verifyCount,
+                                             clearance_order_t   doneCO);
 
 _CHECK_RESULT
 bns_exit_code_t bns_client_set_verify_after_ledger_input_count(
-    bns_client_t *bnsClient, size_t count);
+    bns_client_t* bnsClient, size_t count);
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_set_retry_count(bns_client_t *bnsClient,
-                                           size_t count);
+bns_exit_code_t bns_client_set_retry_count(bns_client_t* bnsClient,
+                                           size_t        count);
 
 _CHECK_RESULT
-bns_exit_code_t bns_client_set_retry_delay_sec(bns_client_t *bnsClient,
-                                               size_t sec);
+bns_exit_code_t bns_client_set_retry_delay_sec(bns_client_t* bnsClient,
+                                               size_t        sec);
 
-void bns_client_free(bns_client_t *bnsClient);
+_CHECK_RESULT
+bns_exit_code_t bns_relogin(const bns_client_t* bnsClient);
+
+void bns_client_free(bns_client_t* bnsClient);
 
 #endif  // BNS_CLIENT_BNS_CLIENT_H

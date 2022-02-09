@@ -9,7 +9,7 @@
 #include "mock_data/mock_receipt_util.h"
 
 void test_verify_clearanceOrder_ok() {
-  long long int co = 87;
+  long long int  co          = 87;
   merkle_proof_t merkleProof = {.clearanceOrder = co};
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   receipt_t receipt = {"", 0L, "", "", "", co};
@@ -18,14 +18,14 @@ void test_verify_clearanceOrder_ok() {
                        co, "", "", {"", "", ""}, {"", "", ""}};
 #endif
   clearance_record_t clearanceRecord = {co, "", ""};
-  bool result;
+  bool               result;
   assert(verify_clearance_order(&receipt, &merkleProof, &clearanceRecord,
                                 &result) == BNS_OK);
   assert(result == true);
 }
 
 void test_verify_clearanceOrder_not_ok() {
-  long long int co = 87;
+  long long int  co          = 87;
   merkle_proof_t merkleProof = {.clearanceOrder = co};
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   receipt_t receipt = {"", 0L, "", "", "", co + 2};
@@ -34,7 +34,7 @@ void test_verify_clearanceOrder_not_ok() {
                        co + 2, "", "", {"", "", ""}, {"", "", ""}};
 #endif
   clearance_record_t clearanceRecord = {co + 4, "", ""};
-  bool result;
+  bool               result;
   assert(verify_clearance_order(&receipt, &merkleProof, &clearanceRecord,
                                 &result) == BNS_VERIFY_CLEARANCE_ORDER_ERROR);
   assert(result == false);
@@ -42,7 +42,7 @@ void test_verify_clearanceOrder_not_ok() {
 
 void test_verify_merkle_proof_signature_ok() {
   bns_client_t bnsClient = {0};
-  assert(mock_post_bns_client_(&bnsClient, NULL) == BNS_OK);
+  assert(mock_get_bns_client_(&bnsClient, NULL) == BNS_OK);
   merkle_proof_t merkleProof = {0};
   mock_merkleProof_ok(&merkleProof);
   bool result = false;
@@ -55,7 +55,7 @@ void test_verify_merkle_proof_signature_ok() {
 
 void test_verify_merkle_proof_signature_error() {
   bns_client_t bnsClient = {0};
-  assert(mock_post_bns_client_(&bnsClient, NULL) == BNS_OK);
+  assert(mock_get_bns_client_(&bnsClient, NULL) == BNS_OK);
   merkle_proof_t merkleProof = {0};
   mock_merkleProof_error(&merkleProof);
   bool result = false;

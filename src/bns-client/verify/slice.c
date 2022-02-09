@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-bns_exit_code_t slice_to_string(const slice_t *const slice,
-                                char **const outputString) {
+bns_exit_code_t slice_to_string(const slice_t* const slice,
+                                char** const         outputString) {
   bns_exit_code_t exitCode = BNS_OK;
   if (!slice) {
     exitCode = BNS_SLICE_NULL_ERROR;
@@ -22,9 +22,9 @@ bns_exit_code_t slice_to_string(const slice_t *const slice,
   size += 1;
   size += strlen(slice->hashString);
   if (*outputString) {
-    *outputString = (char *)realloc(*outputString, sizeof(char) * (size + 1));
+    *outputString = (char*)realloc(*outputString, sizeof(char) * (size + 1));
   } else {
-    *outputString = (char *)malloc(sizeof(char) * (size + 1));
+    *outputString = (char*)malloc(sizeof(char) * (size + 1));
   }
   sprintf(*outputString, "%lld.%s", slice->index, slice->hashString);
   return exitCode;
@@ -34,11 +34,11 @@ slice_to_string_fail:
   return exitCode;
 }
 
-bns_exit_code_t parse_slice(const char *const sliceString,
-                            slice_t *const slice) {
+bns_exit_code_t parse_slice(const char* const sliceString,
+                            slice_t* const    slice) {
   LOG_DEBUG("parse_slice() begin, sliceString=%s", sliceString);
-  bns_exit_code_t exitCode = BNS_OK;
-  char *hashStringBegin = NULL;
+  bns_exit_code_t exitCode        = BNS_OK;
+  char*           hashStringBegin = NULL;
   if (!sliceString) {
     exitCode = BNS_SLICE_STRING_NULL_ERROR;
     goto parse_slice_fail;
@@ -51,7 +51,7 @@ bns_exit_code_t parse_slice(const char *const sliceString,
   hashStringBegin++;
   slice->size = (strlen(hashStringBegin) + 1) / HASH_STR_LEN;
   bns_strdup(&slice->hashString, hashStringBegin);
-  slice->hashStringList = (char **)malloc(sizeof(char *) * slice->size);
+  slice->hashStringList = (char**)malloc(sizeof(char*) * slice->size);
   for (size_t i = 0; i < slice->size; i++) {
     slice->hashStringList[i] = slice->hashString + i * HASH_STR_LEN;
   }
@@ -64,13 +64,9 @@ parse_slice_fail:
   return exitCode;
 }
 
-void slice_free(slice_t *const slice) {
+void slice_free(slice_t* const slice) {
   if (slice) {
-    if (slice->hashString) {
-      BNS_FREE(slice->hashString);
-    }
-    if (slice->hashStringList) {
-      BNS_FREE(slice->hashStringList);
-    }
+    if (slice->hashString) { BNS_FREE(slice->hashString); }
+    if (slice->hashStringList) { BNS_FREE(slice->hashStringList); }
   }
 }

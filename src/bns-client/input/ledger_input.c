@@ -7,28 +7,24 @@
 #include <string.h>
 #include <unistd.h>
 
-char *build_post_ledger_input_url(const char *const serverUrl) {
-  if (!serverUrl) {
-    return NULL;
-  }
+void build_post_ledger_input_url(char** url, const char* const serverUrl) {
+  if (!url) { return; }
   size_t size = strlen(serverUrl) + strlen(LEDGER_INPUT_PATH);
-  char *url = (char *)malloc(sizeof(char) * (size + 1));
-  if (url) {
-    sprintf(url, "%s%s", serverUrl, LEDGER_INPUT_PATH);
-  }
-  return url;
+  *url        = (char*)malloc(sizeof(char) * (size + 1));
+  if (*url) { sprintf(*url, "%s%s", serverUrl, LEDGER_INPUT_PATH); }
 }
 
 bns_exit_code_t bns_post_ledger_input(
-    const bns_client_t *const bnsClient, const char *const cmdJson,
-    const receipt_locator_t *const receiptLocator,
-    ledger_input_result_t *const ledgerInputResult) {
+    const bns_client_t* const      bnsClient,
+    const char* const              cmdJson,
+    const receipt_locator_t* const receiptLocator,
+    ledger_input_result_t* const   ledgerInputResult) {
   size_t count = 0;
 bns_post_ledger_input_beg : {
   bns_exit_code_t exitCode;
-  char *reqJson = NULL;
-  char *url = NULL;
-  char *res = NULL;
+  char*           reqJson = NULL;
+  char*           url     = NULL;
+  char*           res     = NULL;
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
     goto bns_post_ledger_input_fail;
@@ -67,7 +63,7 @@ bns_post_ledger_input_beg : {
     goto bns_post_ledger_input_fail;
   }
 
-  url = build_post_ledger_input_url(bnsClient->config.serverUrl);
+  build_post_ledger_input_url(&url, bnsClient->config.serverUrl);
   res = bnsClient->httpClient.post(url, reqJson);
   BNS_FREE(url);
   BNS_FREE(reqJson);
@@ -92,26 +88,16 @@ bns_post_ledger_input_beg : {
   return exitCode;
 
 bns_post_ledger_input_fail:
-  if (reqJson) {
-    BNS_FREE(reqJson);
-  }
-  if (url) {
-    BNS_FREE(url);
-  }
-  if (res) {
-    BNS_FREE(res);
-  }
+  if (reqJson) { BNS_FREE(reqJson); }
+  if (url) { BNS_FREE(url); }
+  if (res) { BNS_FREE(res); }
   LOG_ERROR("bns_post_ledger_input() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   if (bnsClient && bnsClient->maxRetryCount) {
-    if (is_ledger_input_error(exitCode)) {
-      return exitCode;
-    }
+    if (is_ledger_input_error(exitCode)) { return exitCode; }
     if (count++ < *bnsClient->maxRetryCount) {
       LOG_DEBUG("bns_post_ledger_input() retry, count=%ld", count);
-      if (bnsClient->retryDelaySec) {
-        sleep(*bnsClient->retryDelaySec);
-      }
+      if (bnsClient->retryDelaySec) { sleep(*bnsClient->retryDelaySec); }
       goto bns_post_ledger_input_beg;
     }
   }
@@ -122,10 +108,8 @@ bns_post_ledger_input_fail:
 bool is_ledger_input_resend_error(const bns_exit_code_t exitCode) {
   switch (exitCode) {
     case BNS_LEDGER_INPUT_CLEARANCE_ORDER_ERROR:
-    case BNS_LEDGER_INPUT_INDEX_VALUE_ERROR:
-      return true;
-    default:
-      return false;
+    case BNS_LEDGER_INPUT_INDEX_VALUE_ERROR: return true;
+    default: return false;
   }
 }
 
@@ -136,26 +120,24 @@ bool is_ledger_input_error(const bns_exit_code_t exitCode) {
     case BNS_LEDGER_INPUT_CLIENT_SIGNATURE_ERROR:
     case BNS_LEDGER_INPUT_AUTHENTICATION_ERROR:
     case BNS_LEDGER_INPUT_CMD_ERROR:
-    case BNS_LEDGER_INPUT_TX_COUNT_ERROR:
-      return true;
-    default:
-      return false;
+    case BNS_LEDGER_INPUT_TX_COUNT_ERROR: return true;
+    default: return false;
   }
 }
 
 bns_exit_code_t check_and_parse_ledger_input_response(
-    const char *const res, ledger_input_result_t *const ledgerInputResult) {
+    const char* const res, ledger_input_result_t* const ledgerInputResult) {
   LOG_DEBUG("check_and_parse_ledger_input_response() begin");
   bns_exit_code_t exitCode;
-  cJSON *root = cJSON_Parse(res);
-  cJSON *status, *description;
+  cJSON*          root = cJSON_Parse(res);
+  cJSON *         status, *description;
   status = cJSON_GetObjectItem(root, "status");
   if (!cJSON_IsString(status)) {
     exitCode = BNS_RESPONSE_STATUS_PARSE_ERROR;
     goto check_and_parse_ledger_input_response_fail;
   }
   ledgerInputResult->status =
-      (char *)malloc(sizeof(char) * (strlen(status->valuestring) + 1));
+      (char*)malloc(sizeof(char) * (strlen(status->valuestring) + 1));
   strcpy(ledgerInputResult->status, status->valuestring);
   cJSON_DetachItemViaPointer(root, status);
   cJSON_Delete(status);
@@ -166,7 +148,7 @@ bns_exit_code_t check_and_parse_ledger_input_response(
     goto check_and_parse_ledger_input_response_fail;
   }
   ledgerInputResult->description =
-      (char *)malloc(sizeof(char) * (strlen(description->valuestring) + 1));
+      (char*)malloc(sizeof(char) * (strlen(description->valuestring) + 1));
   strcpy(ledgerInputResult->description, description->valuestring);
   cJSON_DetachItemViaPointer(root, description);
   cJSON_Delete(description);
@@ -201,8 +183,8 @@ bns_exit_code_t check_and_parse_ledger_input_response(
     }
   }
   cJSON *receipt, *doneClearanceOrderList;
-  receipt = cJSON_GetObjectItem(root, "receipt");
-  ledgerInputResult->receipt = (receipt_t *)malloc(sizeof(receipt_t));
+  receipt                    = cJSON_GetObjectItem(root, "receipt");
+  ledgerInputResult->receipt = (receipt_t*)malloc(sizeof(receipt_t));
   if ((exitCode = parse_receipt_from_cjson(
            receipt, ledgerInputResult->receipt)) != BNS_OK) {
     goto check_and_parse_ledger_input_response_fail;
@@ -211,11 +193,9 @@ bns_exit_code_t check_and_parse_ledger_input_response(
   cJSON_Delete(receipt);
 
   doneClearanceOrderList = cJSON_GetObjectItem(root, "doneClearanceOrderList");
-  exitCode = parse_done_clearance_order_list_from_cjson(
-      doneClearanceOrderList, &ledgerInputResult->doneClearanceOrder);
-  if (exitCode != BNS_OK) {
-    goto check_and_parse_ledger_input_response_fail;
-  }
+  exitCode               = parse_done_clearance_order_list_from_cjson(
+                    doneClearanceOrderList, &ledgerInputResult->doneClearanceOrder);
+  if (exitCode != BNS_OK) { goto check_and_parse_ledger_input_response_fail; }
   cJSON_DetachItemViaPointer(root, doneClearanceOrderList);
   cJSON_Delete(doneClearanceOrderList);
 
@@ -236,10 +216,10 @@ check_and_parse_ledger_input_response_fail:
 }
 
 bns_exit_code_t parse_done_clearance_order_list_from_cjson(
-    const cJSON *const root, clearance_order_t *const doneCO) {
+    const cJSON* const root, clearance_order_t* const doneCO) {
   LOG_DEBUG("parse_done_clearance_order_list_from_cjson() begin");
   bns_exit_code_t exitCode = BNS_OK;
-  cJSON *temp;
+  cJSON*          temp;
   if (!doneCO) {
     exitCode = BNS_DONE_CO_NULL_ERROR;
     goto parse_done_clearance_order_list_from_cjson_fail;
@@ -264,16 +244,12 @@ parse_done_clearance_order_list_from_cjson_fail:
   return exitCode;
 }
 
-void ledger_input_result_free(ledger_input_result_t *const ledgerInputResult) {
+void ledger_input_result_free(ledger_input_result_t* const ledgerInputResult) {
   if (ledgerInputResult) {
-    if (ledgerInputResult->status) {
-      BNS_FREE(ledgerInputResult->status);
-    }
+    if (ledgerInputResult->status) { BNS_FREE(ledgerInputResult->status); }
     if (ledgerInputResult->description) {
       BNS_FREE(ledgerInputResult->description);
     }
-    if (ledgerInputResult->receipt) {
-      BNS_FREE(ledgerInputResult->receipt);
-    }
+    if (ledgerInputResult->receipt) { BNS_FREE(ledgerInputResult->receipt); }
   }
 }

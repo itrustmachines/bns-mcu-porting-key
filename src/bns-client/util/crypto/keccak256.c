@@ -29,7 +29,7 @@
 #define I64(x) x##LL
 #define ROTL64(qword, n) ((qword) << (n) ^ ((qword) >> (64 - (n))))
 #define le2me_64(x) (x)
-#define IS_ALIGNED_64(p) (0 == (7 & ((const char *)(p) - (const char *)0)))
+#define IS_ALIGNED_64(p) (0 == (7 & ((const char*)(p) - (const char*)0)))
 #define me64_to_le_str(to, from, length) memcpy((to), (from), (length))
 
 /* constants */
@@ -132,47 +132,31 @@ static uint64_t get_round_constant(uint8_t round) {
 
   // uint8_t roundInfo = pgm_read_byte(&round_constant_info[round]);
   uint8_t roundInfo = getConstant(TYPE_ROUND_INFO, round);
-  if (roundInfo & (1 << 6)) {
-    result |= ((uint64_t)1 << 63);
-  }
-  if (roundInfo & (1 << 5)) {
-    result |= ((uint64_t)1 << 31);
-  }
-  if (roundInfo & (1 << 4)) {
-    result |= ((uint64_t)1 << 15);
-  }
-  if (roundInfo & (1 << 3)) {
-    result |= ((uint64_t)1 << 7);
-  }
-  if (roundInfo & (1 << 2)) {
-    result |= ((uint64_t)1 << 3);
-  }
-  if (roundInfo & (1 << 1)) {
-    result |= ((uint64_t)1 << 1);
-  }
-  if (roundInfo & (1 << 0)) {
-    result |= ((uint64_t)1 << 0);
-  }
+  if (roundInfo & (1 << 6)) { result |= ((uint64_t)1 << 63); }
+  if (roundInfo & (1 << 5)) { result |= ((uint64_t)1 << 31); }
+  if (roundInfo & (1 << 4)) { result |= ((uint64_t)1 << 15); }
+  if (roundInfo & (1 << 3)) { result |= ((uint64_t)1 << 7); }
+  if (roundInfo & (1 << 2)) { result |= ((uint64_t)1 << 3); }
+  if (roundInfo & (1 << 1)) { result |= ((uint64_t)1 << 1); }
+  if (roundInfo & (1 << 0)) { result |= ((uint64_t)1 << 0); }
 
   return result;
 }
 
 /* Initializing a sha3 context for given number of output bits */
-void keccak_init(SHA3_CTX *ctx) {
+void keccak_init(SHA3_CTX* ctx) {
   /* NB: The Keccak capacity parameter = bits * 2 */
 
   memset(ctx, 0, sizeof(SHA3_CTX));
 }
 
 /* Keccak theta() transformation */
-static void keccak_theta(uint64_t *A) {
+static void keccak_theta(uint64_t* A) {
   uint64_t C[5], D[5];
 
   for (uint8_t i = 0; i < 5; i++) {
     C[i] = A[i];
-    for (uint8_t j = 5; j < 25; j += 5) {
-      C[i] ^= A[i + j];
-    }
+    for (uint8_t j = 5; j < 25; j += 5) { C[i] ^= A[i + j]; }
   }
 
   for (uint8_t i = 0; i < 5; i++) {
@@ -181,14 +165,12 @@ static void keccak_theta(uint64_t *A) {
 
   for (uint8_t i = 0; i < 5; i++) {
     // for (uint8_t j = 0; j < 25; j += 5) {
-    for (uint8_t j = 0; j < 25; j += 5) {
-      A[i + j] ^= D[i];
-    }
+    for (uint8_t j = 0; j < 25; j += 5) { A[i + j] ^= D[i]; }
   }
 }
 
 /* Keccak pi() transformation */
-static void keccak_pi(uint64_t *A) {
+static void keccak_pi(uint64_t* A) {
   uint64_t A1 = A[1];
   // for (uint8_t i = 1; i < sizeof(pi_transform); i++) {
   for (uint8_t i = 1; i < 24; i++) {
@@ -208,7 +190,7 @@ local variables. Maximum is 2048 bytes.
 
 */
 /* Keccak chi() transformation */
-static void keccak_chi(uint64_t *A) {
+static void keccak_chi(uint64_t* A) {
   for (uint8_t i = 0; i < 25; i += 5) {
     uint64_t A0 = A[0 + i], A1 = A[1 + i];
     A[0 + i] ^= ~A1 & A[2 + i];
@@ -219,7 +201,7 @@ static void keccak_chi(uint64_t *A) {
   }
 }
 
-static void sha3_permutation(uint64_t *state) {
+static void sha3_permutation(uint64_t* state) {
   // for (uint8_t round = 0; round < sizeof(round_constant_info); round++) {
   for (uint8_t round = 0; round < 24; round++) {
     keccak_theta(state);
@@ -245,10 +227,8 @@ static void sha3_permutation(uint64_t *state) {
  * @param block the message block to process
  * @param block_size the size of the processed block in bytes
  */
-static void sha3_process_block(uint64_t hash[25], const uint64_t *block) {
-  for (uint8_t i = 0; i < 17; i++) {
-    hash[i] ^= le2me_64(block[i]);
-  }
+static void sha3_process_block(uint64_t hash[25], const uint64_t* block) {
+  for (uint8_t i = 0; i < 17; i++) { hash[i] ^= le2me_64(block[i]); }
 
   /* make a permutation of the hash */
   sha3_permutation(hash);
@@ -265,7 +245,7 @@ static void sha3_process_block(uint64_t hash[25], const uint64_t *block) {
  * @param msg message chunk
  * @param size length of the message chunk
  */
-void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size) {
+void keccak_update(SHA3_CTX* ctx, const unsigned char* msg, uint16_t size) {
   uint16_t idx = (uint16_t)ctx->rest;
 
   // if (ctx->rest & SHA3_FINALIZED) return; /* too late for additional input */
@@ -274,7 +254,7 @@ void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size) {
   /* fill partial block */
   if (idx) {
     uint16_t left = BLOCK_SIZE - idx;
-    memcpy((char *)ctx->message + idx, msg, (size < left ? size : left));
+    memcpy((char*)ctx->message + idx, msg, (size < left ? size : left));
     if (size < left) return;
 
     /* process partial block */
@@ -284,11 +264,11 @@ void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size) {
   }
 
   while (size >= BLOCK_SIZE) {
-    uint64_t *aligned_message_block;
+    uint64_t* aligned_message_block;
     if (IS_ALIGNED_64(msg)) {
       // the most common case is processing of an already aligned message
       // without copying it
-      aligned_message_block = (uint64_t *)(void *)msg;
+      aligned_message_block = (uint64_t*)(void*)msg;
     } else {
       memcpy(ctx->message, msg, BLOCK_SIZE);
       aligned_message_block = ctx->message;
@@ -299,9 +279,7 @@ void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size) {
     size -= BLOCK_SIZE;
   }
 
-  if (size) {
-    memcpy(ctx->message, msg, size); /* save leftovers */
-  }
+  if (size) { memcpy(ctx->message, msg, size); /* save leftovers */ }
 }
 
 /**
@@ -310,21 +288,19 @@ void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size) {
  * @param ctx the algorithm context containing current hashing state
  * @param result calculated hash in binary form
  */
-void keccak_final(SHA3_CTX *ctx, unsigned char *result) {
+void keccak_final(SHA3_CTX* ctx, unsigned char* result) {
   uint16_t digest_length = 100 - BLOCK_SIZE / 2;
 
   //    if (!(ctx->rest & SHA3_FINALIZED)) {
   /* clear the rest of the data queue */
-  memset((char *)ctx->message + ctx->rest, 0, BLOCK_SIZE - ctx->rest);
-  ((char *)ctx->message)[ctx->rest] |= 0x01;
-  ((char *)ctx->message)[BLOCK_SIZE - 1] |= 0x80;
+  memset((char*)ctx->message + ctx->rest, 0, BLOCK_SIZE - ctx->rest);
+  ((char*)ctx->message)[ctx->rest] |= 0x01;
+  ((char*)ctx->message)[BLOCK_SIZE - 1] |= 0x80;
 
   /* process final block */
   sha3_process_block(ctx->hash, ctx->message);
   //        ctx->rest = SHA3_FINALIZED; /* mark context as finalized */
   //    }
 
-  if (result) {
-    me64_to_le_str(result, ctx->hash, digest_length);
-  }
+  if (result) { me64_to_le_str(result, ctx->hash, digest_length); }
 }

@@ -45,50 +45,50 @@ long getCurrentThreadID(void);
 
 #if defined(LOG_LINE_NUM)
 #if LOG_LEVEL >= LOG_LEVEL_ERROR && !defined(LOG_ERROR)
-void log_error(const char *file_name, int line_num);
+void log_error(const char* file_name, int line_num);
 #define LOG_ERROR(M, ...)        \
   log_error(__FILE__, __LINE__); \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_ERROR && !defined(LOG_ERROR)
 #if LOG_LEVEL >= LOG_LEVEL_WARN && !defined(LOG_WARN)
-void log_warn(const char *file_name, int line_num);
+void log_warn(const char* file_name, int line_num);
 #define LOG_WARN(M, ...)        \
   log_warn(__FILE__, __LINE__); \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_WARN && !defined(LOG_WARN)
 #if LOG_LEVEL >= LOG_LEVEL_INFO && !defined(LOG_INFO)
-void log_info(const char *file_name, int line_num);
+void log_info(const char* file_name, int line_num);
 #define LOG_INFO(M, ...)        \
   log_info(__FILE__, __LINE__); \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_INFO && !defined(LOG_INFO)
 #if LOG_LEVEL >= LOG_LEVEL_DEBUG && !defined(LOG_DEBUG)
-void log_debug(const char *file_name, int line_num);
+void log_debug(const char* file_name, int line_num);
 #define LOG_DEBUG(M, ...)        \
   log_debug(__FILE__, __LINE__); \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_DEBUG && !defined(LOG_DEBUG)
 #else   // defined(LOG_LINE_NUM)
 #if LOG_LEVEL >= LOG_LEVEL_ERROR && !defined(LOG_ERROR)
-void log_error(const char *file_name);
+void log_error(const char* file_name);
 #define LOG_ERROR(M, ...) \
   log_error(__FILE__);    \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_ERROR && !defined(LOG_ERROR)
 #if LOG_LEVEL >= LOG_LEVEL_WARN && !defined(LOG_WARN)
-void log_warn(const char *file_name);
+void log_warn(const char* file_name);
 #define LOG_WARN(M, ...) \
   log_warn(__FILE__);    \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_WARN
 #if LOG_LEVEL >= LOG_LEVEL_INFO && !defined(LOG_INFO)
-void log_info(const char *file_name);
+void log_info(const char* file_name);
 #define LOG_INFO(M, ...) \
   log_info(__FILE__);    \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)
 #endif  // LOG_LEVEL >= LOG_LEVEL_INFO
 #if LOG_LEVEL >= LOG_LEVEL_DEBUG && !defined(LOG_DEBUG)
-void log_debug(const char *file_name);
+void log_debug(const char* file_name);
 #define LOG_DEBUG(M, ...) \
   log_debug(__FILE__);    \
   LOG_BACKEND(M "\n", ##__VA_ARGS__)

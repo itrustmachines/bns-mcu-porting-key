@@ -13,24 +13,24 @@
 #include "mock_ok_data.h"
 
 _CHECK_RESULT
-char *mock_clearance_record_response_ok() {
-  char *json = NULL;
+char* mock_clearance_record_response_ok() {
+  char* json = NULL;
   bns_strdup(&json, MOCK_CLEARANCE_RECORD_RESPONSE_OK);
   return json;
 }
 
 _CHECK_RESULT
-char *mock_clearance_record_response_error() {
-  char *json = NULL;
+char* mock_clearance_record_response_error() {
+  char* json = NULL;
   bns_strdup(&json, MOCK_ERROR_CLEARANCE_RECORD_RESPONSE);
   return json;
 }
 
 _CHECK_RESULT
-int mock_clearance_record_ok(clearance_record_t *clearanceRecord) {
-  char *response = mock_clearance_record_response_ok();
-  int res = check_and_parse_contract_clearance_record_response(response,
-                                                               clearanceRecord);
+int mock_clearance_record_ok(clearance_record_t* clearanceRecord) {
+  char* response = mock_clearance_record_response_ok();
+  int   res      = check_and_parse_contract_clearance_record_response(response,
+                                                                      clearanceRecord);
   free(response);
   return res;
 }

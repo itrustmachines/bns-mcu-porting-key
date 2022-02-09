@@ -4,16 +4,16 @@
 #include "ssl_get.h"
 
 void ssl_get_test() {
-  char *url =
+  char* url =
       "https://azure-demo-rinkeby.itm.monster:4430/ledger/clearanceOrder";
-  char *result = ssl_get(url);
+  char* result = ssl_get(url);
   assert(result != NULL);
   free(result);
 }
 
 void ssl_post_test() {
-  char *url = "https://azure-demo-rinkeby.itm.monster:4430/ledger/receipts";
-  char *postData =
+  char* url = "https://azure-demo-rinkeby.itm.monster:4430/ledger/receipts";
+  char* postData =
       "{\n"
       "  \"reqPairList\": [\n"
       "    {\n"
@@ -22,7 +22,7 @@ void ssl_post_test() {
       "    }\n"
       "  ]\n"
       "}";
-  char *result = ssl_post(url, postData);
+  char* result = ssl_post(url, postData);
   assert(result != NULL);
   free(result);
 }

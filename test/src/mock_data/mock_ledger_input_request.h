@@ -8,7 +8,7 @@
 
 #include "mock_ok_data.h"
 
-void mock_ledger_input_request_ok(ledger_input_request_t *ledgerInputRequest) {
+void mock_ledger_input_request_ok(ledger_input_request_t* ledgerInputRequest) {
   strcpy(ledgerInputRequest->callerAddress, MOCK_CALLER_ADDRESS_OK);
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   ledgerInputRequest->timestamp = MOCK_TIMESTAMP_OK;

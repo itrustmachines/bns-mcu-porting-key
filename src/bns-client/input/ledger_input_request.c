@@ -10,11 +10,13 @@
 #include <string.h>
 
 bns_exit_code_t build_ledger_input_request_json(
-    const bns_client_t *bnsClient, const char *cmdJson,
-    const receipt_locator_t *receiptLocator, char **reqJson) {
+    const bns_client_t*      bnsClient,
+    const char*              cmdJson,
+    const receipt_locator_t* receiptLocator,
+    char**                   reqJson) {
   LOG_DEBUG("build_ledger_input_request_json() begin");
   ledger_input_request_t ledgerInputRequest = {0};
-  bns_exit_code_t exitCode;
+  bns_exit_code_t        exitCode;
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
     goto build_ledger_input_request_json_fail;
@@ -60,9 +62,10 @@ build_ledger_input_request_json_fail:
 }
 
 bns_exit_code_t build_ledger_input_request(
-    const bns_client_t *const bnsClient, const char *const cmdJson,
-    const receipt_locator_t *const receiptLocator,
-    ledger_input_request_t *const ledgerInputRequest) {
+    const bns_client_t* const      bnsClient,
+    const char* const              cmdJson,
+    const receipt_locator_t* const receiptLocator,
+    ledger_input_request_t* const  ledgerInputRequest) {
   bns_exit_code_t exitCode = BNS_OK;
   if (!bnsClient) {
     exitCode = BNS_CLIENT_NULL_ERROR;
@@ -108,10 +111,10 @@ build_ledger_input_request_fail:
 }
 
 bns_exit_code_t ledger_input_request_sign(
-    ledger_input_request_t *const ledgerInputRequest,
-    const char *const privateKey) {
+    ledger_input_request_t* const ledgerInputRequest,
+    const char* const             privateKey) {
   bns_exit_code_t exitCode;
-  char *buffer = NULL;
+  char*           buffer = NULL;
   if (!ledgerInputRequest || !ledgerInputRequest->cmd ||
       !ledgerInputRequest->indexValue || !ledgerInputRequest->metadata) {
     exitCode = BNS_LEDGER_INPUT_REQUEST_NULL_ERROR;
@@ -135,7 +138,7 @@ bns_exit_code_t ledger_input_request_sign(
   size += strlen(ledgerInputRequest->indexValue);
   size += strlen(ledgerInputRequest->metadata);
   size += bns_digits(ledgerInputRequest->clearanceOrder);
-  buffer = (char *)malloc(sizeof(char) * (size + 1));
+  buffer = (char*)malloc(sizeof(char) * (size + 1));
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
   sprintf(buffer, "%s%lld%s%s%s%lld", ledgerInputRequest->callerAddress,
           ledgerInputRequest->timestamp, ledgerInputRequest->cmd,
@@ -149,7 +152,7 @@ bns_exit_code_t ledger_input_request_sign(
 #endif
 
   unsigned char shaResult[SHA3_BYTE_LEN] = {0};
-  bns_sha3((unsigned char *)buffer, size, shaResult);
+  bns_sha3_prefix((unsigned char*)buffer, size, shaResult);
   BNS_FREE(buffer);
   if ((exitCode = bns_sign(shaResult, privateKey,
                            &ledgerInputRequest->sigClient)) != BNS_OK) {
@@ -161,19 +164,16 @@ bns_exit_code_t ledger_input_request_sign(
   return exitCode;
 
 ledger_input_request_sign_fail:
-  if (buffer) {
-    BNS_FREE(buffer);
-  }
   LOG_ERROR("ledger_input_request_sign() error, " BNS_EXIT_CODE_PRINT_FORMAT,
             bns_strerror(exitCode));
   return exitCode;
 }
 
 bns_exit_code_t ledger_input_request_to_json(
-    const ledger_input_request_t *const ledgerInputRequest, char **const json) {
+    const ledger_input_request_t* const ledgerInputRequest, char** const json) {
   LOG_DEBUG("ledger_input_request_to_json() begin");
   bns_exit_code_t exitCode = BNS_OK;
-  cJSON *root = NULL;
+  cJSON*          root     = NULL;
   if (!ledgerInputRequest || !ledgerInputRequest->cmd ||
       !ledgerInputRequest->indexValue || !ledgerInputRequest->metadata) {
     exitCode = BNS_LEDGER_INPUT_REQUEST_NULL_ERROR;
@@ -183,8 +183,8 @@ bns_exit_code_t ledger_input_request_to_json(
     exitCode = BNS_LEDGER_INPUT_REQUEST_JSON_NULL_ERROR;
     goto ledger_input_request_to_json_fail;
   }
-  root = cJSON_CreateObject();
-  cJSON *sig = cJSON_CreateObject();
+  root       = cJSON_CreateObject();
+  cJSON* sig = cJSON_CreateObject();
   cJSON_AddItemToObject(root, "callerAddress",
                         cJSON_CreateString(ledgerInputRequest->callerAddress));
 #if defined(RECEIPT_TIMESTAMP_IS_LONG)
@@ -201,9 +201,10 @@ bns_exit_code_t ledger_input_request_to_json(
                         cJSON_CreateString(ledgerInputRequest->indexValue));
   cJSON_AddItemToObject(root, "metadata",
                         cJSON_CreateString(ledgerInputRequest->metadata));
-  cJSON_AddItemToObject(root, "clearanceOrder",
-                        cJSON_CreateNumber(ledgerInputRequest->clearanceOrder,
-                                           ledgerInputRequest->clearanceOrder));
+  cJSON_AddItemToObject(
+      root, "clearanceOrder",
+      cJSON_CreateNumber((double)ledgerInputRequest->clearanceOrder,
+                         ledgerInputRequest->clearanceOrder));
   cJSON_AddItemToObject(root, "sigClient", sig);
   cJSON_AddItemToObject(sig, "r",
                         cJSON_CreateString(ledgerInputRequest->sigClient.r));
@@ -211,9 +212,7 @@ bns_exit_code_t ledger_input_request_to_json(
                         cJSON_CreateString(ledgerInputRequest->sigClient.s));
   cJSON_AddItemToObject(sig, "v",
                         cJSON_CreateString(ledgerInputRequest->sigClient.v));
-  if (*json) {
-    BNS_FREE(*json);
-  }
+  if (*json) { BNS_FREE(*json); }
   *json = cJSON_PrintUnformatted(root);
   cJSON_Delete(root);
   LOG_DEBUG("ledger_input_request_to_json() end, json=%s", *json);
@@ -227,16 +226,14 @@ ledger_input_request_to_json_fail:
 }
 
 void ledger_input_request_free(
-    ledger_input_request_t *const ledgerInputRequest) {
+    ledger_input_request_t* const ledgerInputRequest) {
   if (ledgerInputRequest) {
 #if !defined(RECEIPT_TIMESTAMP_IS_LONG)
     if (ledgerInputRequest->timestamp) {
       BNS_FREE(ledgerInputRequest->timestamp);
     }
 #endif
-    if (ledgerInputRequest->cmd) {
-      BNS_FREE(ledgerInputRequest->cmd);
-    }
+    if (ledgerInputRequest->cmd) { BNS_FREE(ledgerInputRequest->cmd); }
     if (ledgerInputRequest->indexValue) {
       BNS_FREE(ledgerInputRequest->indexValue);
     }

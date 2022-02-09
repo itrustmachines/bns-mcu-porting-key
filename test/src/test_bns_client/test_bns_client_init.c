@@ -7,12 +7,12 @@
 void test_ok() {
   LOG_DEBUG("test_ok() begin");
   // given
-  receipt_dao_t receiptDao = mock_receipt_dao_empty();
-  http_client_t httpClient = {.get = mock_check_register_response_true,
-                              .post = mock_register_response_ok,
+  receipt_dao_t         receiptDao = mock_receipt_dao_empty();
+  http_client_t         httpClient = {.get  = mock_check_register_response_true,
+                              .post = mock_login_response_ok,
                               .eth_post = mock_response_null};
-  bns_client_callback_t callback = {0};
-  bns_client_t bnsClient = {0};
+  bns_client_callback_t callback   = {0};
+  bns_client_t          bnsClient  = {0};
   strcpy(bnsClient.bnsServerInfo.contractAddress, MOCK_CONTRACT_ADDRESS_OK);
   strcpy(bnsClient.bnsServerInfo.serverWalletAddress,
          MOCK_SERVER_WALLET_ADDRESS_OK);
@@ -50,7 +50,7 @@ void test_bns_client_null_error() {
   int res;
 
   // given
-  bns_client_t *bnsClient = NULL;
+  bns_client_t* bnsClient = NULL;
 
   // when
   res = bns_client_init(bnsClient, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
@@ -174,7 +174,7 @@ void test_http_client_null_error() {
 
   // given
   receipt_dao_t receiptDao = mock_receipt_dao_empty();
-  bns_client_t bnsClient = {0};
+  bns_client_t  bnsClient  = {0};
 
   // when
   res = bns_client_init(
@@ -193,10 +193,10 @@ void test_bns_client_callback_null_ok() {
 
   // given
   receipt_dao_t receiptDao = mock_receipt_dao_empty();
-  http_client_t httpClient = {.get = mock_check_register_response_true,
-                              .post = mock_register_response_ok,
+  http_client_t httpClient = {.get      = mock_check_register_response_true,
+                              .post     = mock_login_response_ok,
                               .eth_post = mock_response_null};
-  bns_client_t bnsClient = {0};
+  bns_client_t  bnsClient  = {0};
   strcpy(bnsClient.bnsServerInfo.contractAddress, MOCK_CONTRACT_ADDRESS_OK);
   strcpy(bnsClient.bnsServerInfo.serverWalletAddress,
          MOCK_SERVER_WALLET_ADDRESS_OK);

@@ -16,20 +16,21 @@
 
 _CHECK_RESULT
 bns_exit_code_t build_clearance_record_contract_instruction(
-    clearance_order_t clearanceOrder, char **instruction);
+    clearance_order_t clearanceOrder, char** instruction);
 
 _CHECK_RESULT
-bns_exit_code_t build_contract_request_json(const char *contractAddress,
-                                            const char *instruction,
-                                            char **requestJson);
+bns_exit_code_t build_contract_request_json(const char* contractAddress,
+                                            const char* instruction,
+                                            char**      requestJson);
 
 _CHECK_RESULT
 bns_exit_code_t contract_post_clearance_record(
-    const bns_client_t *bnsClient, clearance_order_t clearanceOrder,
-    clearance_record_t *clearanceRecord);
+    const bns_client_t* bnsClient,
+    clearance_order_t   clearanceOrder,
+    clearance_record_t* clearanceRecord);
 
 _CHECK_RESULT
 bns_exit_code_t check_and_parse_contract_clearance_record_response(
-    const char *res, clearance_record_t *clearanceRecord);
+    const char* res, clearance_record_t* clearanceRecord);
 
 #endif  // BNS_C_CLIENT_CONTRACT_H

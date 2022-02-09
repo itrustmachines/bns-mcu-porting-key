@@ -1,11 +1,8 @@
 #include <bns-client/util/byte_util.h>
 #include <ctype.h>
-#include <stdio.h>
 
-void bns_hex_to_byte(const char *hex, size_t size, unsigned char *byte) {
-  if (!hex || (size == 0) || !byte) {
-    return;
-  }
+void bns_hex_to_byte(const char* hex, size_t size, unsigned char* byte) {
+  if (!hex || (size == 0) || !byte) { return; }
   for (int i = (size % 2 == 0 ? 0 : -1), j = 0; i < (int)size; i += 2, j++) {
     byte[j] = 0;
     if (i >= 0) {
@@ -25,11 +22,9 @@ void bns_hex_to_byte(const char *hex, size_t size, unsigned char *byte) {
   }
 }
 
-void bns_byte_to_hex(const unsigned char *byte, size_t size, char *hex) {
-  if (!byte || (size == 0) || !hex) {
-    return;
-  }
-  size_t index = 0;
+void bns_byte_to_hex(const unsigned char* byte, size_t size, char* hex) {
+  if (!byte || (size == 0) || !hex) { return; }
+  size_t        index = 0;
   unsigned char h;
   unsigned char l;
   for (size_t i = 0; i < size; i++) {

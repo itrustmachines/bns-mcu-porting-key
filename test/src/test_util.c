@@ -12,8 +12,8 @@ void test_hexTransform() {
       "1A2B3C4D5E6F1A2B3C4D5E6F1A2B3C4D5E6F";
 
   // when
-  unsigned char output[54] = {0};
-  char transBack[109] = {0};
+  unsigned char output[54]     = {0};
+  char          transBack[109] = {0};
   bns_hex_to_byte(input, 108, output);
   bns_byte_to_hex(output, 54, transBack);
 

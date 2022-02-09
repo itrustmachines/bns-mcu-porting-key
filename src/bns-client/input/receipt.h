@@ -24,26 +24,26 @@
       (receipt)->sigServer.s, (receipt)->sigServer.v
 
 _CHECK_RESULT
-bns_exit_code_t receipt_first_part_to_sign_data(const receipt_t *receipt,
-                                                char **firstPart);
+bns_exit_code_t receipt_first_part_to_sign_data(const receipt_t* receipt,
+                                                char**           firstPart);
 
 _CHECK_RESULT
-bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t *receipt,
-                                                      char **secondPartHash);
+bns_exit_code_t receipt_second_part_hash_to_sign_data(const receipt_t* receipt,
+                                                      char** secondPartHash);
 
 _CHECK_RESULT
-bns_exit_code_t receipt_to_sign_data(const receipt_t *receipt,
-                                     char **toSignData);
+bns_exit_code_t receipt_to_sign_data(const receipt_t* receipt,
+                                     char**           toSignData);
 
 _CHECK_RESULT
-bns_exit_code_t parse_receipt_from_cjson(cJSON *root, receipt_t *receipt);
+bns_exit_code_t parse_receipt_from_cjson(cJSON* root, receipt_t* receipt);
 
 _CHECK_RESULT
-bns_exit_code_t receipt_check_sig(const char *serverWalletAddress,
-                                  const receipt_t *receipt);
+bns_exit_code_t receipt_check_sig(const char*      serverWalletAddress,
+                                  const receipt_t* receipt);
 
 _CHECK_RESULT
-bns_exit_code_t receipt_to_digest_value(const receipt_t *receipt,
-                                        char **digestValue);
+bns_exit_code_t receipt_to_digest_value(const receipt_t* receipt,
+                                        char**           digestValue);
 
 #endif  // BNS_C_CLIENT_RECEIPT_H

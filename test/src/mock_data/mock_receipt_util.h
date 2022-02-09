@@ -7,16 +7,16 @@
 
 #include "mock_ok_data.h"
 
-bns_exit_code_t parse_receipt(const char *const res, receipt_t *const receipt) {
+bns_exit_code_t parse_receipt(const char* const res, receipt_t* const receipt) {
   bns_exit_code_t exitCode;
-  cJSON *root = cJSON_Parse(res);
-  exitCode = parse_receipt_from_cjson(root, receipt);
+  cJSON*          root = cJSON_Parse(res);
+  exitCode             = parse_receipt_from_cjson(root, receipt);
   cJSON_Delete(root);
   return exitCode;
 }
 
 _CHECK_RESULT
-int mock_get_string_timestamp_receipt(receipt_t *receipt) {
+int mock_get_string_timestamp_receipt(receipt_t* receipt) {
   int result = parse_receipt(MOCK_RECEIPT_JSON_STRING_TIMESTAMP_OK, receipt);
   LOG_DEBUG("mock_get_receipt() " RECEIPT_PRINT_FORMAT,
             RECEIPT_TO_PRINT_ARGS(receipt));
@@ -24,7 +24,7 @@ int mock_get_string_timestamp_receipt(receipt_t *receipt) {
 }
 
 _CHECK_RESULT
-int mock_get_long_timestamp_receipt(receipt_t *receipt) {
+int mock_get_long_timestamp_receipt(receipt_t* receipt) {
   int result = parse_receipt(MOCK_RECEIPT_JSON_LONG_TIMESTAMP_OK, receipt);
   LOG_DEBUG("mock_get_receipt() " RECEIPT_PRINT_FORMAT,
             RECEIPT_TO_PRINT_ARGS(receipt));

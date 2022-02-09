@@ -4,11 +4,11 @@
 
 void test_positive_int() {
   // given
-  int num = 1234567890;
-  char *numString = "1234567890";
+  int   num       = 1234567890;
+  char* numString = "1234567890";
 
   // when
-  char *result = bns_lltos(num);
+  char* result = bns_lltos(num);
 
   // then
   assert(strcmp(result, numString) == 0);
@@ -19,11 +19,11 @@ void test_positive_int() {
 
 void test_negative_int() {
   // given
-  int num = -1234567890;
-  char *numString = "-1234567890";
+  int   num       = -1234567890;
+  char* numString = "-1234567890";
 
   // when
-  char *result = bns_lltos(num);
+  char* result = bns_lltos(num);
 
   // then
   assert(strcmp(result, numString) == 0);
@@ -34,11 +34,11 @@ void test_negative_int() {
 
 void test_positive_long_long() {
   // given
-  long long int num = 1234567890123456789L;
-  char *numString = "1234567890123456789";
+  long long int num       = 1234567890123456789L;
+  char*         numString = "1234567890123456789";
 
   // when
-  char *result = bns_lltos(num);
+  char* result = bns_lltos(num);
 
   // then
   assert(strcmp(result, numString) == 0);
@@ -49,11 +49,11 @@ void test_positive_long_long() {
 
 void test_negative_long_long() {
   // given
-  long long int num = -1234567890123456789L;
-  char *numString = "-1234567890123456789";
+  long long int num       = -1234567890123456789L;
+  char*         numString = "-1234567890123456789";
 
   // when
-  char *result = bns_lltos(num);
+  char* result = bns_lltos(num);
 
   // then
   assert(strcmp(result, numString) == 0);
