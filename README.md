@@ -10,7 +10,7 @@ This is BNS MCU SDK User Guide. The User Guide will guide you through several do
 
 ### Quick Starts
 
-The quickstarts are intended to guide you through the steps to install packages required to SDK, configure the settings for sample code, and check the result after ledgerinput.
+The quickstarts are intended to guide you through the steps to install packages required for the SDK, configure the settings for sample code, and check the result after ledgerinput.
 
 - [About quickstarts](./doc/quick_start_en.md)
 - [Download the SDK](./doc/quick_start_en.md#1-download-the-sdk)
@@ -19,7 +19,7 @@ The quickstarts are intended to guide you through the steps to install packages 
 - [Run the Sample code](./doc/quick_start_en.md#4-run-the-sample-code)
 - [Check the result](./doc/quick_start_en.md#5-check-the-result)
 
-Complete the quickstarts for each steps, then you will be ready to run the tutorial and develop our SDK with your own applications.
+Complete the quickstarts for each step, then you will be ready to run the tutorial and develop our SDK with your own applications.
 
 ### Tutorials
 
@@ -30,10 +30,10 @@ The tutorials are intended to guide you through following documents to build the
 - [Build thte ReceiptDao Applications](./doc/receiptDao_en.md)
 - [Configure setting of BNS Client](./doc/other_setting_en.md)
 
-Complete the tutorial for each documents, then you will be ready to run the overview of BNS Client to modify or learn more details about our SDK
+Complete the tutorial for each document, then you will be ready to run the overview of BNS Client to modify or learn more about our SDK.
 
 ## Overview of BNS Client
 
-If you want to explore our SDK in more details or modify our SDK, we recommand you go through this document. In this document, we will combine the previous tutorials and documents to guide you through the operation of BNS Client.
+If you want to explore our SDK in more details or modify our SDK, we recommand you to go through this document. In this document, we combine the previous tutorials and documents to guide you through the operation of BNS Client.
 
 - [Overview Of BNS Client](./doc/summary_en.md)
