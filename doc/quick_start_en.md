@@ -14,7 +14,7 @@ Depending on your operating system, our SDK supports serveral development enviro
 
 - Command Line Interface (CLI)
 
-The quickstarts are intended to guide you through the steps to install the software that the SDK will need, configure the settings for Sample Code, and check the result after doing ledgerinput. Quick starts involved follwing steps:
+The quickstarts are intended to guide you through the steps to install the software that the SDK will need, configure the settings for Sample Code, and check the result after doing ledgerinput. The quickstarts involve the follwing steps:
 
 <!-- no toc -->
 1. [Download the SDK](#1-download-the-sdk)
@@ -76,7 +76,7 @@ This configuration file is very important. The main program uses this configurat
   
   2. Ethereum Blockchain Node URL : In order to get the onchain proof, we need to access the node on the blockchain. We use the Ethereum blockchain for our testing enviroment. The Ethereum blockchain node URL can be obtained via Infura. Please check the [Infura tutorial](infura_en.md) to get the Rinkeby Node URL.
 
-After obtaining the private key and Ethereum Node URL, then you will be ready to modify the configuration file [config.h](../example/bns-client-example/config.h). Please check the file and follow the instructions in file or below.
+After obtaining the private key and Ethereum Node URL, then you will be ready to modify the configuration file [config.h](../example/bns-client-example/config.h). Please check the file and follow the instructions in the file or below.
 
 ```C
 /**
