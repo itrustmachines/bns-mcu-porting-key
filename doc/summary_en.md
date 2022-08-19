@@ -2,7 +2,7 @@
 
 ### About the overview of BNS Client
 
-If you want to explore our SDK in more details or modify our SDK, we recommand you go through this document. In this document, we will combine the previous tutorials and settings to guide you through the operation of BNS Client.
+If you want to explore our SDK in more detail or modify our SDK, we recommand you go through this document. In this document, we will combine the previous tutorials and settings to guide you through the operation o ourf BNS Client.
 
 ### Prerequisites
 
@@ -31,7 +31,7 @@ If you want to explore our SDK in more details or modify our SDK, we recommand y
 
 ### ReceiptDao Applications
 
-- BNS Client initialize the `receiptDao` struct with each receiptDao function. Check [Build thte ReceiptDao Applications](receiptDao_en.md) for more informations
+- BNS Client initialize the `receiptDao` struct with each receiptDao function. Check [Build thte ReceiptDao Applications](receiptDao_en.md) for more information.
 
   ```C
   receipt_dao_t receiptDao = 
@@ -44,7 +44,7 @@ If you want to explore our SDK in more details or modify our SDK, we recommand y
 
 ### HttpClient Applications
 
-- BNS Client initialize `httpClient` struct with each httpClient function. Check [ssl_get.c](../example/bns-client-example/ssl_get.c) and [ssl_get.h](../example/bns-client-example/ssl_get.h) for more httpClient information
+- BNS Client initialize `httpClient` struct with each HttpClient function. Check [ssl_get.c](../example/bns-client-example/ssl_get.c) and [ssl_get.h](../example/bns-client-example/ssl_get.h) for more httpClient information.
 
   ```C
   http_client_t httpClient = 
@@ -75,10 +75,9 @@ If you want to explore our SDK in more details or modify our SDK, we recommand y
   
   ```
 
-- After initializing, BNS Client will call the `spo_client_set_verify_after_ledger_input_count`, `spo_client_set_retry_count` and `spo_client_set_retry_delay_sec` to update the setting. Check [other setting](./other_setting_en.md) for more informations
+- After initializing, the BNS Client will call the `spo_client_set_verify_after_ledger_input_count`, `spo_client_set_retry_count` and `spo_client_set_retry_delay_sec` to update the setting. Check [other setting](./other_setting_en.md) for more information.
 
   - `spo_client_set_verify_after_ledger_input_count` : set the number of receipts to be verified after each ledgerInput
-
   - `spo_client_set_retry_count` : set the maximum retry count after failed ledgerInput
   - `spo_client_set_retry_delay_sec` : set the delay time for each retry
 
@@ -100,29 +99,29 @@ If you want to explore our SDK in more details or modify our SDK, we recommand y
 
 ![](../image/spo_client_ldeger_input.png)
 
-- After successfully initializing the BNS Client, BNS Client will convert `CMD` to JSON data type, `cmdJSON`, and call `spo_client_ledger_input` function to do the ledgerInput. Check [Build the CMD](./cmd_en.md) for more informations
+- After successfully initializing the BNS Client, BNS Client will convert `CMD` to JSON data type, `cmdJSON`, and call `spo_client_ledger_input` to do the ledgerInput. Check [Build the CMD](./cmd_en.md) for more information.
 
-- `spo_client_ledger_input` will store `cmdJSON` and other informations in `ledgerInputRequest` then call `create_ledger_input_by_cmd_callback` to callback the informations in `ledgerInputRequest`
+- `spo_client_ledger_input` will store `cmdJSON` and other information in `ledgerInputRequest` then call `create_ledger_input_by_cmd_callback` to Callback the information in `ledgerInputRequest`.
 
-- After building the `ledgerInputRequest`, BNS Client will send `ledgerInputRequest` to BNS Server, then receive the `ledgerInputResponse` from BNS Server and call `receipt_cache_save` to save the receipt
+- After building the `ledgerInputRequest`, the BNS Client will send `ledgerInputRequest` to the BNS Server, then receive the `ledgerInputResponse` from BNS Server and call `receipt_cache_save` to save the receipt.
 
-- BNS Client will call `ledger_input_response_callback`, `receipt_event_callback` and  `done_clearance_order_event_callback` to callback the informations in `ledgerInputResponse`, `receipt` and `doneClearanceOrder`. The `receipt` and `doneClearanceOrder` are contained in `ledgerInputResponse`.
+- The BNS Client will call `ledger_input_response_callback`, `receipt_event_callback` and  `done_clearance_order_event_callback` to Callback the information in `ledgerInputResponse`, `receipt` and `doneClearanceOrder`. The `receipt` and `doneClearanceOrder` are contained in `ledgerInputResponse`.
 
-- BNS Client will check the setting of `spo_client_set_verify_after_ledger_input_count` whether it is greater than 0. If true, BNS Client will call `spo_client_verify_by_done_co` to verify the receipt, otherwise, BNS Client will keep doing ledgerInput until `receipt_cache_size` is full. Then BNS Client will call `spo_client_verify_now` to verify the receipt, you can change the value of `spo_client_verify_now` to configure how many receipt will be verified.
+- BNS Client will check the setting of `spo_client_set_verify_after_ledger_input_count` whether it is greater than 0. If true, BNS Client will call `spo_client_verify_by_done_co` to verify the receipt, otherwise, the BNS Client will keep doing ledgerInput until `receipt_cache_size` is full. Then BNS Client will call `spo_client_verify_now` to verify the receipt, you can change the value of `spo_client_verify_now` to configure how many receipts will be verified.
 
 ### Verify
 
 ![](../image/spo_client_verify.png)
 
-- `spo_client_verify_by_done_co` will call `receipt_cache_findPageByClearanceOrderEqualOrLessThan` function to use `clearanceOrder` to find out which receipts to be verified. If `clearanceOrder` is equal or less than the `doneClearanceOrder` of the BNS Server, the receipt will be verified by BNS Client later
+- `spo_client_verify_by_done_co` will call `receipt_cache_findPageByClearanceOrderEqualOrLessThan`  to use `clearanceOrder` to find out which receipts have to be verified. If `clearanceOrder` is equal or less than the `doneClearanceOrder` of the BNS Server, the receipt will be verified by BNS Client later.
 
-- BNS Client call `spo_get_merkle_proof` to request the merkleProof of the receipts from the BNS Server.
+- The BNS Client call `spo_get_merkle_proof` to request the merkleProof of the receipts from the BNS Server.
 
-- After obtaining the merkleProof, BNS Client will call the `merkle_proof_callback` to callback the informations in `merkleProof` and call `verify` function to verify the receipt.
+- After obtaining the merkleProof, the BNS Client will call the `merkle_proof_callback` to Callback the information in `merkleProof` and call `verify` function to verify the receipt.
 
-- `spo_client_verify_now` will call `spo_get_done_clearanceOrder` first to request the latest `doneClearanceOrder` from the BNS Server and then call `spo_client_verify_by_done_co` to verify the receipt
+- `spo_client_verify_now` will call `spo_get_done_clearanceOrder` first to request the latest `doneClearanceOrder` from the BNS Server and then call `spo_client_verify_by_done_co` to verify the receipt.
 
-- After verifying the receipt, BNS Client will call `verify_receipt_result_callback` to callback the informations in `verifyReceiptResult`
+- After verifying the receipt, the BNS Client will call `verify_receipt_result_callback` to Callback the information in `verifyReceiptResult`
 
   ```C
   size_t count = 0;
