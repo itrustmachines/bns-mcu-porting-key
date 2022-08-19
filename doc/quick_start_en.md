@@ -184,7 +184,7 @@ The code will do ledgerinput ( send the CMD ) to BNS Server, you can let the cod
 
 ### 5. Check the result
 
-After excuting the sample code. The BNS Client will do ledgerinput. You can login and check the result of the ledgerinput on the [Blockchain Notary Service](https://bns.itrustmachines.com/) website. For instructions on BNS operations one can go to YouTube to watch the instructional video [Blockchain Notary Service Playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42).
+After executing the sample code. The BNS Client will do ledgerinput. You can login and check the result of the ledgerinput on the [Blockchain Notary Service](https://bns.itrustmachines.com/) website. For instructions on BNS operations one can go to YouTube to watch the instructional video [Blockchain Notary Service Playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42).
 
 ----
 Quickstarts is now complete. Next, learn how to build your own CMD.
