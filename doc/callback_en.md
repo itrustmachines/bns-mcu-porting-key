@@ -2,7 +2,7 @@
 
 ### About the Callback
 
-The Callbacks send events between the BNS Client, BNS Server, BNS or your system. We define 8 events that you can Callback. We will introduce these Callbacks in the following document. The document include two parts. The first part [(Basic)](#basic) will introduce two basic Callbacks and send events to the BNS. The second part [(Advanced)](#advanced) will introduce all Callbacks and let you integrate the Callbacks into your system, server, database, and other services.
+Callbacks send events between the BNS Client and BNS Server to BNS and your system. We define 8 events that you can Callback. We will introduce these Callbacks in the following document. The document includes two parts. The first part [(Basic)](#basic) will introduce two basic Callbacks and send events to the BNS. The second part [(Advanced)](#advanced) will introduce all Callbacks and let you integrate the Callbacks into your system, server, database, and other services.
 
 ### Prerequisites
 
