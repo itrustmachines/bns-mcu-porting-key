@@ -2,7 +2,7 @@
 
 ### About the CMD
 
-CMD is the data you want to clearance to blockchain by the BNS Server. CMD is also part of ledgerinput. The BNS Client sends the ledgerinput to the BNS Server and the BNS Server will automatically upload the fingerprint of the ledgerinput to blockchain. Developers should build their own CMD so that their can use our BNS service. There are two scenarios to build the CMD:
+CMD is the data you want to clear to the blockchain via the BNS Server. CMD is also part of ledgerinput. The BNS Client sends the ledgerinput to the BNS Server and the BNS Server will automatically upload the fingerprint of the ledgerinput to blockchain. Developers should build their own CMD so that their can use our BNS service. There are two scenarios to build the CMD:
 
 1. Display on BNS : Learn how to build CMD in JSON data type and display it on BNS.
 
