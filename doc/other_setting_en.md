@@ -2,7 +2,7 @@
 
 ### About the Setting of BNS Client
 
-To let the BNS Client operates more flexible, we allow developers to configure some settings in BNS Client. In this document, We are going to guide you all the setting of BNS Client and help you to configure the setting to meet your demanding.
+To let the BNS Client operations more flexible, we allow developers to configure some settings in BNS Client. In this document, We are going to guide you to all the setting of BNS Client and help you to configure the setting to meet your demands.
 
 ### Prerequisites
 
@@ -17,24 +17,24 @@ We define 4 settings in BNS Client, which are
 
 - `bns_client_set_verify_after_ledger_input_count` : set the number of receipts to be verified after doing ledgerInput
 - `bns_client_set_retry_count` : set the maximum retry count of failed ledgerInput
-- `bns_client_set_retry_delay_sec` : set the delay time fore each retry
+- `bns_client_set_retry_delay_sec` : set the delay time for each retry
 - `bns_client_verify_now` : set the numbers of receipt to be verified, if `receipt_cache_size` is full
 
 ### bns_client_set_verify_after_ledger_input_count
 
 **BNS Client will verify receipts after each ledgerInput in case excessive receipt reduce the system performance**
 
-- The `bns_client_set_verify_after_ledger_input_count` will be configured when initialize the BNS Client, the default is 2
+- The `bns_client_set_verify_after_ledger_input_count` will be configured when we initialize the BNS Client, the default is 2
 
 - The default setting, `DEFAULT_VERIFY_AFTER_LEDGER_INPUT_COUNT`, is defined in [bns_client.h](../src/bns-client/spo_client.h)
 
 - Developer can change the number in `spo_client_set_verify_after_ledger_input_count` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
 
-- If `spo_client_set_verify_after_ledger_input_count` greater than 0 ，BNS Client will call `spo_client_verify_by_done_co` verify the receipt, otherwise, the BNS Client will keep ledgerInput until the the number of receipts meet the `receipt_cache_size`
+- If `spo_client_set_verify_after_ledger_input_count` is greater than 0 ，the BNS Client will call `spo_client_verify_by_done_co` to verify the receipt, otherwise, the BNS Client will keep ledgerInput until the the number of receipts meet the `receipt_cache_size`.
 
-- If the memory limited is tight, you can set the number more larger, but the performance of ledgerInput will decrease
+- If the memory limited is too little, you can set the number higher, but the performance of ledgerInput will decrease.
 
-- If you want to make the ledgerInput more efficient, you can set the number smaller but the usage of memory will increase
+- If you want to make the ledgerInput more efficient, you can set the number smaller but the usage of the memory will increase.
 
 - [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
 
@@ -155,7 +155,7 @@ We define 4 settings in BNS Client, which are
 
 **In case the failed ledgerInput affect other ledgerInput, developer can set the maximum retry count here**
 
-- The `spo_client_set_retry_count` will be configured when initialize the BNS Client, the default is 5
+- The `spo_client_set_retry_count` will be configured when we initialize the BNS Client, the default is 5.
 - The default setting, `DEFAULT_MAX_RETRY_COUNT`, is defined in [spo_client.h](../src/bns-client/spo_client.h)
 - Developer can change the number in `spo_client_set_retry_count` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
 
@@ -231,11 +231,11 @@ We define 4 settings in BNS Client, which are
 
 ### spo_client_set_retry_delay_sec
 
-**In case the failure ledgerInput keep retrying and affect performance, developer can set the maximum retry delay second here**
+**In case the failed ledgerInput keep retrying and it affect performance, developers can set the maximum retry delay seconds here**
 
-- The `spo_client_set_retry_delay_sec` will be configured when initialize the BNS Client, the default is 5
-- The default setting, `DEFAULT_RETRY_DELAY_SEC`, is defined in [spo_client.h](../src/bns-client/spo_client.h)
-- Developer can change the number in `spo_client_set_retry_delay_sec` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
+- The `spo_client_set_retry_delay_sec` will be configured to initialize the BNS Client, the default is 5.
+- The default setting, `DEFAULT_RETRY_DELAY_SEC`, is defined in [spo_client.h](../src/bns-client/spo_client.h).
+- Developer can change the number in `spo_client_set_retry_delay_sec` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c).
 
 - [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
 
@@ -317,10 +317,10 @@ We define 4 settings in BNS Client, which are
 
 ### spo_client_verify_now
 
-**BNS Client verify the receipt after ledgerInput. In addition, BNS Client also verify the receipt when the number of receipt reaches the `receipt_cache_size`**
+**The BNS Client verifies the receipt after ledgerInput. In addition, the BNS Client also verifies the receipt when the number of receipt reaches the `receipt_cache_size`**
 
-- When BNS Client call `spo_client_verify_now`, BNS Client will request the latest `doneClearanceOrder` from BNS Server and call `receipt_cache_findPageByClearanceOrderEqualOrLessThan` to find out which receipts to be verified
-- Developer can change the number in `spo_client_verify_now` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
+- When the BNS Client calls `spo_client_verify_now`, the BNS Client will request the latest `doneClearanceOrder` from the BNS Server and call `receipt_cache_findPageByClearanceOrderEqualOrLessThan` to find out which receipts need to be verified.
+- Developer can change the number in `spo_client_verify_now` to configure the setting. Please check [spo_client_example.c](../example/bns-client-example/spo_client_example.c).
 
 - [spo_client_example.c](../example/bns-client-example/spo_client_example.c)
 
@@ -377,7 +377,7 @@ We define 4 settings in BNS Client, which are
   ```
 
 ----
-Tutorials is now complete. Next, you can explore the overview of BNS Client
+Tutorials are now complete. Next, you can explore the overview of BNS Client.
 
 ## Next Steps
 

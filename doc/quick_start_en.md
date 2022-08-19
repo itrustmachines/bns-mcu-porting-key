@@ -2,19 +2,19 @@
 
 ### About Quick Starts
 
-Development for SDK require the following prerequisite:
+Development for the SDK requires the following prerequisites:
 
 - An BNS MCU SDK
 - A Linux machine running with Ubuntu 18.04 / Ubuntu 20.04 / Centos 7 / Centos 8
 - MacOS and Windows users can develop our SDK in Linux enviroments by using Docker, Virtual machines or other methods
 
-Depending on your operating system, our SDK supports serveral development enviroments:
+Depending on your operating system, our SDK supports several development enviroments:
 
-- Visual Studio Code (VSCode) : You need to install [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) for VSCode. This extension enables you to develop and execute our SDK in Linux, MacOS and Windows enviroments.
+- Visual Studio Code (VSCode) : You need to install [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) for VSCode. This extension enables you to develop and execute our SDK in Linux, MacOS, and Windows enviroments.
 
 - Command Line Interface (CLI)
 
-The quickstarts are intended to guide you through the steps to install the software that SDK will need, configure the settings for Sample Code, and check the result after doing ledgerinput. Quick starts involved follwing steps:
+The quickstarts are intended to guide you through the steps to install the software that the SDK will need, configure the settings for Sample Code, and check the result after doing ledgerinput. The quickstarts involve the follwing steps:
 
 <!-- no toc -->
 1. [Download the SDK](#1-download-the-sdk)
@@ -23,7 +23,7 @@ The quickstarts are intended to guide you through the steps to install the softw
 4. [Run the Sample code](#4-run-the-sample-code)
 5. [Check the result](#5-check-the-result)
 
-Complete the quickstarts for each steps, then you will be ready to run the tutorial and develop our SDK with your own applications.
+Complete the quickstart for each step, then you will be ready to run the tutorial and develop our SDK with your own application.
 
 ### 1. Download the SDK
 
@@ -35,7 +35,7 @@ To download the code, you will need to install git (If not installed yet) and th
 
 ### 2. Install packages required to SDK
 
-Before you run the SDK, you need to add required Linux packages to your computer if they are not already installed. Depending on your Linix distribution, enter the following commands in terminal. You may omit packages that are already installed but make sure your **gcc version is higher than 7.5**, you can type `gcc --version` in terminal to check.
+Before you run the SDK, you need to add the required Linux packages to your computer if they are not already installed. Depending on your Linix distribution, enter the following commands in the terminal. You may omit packages that are already installed but make sure your **gcc version is higher than 7.5**, you can type `gcc --version` in terminal to check.
 
 - Check gcc Verison
   
@@ -69,14 +69,14 @@ This is free software; see the source for copying conditions.  There is NO warra
 
 ### 3. Configure the settings for Sample Code
 
-This configuration file is very important. Main program use this configuration file to initialize the BNS Client. Configuration file includes private key, blockchain address, server URL setting ... etc.
+This configuration file is very important. The main program uses this configuration file to initialize the BNS Client. The configuration file includes a private key, the blockchain address, the server URL, the settings ... etc.
 
 - Modifying the configuration file require the following prerequisites:
-  1. Private key : To make sure the reliability of every data source, we need a unique private key to process digital signature for each data source. We recommand to use [VANITY-ETH](https://vanity-eth.tk/) to generate the private key.
+  1. Private key : To make sure the reliability of every data source, we need a unique private key to process the digital signature for each data source. We recommand using [VANITY-ETH](https://vanity-eth.tk/) to generate the private key.
   
-  2. Ethereum Blockchain Node URL : In order to get the onchain proof, we need to access the node of blockchain. We use Ethereum blockchain for our testing enviroment. The Ethereum blockchain node URL can obtain via Infura. Please check the [Infura tutorial](infura_en.md) to get the Rinkey Node URL.
+  2. Ethereum Blockchain Node URL : In order to get the onchain proof, we need to access the node on the blockchain. We use the Ethereum blockchain for our testing enviroment. The Ethereum blockchain node URL can be obtained via Infura. Please check the [Infura tutorial](infura_en.md) to get the Rinkeby Node URL.
 
-After obtain the private key and Ethereum Node URL, then you will be ready to modify the configuration file [config.h](../example/bns-client-example/config.h). Please check the file and follow the instructions in file or below.
+After obtaining the private key and Ethereum Node URL, then you will be ready to modify the configuration file [config.h](../example/bns-client-example/config.h). Please check the file and follow the instructions in the file or below.
 
 ```C
 /**
@@ -87,21 +87,21 @@ After obtain the private key and Ethereum Node URL, then you will be ready to mo
 #define PRIVATE_KEY "" 
 
 /** 
- * Please fill in the index value of data source. 
- * The index value is the index of clearance. 
- * You can use device ID instead, if data source is coming from device.
- * But make sure the index value must be unique.
+ * Please fill in the index value of the data source. 
+ * The index value is the index of the clearance. 
+ * You can use the device ID instead, if the data source is coming from a device.
+ * Ensure the index value is unique.
  */
 #define INDEX_VALUE_KEY ""
 
-/** Please fill in the EMAIL of BNS Account */
+/** Please fill in the EMAIL of the BNS Account */
 #define EMAIL ""
 
-/** Please fill in the URL of BNS Server */
+/** Please fill in the URL of the BNS Server */
 #define SERVER_URL "https://bns.itrustmachines.com/" 
 
 /** 
- * Please fill in the Node URL of Rinkey which generated by Infura
+ * Please fill in the Node URL of Rinkey which is generated by Infura
  */
 #define NODE_URL "https://mainnet.infura.io/v3/{InfuraProjectId}" 
 ```
@@ -113,38 +113,38 @@ After obtain the private key and Ethereum Node URL, then you will be ready to mo
 
 **There is currently no test fucntion. If you want to run the test, please check [cmake](#cmake)**
 
-Move to SDK directory
+Move to the SDK directory
 
 ```shell
 > make clean
 > make all
 ```
 
-You can use `make help` to check avail options
+You can use `make help` to check available options
 
-Move to execution file directory
+Move to the execution file directory
 
 ```shell
 > cd bin
 ```
 
-Excute the Sample code
+Execute the sample code
 
 ```shell
 > ./bns-client-example
 ```
 
-The code will do ledgerinput ( send the CMD ) to BNS Server, you can let the code keep working and go to next topic to check the result of ledgerinput. If you want to terminate, you can use `crtl + c` at any time.
+The code will do ledgerinput ( send the CMD ) to the BNS Server, you can let the code keep working and go to next topic to check the result of ledgerinput. If you want to terminate, you can use `crtl + c` at any time.
 
 ##### cmake
 
-Move to SDK directory and create the build directory
+Move to the SDK directory and create the build directory
 
 ```shell
 > mkdir build
 ```
 
-Move to build directory and compile the SDK
+Move to the build directory and compile the SDK
 
 ```shell
 > cd build
@@ -157,7 +157,7 @@ Run the test
 > make test
 ```
 
-**If you have meet implicit declaration of function problems during `make`, try to build with `make C_FLAGS=-std=gnu99`**
+**If you havet implicit declaration of function problems during `make`, try to build with `make C_FLAGS=-std=gnu99`**
 
 Move to execution file directory
 
@@ -184,10 +184,10 @@ The code will do ledgerinput ( send the CMD ) to BNS Server, you can let the cod
 
 ### 5. Check the result
 
-After excuting the sample code. The BNS Client will do ledgerinput. You can login and check the result of ledgerinput on [Blockchain Notary Service](https://bns.itrustmachines.com/) website. The BNS operation can go to YouTube to watch the instructional video [Blockchain Notary Service Playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42).
+After executing the sample code, the BNS Client will do ledgerinput. You can login and check the result of the ledgerinput on the [Blockchain Notary Service website](https://bns.itrustmachines.com/). For instructions on BNS operations one can go to YouTube to watch the instructional [playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42).
 
 ----
-Quickstarts is now complete. Next, learn how to build your own CMD.
+Quickstarts are now complete. Next, you learn how to build your own CMD.
 
 ## Next Steps
 

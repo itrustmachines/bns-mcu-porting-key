@@ -2,7 +2,7 @@
 
 ### About the ReceiptDao
 
-The ReceiptDao ( Receipt Data Access Object ) is a interface which help developer to store, find, delete the receipt. Developer can implement the code in ReceiptDao to store the receipt in memory, database, cloud service or other services. In this document, we are going to store the receipt in memory as a exmaple to guide you understand the ReceiptDao.
+The ReceiptDao ( Receipt Data Access Object ) is an interface which helps developers to store, find, delete the receipt. Developers can implement the code in ReceiptDao to store the receipt in memory, databases, cloud services, or other services. In this document, we are going to store the receipt in memory as an example to guide you to understand the ReceiptDao.
 
 ### Prerequisites
 
@@ -14,10 +14,10 @@ The ReceiptDao ( Receipt Data Access Object ) is a interface which help develope
 
 ![](../image/receipt_dao.png)
 
-The `receiptDao` is struct data type and includes three functions which are  
+The `receiptDao` is a struct data type and includes three functions which are  
 
 - `receipt_cache_save` : store the receipts in memory
-- `receipt_cache_findPageByClearanceOrderEqualOrLessThan` : use `clearanceOrder` to find out which receipts to be verified
+- `receipt_cache_findPageByClearanceOrderEqualOrLessThan` : use `clearanceOrder` to find out which receipts are to be verified
 - `receipt_cache_delete` : delete the verified receipts
 
 - [bns_types.h](../src/bns-client/core/bns_types.h)
@@ -44,11 +44,11 @@ receipt_dao_t receiptDao = {
 
 #### receipt_cache_save
 
-- After receiving the `ledgerInputResult`, `bns_post_ledger_input` will call `receipt_cache_save` function to store the receipt in memory. Developes can implement the code in `receipt_cache_save` if you want to store receipt in other services.
+- After receiving the `ledgerInputResult`, `bns_post_ledger_input` will call `receipt_cache_save` to store the receipt in memory. Developers can implement the code in `receipt_cache_save` if they want to store the receipt in other services.
 
-- The size of `receipt` depends on `CMD` and `indexValue`. In general, the receipt is about 0.5 KB. Developer can change the maximum storage quantity of receipt depending on your system specification. Default Setting is 1000 receipts
+- The size of `receipt` depends on `CMD` and `indexValue`. In general, the receipt is about 0.5 KB. Developers can change the maximum storage quantity of receipt depending on your system specification. Default Setting is 1000 receipts.
 
-- For maximum storage quantity of receipt setting, please check [receipt_dao.h](../example/bns-client-example/receipt_dao.h)
+- For maximum storage quantity of the receipt setting, please check [receipt_dao.h](../example/bns-client-example/receipt_dao.h)
 
 - [ledgerInput.c](../src/bns-client/input/ledger_input.c)
   
@@ -99,9 +99,9 @@ receipt_dao_t receiptDao = {
 
 #### receipt_cache_findPageByClearanceOrderEqualOrLessThan
 
-- When BNS Client want to verify the receipt, BNS Client will call `receipt_cache_findPageByClearanceOrderEqualOrLessThan` function to use `clearanceOrder` to find out which receipts to be verified
+- When the BNS Client wants to verify the receipt, the BNS Client will call `receipt_cache_findPageByClearanceOrderEqualOrLessThan` to use `clearanceOrder` to find out which receipts to be verified.
 
-- If `clearanceOrder` is equal or less than the `doneClearanceOrder` of the BNS Server, the receipt will be verified by BNS Client later
+- If `clearanceOrder` is equal or less than the `doneClearanceOrder` of the BNS Server, the receipt will be verified by BNS Client later.
 
 - [spo_client.c](../src/bns-client/spo_client.c)
   
@@ -147,7 +147,7 @@ receipt_dao_t receiptDao = {
 
 #### receipt_cache_delete
 
-- To save the memory, BNS Client will delete the verified receipts
+- To save the memory, the BNS Client will delete the verified receipts.
 
 - [spo_client.c](../src/bns-client/spo_client.c)
   
@@ -176,7 +176,7 @@ receipt_dao_t receiptDao = {
   ```
 
 ----
-Build the ReceiptDao Applications document is now complete. Next, learn how to configure the remaining setting of BNS Client
+Build the ReceiptDao Application document is now complete. Next, we learn how to configure the remaining setting of BNS Client.
 
 ## Next Steps
 
