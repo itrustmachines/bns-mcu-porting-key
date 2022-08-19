@@ -32,7 +32,7 @@ CMD is the data you want to clear to the blockchain via the BNS Server. CMD is a
   sprintf(cmdJson, "{\"deviceId\":\"%s\", \"timestamp\":%s, \"voltage\":%.6f, \"current\":%.6f, \"power\":%.6f}", INDEX_VALUE_KEY, timestamp, voltage, current, power);
   ```
 
-- Now, you can implement your own CMD in [bns_client_example.c](../example/bns-client-example/spo_client_example.c) and follow the instructions in the quickstart document to execute the program. We highly recommend that you keep checking the ledgerinput result on [Blockchain Notary Service](https://bns.itrustmachines.com/) until CMD is successfully on-chain.
+- Now, you can implement your own CMD in [bns_client_example.c](../example/bns-client-example/bns_client_example.c) and follow the instructions in the quickstart document to execute the program. We highly recommend that you keep checking the ledgerinput result on [Blockchain Notary Service](https://bns.itrustmachines.com/) until CMD is successfully on-chain.
 
 ----
 Build the CMD document is now complete. Next, learn how to build the Callback Applications.
