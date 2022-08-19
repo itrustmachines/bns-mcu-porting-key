@@ -19,7 +19,7 @@ The quickstarts are intended to guide you through the steps to install packages 
 - [Run the Sample code](./doc/quick_start_en.md#4-run-the-sample-code)
 - [Check the result](./doc/quick_start_en.md#5-check-the-result)
 
-Complete the quickstarts for each step, then you will be ready to run the tutorial and develop our SDK with your own applications.
+Complete the quickstart for each step, then you will be ready to run the tutorial and develop our SDK with your own applications.
 
 ### Tutorials
 
@@ -34,6 +34,6 @@ Complete the tutorial for each document, then you will be ready to run the overv
 
 ## Overview of BNS Client
 
-If you want to explore our SDK in more details or modify our SDK, we recommand you to go through this document. In this document, we combine the previous tutorials and documents to guide you through the operation of BNS Client.
+If you want to explore our SDK in more details or modify our SDK, we recommend you go through this document. In this document, we combine the previous tutorials and documents to guide you through the operation of the BNS Client.
 
 - [Overview Of BNS Client](./doc/summary_en.md)
