@@ -23,7 +23,7 @@ Complete the quickstarts for each step, then you will be ready to run the tutori
 
 ### Tutorials
 
-The tutorials are intended to guide you through following documents to build the CMD, Callback, ReceiptDao and other BNS Client settings
+The tutorials are intended to guide you through the following documents to build the CMD, Callback, ReceiptDao and other BNS Client settings.
 
 - [Build the CMD](./doc/cmd_en.md)
 - [Build the Callback Applications](./doc/callback_en.md)
