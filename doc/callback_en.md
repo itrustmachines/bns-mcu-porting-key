@@ -21,19 +21,19 @@ Callbacks send events between the BNS Client and BNS Server to BNS and your syst
    
 3. `ledger_input_response_callback` :The BNS Client will receive `ledgerInputResult` from the BNS Server after sending `ledgerInputRequest`. Developers can implement the code in `ledger_input_response_callback` function to Callback the information in `ledgerInputResult`.
 
-4`receipt_event_callback` : The `receipt` is contained in `ledgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`.
+4. `receipt_event_callback` : The `receipt` is contained in `ledgerInputResult`. Developers can implement the code in `receipt_event_callback` function to callback the informations in `receipt`.
 
-5`done_clearance_order_event_callback` : The `doneClearanceOrder` is contained in `ledgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`.
+5. `done_clearance_order_event_callback` : The `doneClearanceOrder` is contained in `ledgerInputResult`. BNS Client will use `doneClearanceOrder` to find out which receipts need to be verified. Developers can implement the code in `done_clearance_order_event_callback` function to callback the informations in `doneClearanceOrder`.
 
-6`merkle_proof_callback` : Before verifying the receipt, BNS Client will request the `merkleProof` of the receipts to be verified from the Server. The Merkle Proof is evidence of receipt verification. The BNS Client will then use the Merkle proof to verify whether the receipt is in the TP-merkle tree or not. Developers can implement the code in `merkle_proof_callback` function to callback the informations in `merkleProof`.
+6. `merkle_proof_callback` : Before verifying the receipt, BNS Client will request the `merkleProof` of the receipts to be verified from the Server. The Merkle Proof is evidence of receipt verification. The BNS Client will then use the Merkle proof to verify whether the receipt is in the TP-merkle tree or not. Developers can implement the code in `merkle_proof_callback` function to callback the informations in `merkleProof`.
 
-7`verify_receipt_result_callback` : After receiving the Merkle Proof. The BNS Client will start to verify the receipt and store the result to `verifyReceiptResult`. Developers can implement the code in `verify_receipt_result_callback` function to callback the informations in `verifyReceiptResult`.
+7. `verify_receipt_result_callback` : After receiving the Merkle Proof. The BNS Client will start to verify the receipt and store the result to `verifyReceiptResult`. Developers can implement the code in `verify_receipt_result_callback` function to callback the informations in `verifyReceiptResult`.
 
 ### Basic
 
 We are going to use BNS as an example to demonstrate the two basic callbacks `ledger_input_response_callback` and `verify_receipt_result_callback`.
 
-we recommand that you reference the code and document at the same time so that you can understand the callback applications better.
+we recommend that you reference the code and document at the same time so that you can understand applications of Callback better.
 
 ![](../image/callback_easy.png)
 
@@ -206,7 +206,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 - `ledgerInputRequest` is a struct data type, including `timestamp`, `indexValue`, `clearanceOrder`, `cmdJson` ... and so on. Please refer to [bns_types.h](../src/bns-client/core/bns_types.h) for more information.
 
-- In order to search ledgerInput data conveniently, we recommand that you Callback the `indexValue` and `clearanceOrder`.
+- In order to search ledgerInput data conveniently, we recommend that you Callback the `indexValue` and `clearanceOrder`.
 
 - [bns_client.c](../src/bns-client/bns_client.c)
   
@@ -289,7 +289,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 - `ledgerInputResult` is a struct data type, including `stauts`, `receipt`, `doneClearanceOrder` ... and so on. Check [bns_types.h](../src/bns-client/core/bns_types.h) for more information.
 
-- In order to search data conveniently, we recommand that you Callback the `indexValue` and `clearanceOrder`.
+- In order to search data conveniently, we recommend that you Callback the `indexValue` and `clearanceOrder`.
 
 - [ledger_input.c](../src/bns-client/input/ledger_input.c)
   
@@ -346,7 +346,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 - `Receipt` is a struct data type, including `timestamp`, `cmd`, `clearanceOrder` ... and so on. Check [spo_types.h](../src/bns-client/core/spo_types.h) for more information.
 
-- In order to search data conveniently, we recommand that you Callback the `indexValue` and `clearanceOrder`.
+- In order to search data conveniently, we recommend that you Callback the `indexValue` and `clearanceOrder`.
 
 - [spo_client.c](../src/bns-client/spo_client.c)
   
@@ -506,7 +506,7 @@ Before you implement the code in Callback functions, please remember to remove t
 
 - For `verify`, `verify_receipt_signature`, `verify_merkle_proof_signature`, `verify_clearance_order`, `verify_pb_pair`, `verify_merkle_proof_slice`, `verify_root_hash` functions, please check [verify.c](../src/bns-client/verify/verify.c)
 
-- To update the verification inforamtion, we recommand that you Callback the `indexValue` and `clearanceOrder`.
+- To update the verification inforamtion, we recommend that you Callback the `indexValue` and `clearanceOrder`.
 
 - [verify.c](../src/bns-client/verify/verify.c)
   
