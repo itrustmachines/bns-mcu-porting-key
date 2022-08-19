@@ -8,7 +8,7 @@ Development for the SDK requires the following prerequisites:
 - A Linux machine running with Ubuntu 18.04 / Ubuntu 20.04 / Centos 7 / Centos 8
 - MacOS and Windows users can develop our SDK in Linux enviroments by using Docker, Virtual machines or other methods
 
-Depending on your operating system, our SDK supports serveral development enviroments:
+Depending on your operating system, our SDK supports several development enviroments:
 
 - Visual Studio Code (VSCode) : You need to install [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) for VSCode. This extension enables you to develop and execute our SDK in Linux, MacOS, and Windows enviroments.
 
@@ -69,7 +69,7 @@ This is free software; see the source for copying conditions.  There is NO warra
 
 ### 3. Configure the settings for Sample Code
 
-This configuration file is very important. The main program uses this configuration file to initialize the BNS Client. The configuration file includes private key, blockchain address, server URL, setting ... etc.
+This configuration file is very important. The main program uses this configuration file to initialize the BNS Client. The configuration file includes a private key, the blockchain address, the server URL, the settings ... etc.
 
 - Modifying the configuration file require the following prerequisites:
   1. Private key : To make sure the reliability of every data source, we need a unique private key to process the digital signature for each data source. We recommand using [VANITY-ETH](https://vanity-eth.tk/) to generate the private key.
@@ -187,7 +187,7 @@ The code will do ledgerinput ( send the CMD ) to BNS Server, you can let the cod
 After executing the sample code, the BNS Client will do ledgerinput. You can login and check the result of the ledgerinput on the [Blockchain Notary Service website](https://bns.itrustmachines.com/). For instructions on BNS operations one can go to YouTube to watch the instructional [playlist](https://youtube.com/playlist?list=PL9mBKnNjNC1K0XiH9EL65QljN6Agf4k42).
 
 ----
-Quickstarts is now complete. Next, learn how to build your own CMD.
+Quickstarts are now complete. Next, you learn how to build your own CMD.
 
 ## Next Steps
 
